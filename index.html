@@ -672,6 +672,13 @@
   .note .nh b{font-weight:600}
   .note .np{display:block;margin-top:4px;font-size:11.5px;color:var(--muted);line-height:1.45}
   .note .chev{flex:none;font-size:20px;color:var(--tight);line-height:1}
+  /* an event the second-look flag is counting, wearing the flag's own colour */
+  .ev.under,.evt.under{
+    border:1px solid var(--tight);border-radius:10px;
+    background-image:linear-gradient(180deg,rgba(217,146,0,.13),rgba(217,146,0,.03));
+  }
+  .ev.under{padding:8px 10px;margin:3px 0}
+  .evt.under .d b{color:var(--tight)}
 </style>
 </head>
 <body>
@@ -2106,7 +2113,12 @@ function renderCalendar(){
 
   let rows = evs.map(e=>{
     const h=hintFor(e), flag=(h&&h.kind!=="suggest")?`<span class="flag ${h.kind==="lower"?"lower":""}"></span>`:"";
-    return `<button class="ev ${e.pending?"isp":""}" data-ev="${e.id}">
+    /* The same amber the notification carries, on the row it's counting — so
+       "2 events are costing more than you thought" resolves to two objects on
+       the screen rather than sending you to look for them. A 5px dot was doing
+       this job and losing every time. */
+    const low = !!(h && h.kind==="higher");
+    return `<button class="ev ${e.pending?"isp":""} ${low?"under":""}" data-ev="${e.id}">
       <span class="t">${e.time?e.time:"—"}</span>
       <span class="n">${e.name}</span>
       ${e.pending?`<span class="pending">pending</span>`:""}
@@ -2183,7 +2195,7 @@ function renderDay(){
       : `<span class="${isInferred(e)?"inf":""}">${cv<0?"+":"−"}${noNums()?"":fmt(Math.abs(cv))}</span> → <b>${noNums()?"":fmt(after)}</b>`;
     const h=hintFor(e), flag=(h&&h.kind!=="suggest")?`<span class="flag ${h.kind==="lower"?"lower":""}"></span>`:"";
     nodes+=`<div class="node" style="top:${y(hm(e.time))-8}px"></div>
-      <button class="evt ${isRest?"rest":""} ${e.pending?"isp":""} ${isHeavy(e)?"drain":""}" data-mv="${e.id}" style="top:${top}px">
+      <button class="evt ${isRest?"rest":""} ${e.pending?"isp":""} ${isHeavy(e)?"drain":""} ${h&&h.kind==="higher"?"under":""}" data-mv="${e.id}" style="top:${top}px">
         <span class="n">${e.name}</span>${e.pending?`<span class="pending">pending</span>`:""}${e.inv?`<span class="invited">invited</span>`:""}${flag}<span class="d">${delta}</span></button>`;
   });
 

@@ -1049,6 +1049,16 @@ modal. Rows still lead to the cost sheet, so accepting a number is two taps.
 The singular and plural branches are both written out (`it's` / `they're`), the
 way everything else here has to be.
 
+**The flagged event wears the same amber.** A count is only useful if you can
+find what it counted — *"2 events are costing more than you thought"* has to
+resolve to two objects on the screen, not send you hunting. The rows the
+notification counts carry its border, on the calendar agenda and on the day
+timeline. A 5px dot had been doing this job and losing every time.
+
+On a heavy day an event can carry both marks at once: the red bar on the left
+(this is costing you the most today) and the amber border (and your estimate for
+it is low). Different claims, so they stack rather than compete.
+
 **"Room on Sunday" moved to the forecast rather than being deleted.** It had only
 ever rendered on the calendar outside burnout mode, so simplifying this page
 would have quietly removed it from the app. It belongs on the forecast anyway:
