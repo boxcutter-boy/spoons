@@ -1086,6 +1086,41 @@ ahead is read.
 The calendar now goes grid → the selected day → one flag → conditions: 1082px,
 down from 1468.
 
+### Costs are arrows; levels are numbers
+
+A list of 1 / 2 / 3 / 3 down the right of an agenda is four figures to read and
+compare before you learn anything, and the thing you actually wanted to know was
+"which of these is the heavy one". So costs are drawn as arrows:
+
+| | |
+|---|---|
+| ↘ | light — under 0.15 |
+| ↘↘ | medium |
+| ↘↘↘ | heavy — 0.25 and up |
+| ↗ ↗↗ ↗↗↗ | the same, for something that gives back |
+
+**Three bands, because light / medium / heavy is the whole judgement anyone makes
+from a cost.** A fourth arrow would be a digit wearing a costume. The boundaries
+sit where the printed figures used to fall, so an event that read "3" gets three
+arrows — the bands are a coarser view of the same scale, not a different opinion
+about it.
+
+**What stays a number is how much you have.** Ferri: *"the most helpful thing is
+knowing how many spoons you have currently."* That's the line between the two
+treatments and it holds up — a cost is relative, re-estimated every time you rate
+an event, and only ever compared against its neighbours. A level is a fact about
+you right now. So the charge, day totals and every "ends on" stay as figures,
+and the day timeline reads:
+
+> Client workshop **↘↘↘ → 0**
+
+what it takes, and what you're left holding.
+
+The arrow was already the app's word for "this drains you" — it's on every
+calendar chip — so this adds magnitude to an existing vocabulary rather than
+introducing one. The cost **stepper** is still numeric: that's an input, the one
+place you're deliberately setting a value rather than reading one.
+
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
 glyphs, inheriting `currentColor` — so the selected tab lights its icon and its

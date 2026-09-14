@@ -215,6 +215,9 @@
   .cev b,.cev .arrow{display:none}
   .arrow{flex:none;font-size:11px;line-height:1;opacity:.9}
   .arrow.rep{font-size:12px;font-weight:700}
+  /* one arrow per band, set tight so three of them read as one mark */
+  .arrows{font-size:12px;line-height:1;letter-spacing:-.06em;color:var(--ink);white-space:nowrap}
+  .arrows.plus{color:var(--ok)}
   /* Hollow means one thing only: an invitation you haven't answered. It's on
      your calendar but it isn't yours yet — the same outline Google draws. */
   .cev.inv{background:transparent;box-shadow:inset 0 0 0 1.5px var(--c),0 0 0 1.5px var(--chipstroke);color:var(--c)}
@@ -498,7 +501,7 @@
   .ev .n{flex:1;font-size:12.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .ev .g,.task .g{flex:none;display:flex;align-items:center;color:var(--muted)}
   .ico{width:15px;height:15px;display:block}
-  .ev .c{font-size:12px;font-weight:600;min-width:26px;text-align:right;flex:none}
+  .ev .c{font-size:12px;font-weight:600;min-width:34px;text-align:right;flex:none}
   .ev .c.none{font-weight:400;color:var(--faint);font-size:10.5px}
   .ev .c.inf,.evt .d .inf{font-weight:400;color:var(--muted);font-style:italic}
   .ev .c.plus{color:var(--ok)}
@@ -1098,6 +1101,25 @@ const SCALES = {
 const noNums = ()=> S.scale==="none";
 function fmt(v){ const s=SCALES[S.scale]; return s.round ? String(s.round(Math.max(0,v))) : ""; }
 function fmtMax(){ const s=SCALES[S.scale]; return s.max==null?"":String(s.max); }
+/* Magnitude without digits. The figures were the overwhelming part, and they get
+   read far more often than they're needed: on an agenda the question is "is this
+   the heavy one", never "is this a 2 or a 3". Three bands, because light /
+   medium / heavy is the whole judgement anyone makes from a cost — a fourth
+   arrow would be a digit wearing a costume.
+
+   What DOESN'T become arrows is how much you have. That's the number worth
+   knowing, so charge, day totals and "ends on" stay as figures. Costs are
+   relative and constantly re-estimated; a level is a fact about you. */
+/* Boundaries set where the printed figures used to fall, so an event that read
+   "3" gets three arrows and one that read "2" gets two — the bands are a coarser
+   view of the same scale, not a different opinion about it. */
+const COST_BANDS = [.15, .25];
+function costArrows(c){
+  const a=Math.abs(c), up=c<0;
+  const n = a<COST_BANDS[0] ? 1 : a<COST_BANDS[1] ? 2 : 3;   /* light | medium | heavy */
+  return `<span class="arrows${up?" plus":""}">${(up?TREND.up:TREND.down).repeat(n)}</span>`;
+}
+
 function pips(v,plus){
   const n=Math.max(1,Math.round(Math.abs(v)*10));
   return `<span class="pips${plus?" plus":""}">${"<i></i>".repeat(Math.min(n,6))}</span>`;
@@ -1105,7 +1127,7 @@ function pips(v,plus){
 function costText(c,inferred){
   if(c==null) return `<span class="c none">tap</span>`;
   const plus = c<0;
-  const inner = noNums() ? pips(c,plus) : `${plus?"+":""}${fmt(Math.abs(c))}`;
+  const inner = costArrows(c);
   return `<span class="c ${plus?"plus":""} ${inferred?"inf":""}">${inner}</span>`;
 }
 
@@ -1556,7 +1578,7 @@ function sheetArc(){
           <button class="ev" data-goday="${x.date}">
             <span class="n">${x.e.name}</span>
             <span class="t" style="width:auto">${dow(x.date)}</span>
-            <span class="c">${noNums()?pips(x.c):fmt(x.c)}</span>
+            <span class="c">${costArrows(x.c)}</span>
           </button>`).join("")}
       </div>`).join("")}
     <div style="height:10px"></div>
@@ -1606,8 +1628,8 @@ function sheetLook(days){
     <p class="sub">What you've actually come out at, against what you'd guessed.</p>
     ${flags.map(x=>`<button class="opt" data-ev="${x.ev.id}">
       <span class="n">${x.ev.name} <span class="hint">\u00b7 ${dow(x.ev.date)}</span><br>
-        <span class="hint">you've come out around ${fmt(x.hint.act)}, not ${fmt(x.ev.cost)}</span></span>
-      <span class="d">\u2192 <b>${fmt(x.hint.act)}</b></span>
+        <span class="hint">you've come out around ${costArrows(x.hint.act)}, not ${costArrows(x.ev.cost)}</span></span>
+      <span class="d">${costArrows(x.hint.act)}</span>
     </button>`).join("")}
     ${line?`<p class="hint" style="margin:13px 0 0;line-height:1.45">${line}</p>`:""}
     <div style="height:18px"></div>
@@ -1660,7 +1682,7 @@ function taskRow(e,plain){
       <span class="tick"></span>
       <span class="n">${par?`<span class="par">${par.name} · </span>`:""}${e.name}</span>
       <span class="g">${typeIcon(e.type)}</span>
-      <span class="c">${noNums()?pips(e.cost):fmt(e.cost)}</span>
+      <span class="c">${costArrows(e.cost)}</span>
     </button>
     ${dl?`<p class="due ${affordableBefore(e).count===0?"tight":""}">${dl}</p>`:""}
     ${!plain&&nudgeable?`<p class="nudge"><button data-breakdown="${e.id}">sitting a while — break it into smaller chunks?</button></p>`:""}
@@ -2142,7 +2164,7 @@ function renderCalendar(){
     rows += `<div class="ev open"><span class="t"></span>
       <span class="n">${hrs}h open · ${clockLabel(halfHour(g.from))}–${clockLabel(halfHour(g.from+g.len))}</span>
       <span class="g" style="opacity:0"></span>
-      <span class="c plus">${noNums()?pips(.1,true):"+"+fmt(Math.min(d.openHours*REFILL_PER_OPEN_HOUR,DAY_OPEN_CAP))}</span></div>`;
+      <span class="c plus">${costArrows(-Math.min(d.openHours*REFILL_PER_OPEN_HOUR,DAY_OPEN_CAP))}</span></div>`;
   }
   if(!evs.length) rows += `<p class="hint" style="padding:10px 0">Nothing scheduled. That's recovery.</p>`;
 
@@ -2201,8 +2223,9 @@ function renderDay(){
     let after=d.curve[0].c;
     for(const p of d.curve) if(p.h<=hm(e.time)+.9) after=p.c;
     const cv=costOf(e);
+    /* the arrow is what it takes, the figure is what you're left holding */
     const delta = cv==null ? "not priced"
-      : `<span class="${isInferred(e)?"inf":""}">${cv<0?"+":"−"}${noNums()?"":fmt(Math.abs(cv))}</span> → <b>${noNums()?"":fmt(after)}</b>`;
+      : `<span class="${isInferred(e)?"inf":""}">${costArrows(cv)}</span> → <b>${fmt(after)}</b>`;
     const h=hintFor(e), flag=flagMark(h);
     nodes+=`<div class="node" style="top:${y(hm(e.time))-8}px"></div>
       <button class="evt ${isRest?"rest":""} ${e.pending?"isp":""} ${isHeavy(e)?"drain":""}" data-mv="${e.id}" style="top:${top}px">
@@ -2792,7 +2815,7 @@ function sheetMove(id){
   openSheet(`
     <h3>${e.name}</h3>
     <p class="sub">${e.time?e.time+" \u00b7 ":""}${niceDate(e.date)}${
-      c==null?" \u00b7 not priced":(noNums()?"":` \u00b7 ${c<0?"gives back ":"costs "}${fmt(Math.abs(c))}`)}</p>
+      c==null?" \u00b7 not priced":` \u00b7 ${c<0?"gives back ":"costs "}${costArrows(c)}`}</p>
     ${moves.length ? `<p class="label">Move it to</p>
       ${moves.map(m=>`<button class="opt" data-pmove="${id}|${m.date}">
         <span class="n">${dowL(m.date)} ${dayNum(m.date)}</span>
@@ -2924,7 +2947,7 @@ function renderTasks(){
         ${rest.map(e=>`<div class="task no">
           <span class="tick"></span><span class="n">${e.name}</span>
           <span class="g">${typeIcon(e.type)}</span>
-          <span class="c">${noNums()?pips(e.cost):fmt(e.cost)}</span></div>`).join("")}
+          <span class="c">${costArrows(e.cost)}</span></div>`).join("")}
       </div>`:""}`
     : `<p class="lead">Nothing on your list yet.</p>`}
 
@@ -2954,7 +2977,7 @@ function sheetBreakdown(id){
     <p class="sub">${parent.name} — ${parent.added?`added ${daysBetween(parent.added,TODAY)} days ago`:""}</p>
     ${cur.length?cur.map(k=>`<div class="subrow">
       <span class="n">${k.name}</span>
-      <span class="c">${noNums()?pips(k.cost):fmt(k.cost)}</span></div>`).join("")
+      <span class="c">${costArrows(k.cost)}</span></div>`).join("")
       :`<p class="hint" style="margin-bottom:14px">What's the first small piece of it?</p>`}
     <input class="tinput" id="subName" type="text" placeholder="A smaller piece of it"
            value="${(draft.pending||"").replace(/"/g,"&quot;")}" style="margin-top:14px">
