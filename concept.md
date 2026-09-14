@@ -1049,15 +1049,20 @@ modal. Rows still lead to the cost sheet, so accepting a number is two taps.
 The singular and plural branches are both written out (`it's` / `they're`), the
 way everything else here has to be.
 
-**The flagged event wears the same amber.** A count is only useful if you can
+**The flagged event wears the same glyph.** A count is only useful if you can
 find what it counted — *"2 events are costing more than you thought"* has to
-resolve to two objects on the screen, not send you hunting. The rows the
-notification counts carry its border, on the calendar agenda and on the day
-timeline. A 5px dot had been doing this job and losing every time.
+resolve to two objects on the screen, not send you hunting. A 5px amber dot had
+been doing this job and losing every time.
 
-On a heavy day an event can carry both marks at once: the red bar on the left
-(this is costing you the most today) and the amber border (and your estimate for
-it is low). Different claims, so they stack rather than compete.
+The first attempt gave those rows the notification's amber border, and it read as
+**selected**. A box around one row in a list of hairline-separated rows is a
+state, and that state is already spoken for; borrowing it to mean "look at this"
+makes the row look like something you clicked. So the connection is an amber ⚠
+circle instead — the same glyph in the row and in the notification, no borrowed
+state, and nothing about the row's own shape changed.
+
+Costing *less* than you thought keeps the quiet dot. The same event shouldn't
+raise an alarm for turning out easier than expected.
 
 **"Room on Sunday" moved to the forecast rather than being deleted.** It had only
 ever rendered on the calendar outside burnout mode, so simplifying this page
