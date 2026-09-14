@@ -1022,6 +1022,42 @@ transition; the cost editor opened fresh from the calendar is still a drawer.
 Everything that had been a page is now a sheet over the day, which is what the
 week views were failing to earn: you never leave the thing you're deciding about.
 
+### The calendar page is a calendar again
+
+It had grown four stacked blocks under the grid — the day's agenda, *Worth a
+second look*, *Room on Sunday*, *Conditions* — and ran to 1468px against a 714px
+screen. Two full screens of scrolling to reach a month view.
+
+**A flag is not a panel.** *Worth a second look* was the block that earned its
+place least: it's something the app **noticed**, not something you came to the
+page to read. Those want opposite treatments — a panel can be quiet because you
+sought it out, an alert has to be impossible to scroll past and should hold only
+what it takes to decide whether to open it.
+
+> ┌──────────────────────────────────────────┐
+> │ **2 events are costing more than you     │
+> │ thought.**                          ›    │
+> │ Tap to see what they're really running   │
+> │ at.                                      │
+> └──────────────────────────────────────────┘
+
+Amber, because that's the "you'll pay for it" zone colour and this is the app
+being unsure rather than certain. The detail — each event, what you've actually
+come out at, and what the week costs if those rates are right — opens as a
+modal. Rows still lead to the cost sheet, so accepting a number is two taps.
+
+The singular and plural branches are both written out (`it's` / `they're`), the
+way everything else here has to be.
+
+**"Room on Sunday" moved to the forecast rather than being deleted.** It had only
+ever rendered on the calendar outside burnout mode, so simplifying this page
+would have quietly removed it from the app. It belongs on the forecast anyway:
+an empty day is a reading of the week ahead, and that's the screen where the week
+ahead is read.
+
+The calendar now goes grid → the selected day → one flag → conditions: 1082px,
+down from 1468.
+
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
 glyphs, inheriting `currentColor` — so the selected tab lights its icon and its
