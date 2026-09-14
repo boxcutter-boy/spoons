@@ -494,7 +494,7 @@
   .legend i{width:10px;height:10px;border-radius:2px;display:block;border:1px solid transparent;flex:none}
   .agenda{border-top:1px solid var(--line);padding-top:12px}
   .ev{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--hair);width:100%}
-  .ev .t{font-size:10px;color:var(--faint);width:40px;flex:none}
+  .ev .t{font-size:10px;color:var(--faint);width:48px;flex:none}
   .ev .n{flex:1;font-size:12.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .ev .g,.task .g{flex:none;display:flex;align-items:center;color:var(--muted)}
   .ico{width:15px;height:15px;display:block}
@@ -777,12 +777,15 @@ function trendIcon(e){ const d=trendOf(e); return d?trendGlyph(d):"" }
 const WARN_ICON = `<svg class="wi" viewBox="0 0 16 16" fill="none" stroke="currentColor"
   stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.5"/>
   <path d="M8 4.7v3.9"/><circle cx="8" cy="11.5" r=".85" fill="currentColor" stroke="none"/></svg>`;
-/* Costing MORE than you thought is a warning and gets the mark. Costing less is
-   good news and stays the quiet dot — the same event shouldn't shout at you for
-   turning out easier than expected. */
+/* One mark, one meaning: this is costing you more than you thought, and the
+   notification below is counting it. There used to be a green dot for the
+   opposite case — an event running cheaper than its estimate — and nobody could
+   tell you what it meant, which is the whole argument against it. That's good
+   news with nothing to do about it, and it's still waiting in the event's own
+   sheet for anyone who opens it. A row in an agenda earns a mark by being
+   actionable, not by being true. */
 function flagMark(h){
-  if(!h || h.kind==="suggest") return "";
-  return h.kind==="lower" ? `<span class="flag lower"></span>` : `<span class="warn">${WARN_ICON}</span>`;
+  return (h && h.kind==="higher") ? `<span class="warn">${WARN_ICON}</span>` : "";
 }
 
 function typeIcon(t){
@@ -2127,11 +2130,10 @@ function renderCalendar(){
   let rows = evs.map(e=>{
     const h=hintFor(e), flag=flagMark(h);
     return `<button class="ev ${e.pending?"isp":""}" data-ev="${e.id}">
-      <span class="t">${e.time?e.time:"—"}</span>
+      <span class="t">${e.time?clockLabel(hm(e.time)):"—"}</span>
       <span class="n">${e.name}</span>
       ${e.pending?`<span class="pending">pending</span>`:""}
       ${e.inv?`<span class="invited">invited</span>`:""}
-      <span class="g">${typeIcon(e.type)}</span>
       ${flag}${costText(costOf(e),isInferred(e))}
     </button>`}).join("");
 
@@ -2249,7 +2251,6 @@ function renderDay(){
     ${untimed.length?`<p class="label">No time set</p>
       ${untimed.map(e=>`<button class="ev ${isHeavy(e)?"drain":""}" data-mv="${e.id}">
         <span class="n">${e.name}</span>
-        <span class="g">${typeIcon(e.type)}</span>
         ${costText(costOf(e),isInferred(e))}</button>`).join("")}
       <div style="height:16px"></div>`:""}
     <button class="btn" data-cantmove="${date}" style="border-color:var(--line);color:var(--muted)">I can't move anything</button>`;

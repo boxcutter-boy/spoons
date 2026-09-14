@@ -1061,8 +1061,21 @@ makes the row look like something you clicked. So the connection is an amber ⚠
 circle instead — the same glyph in the row and in the notification, no borrowed
 state, and nothing about the row's own shape changed.
 
-Costing *less* than you thought keeps the quiet dot. The same event shouldn't
-raise an alarm for turning out easier than expected.
+**And it's the only mark on the row.** Ferri asked what the green dot meant — the
+one an event wore when it had been running *cheaper* than its estimate — and not
+being able to answer from the screen is the whole argument against it. It's good
+news with nothing to do about it. A row in an agenda earns a mark by being
+actionable, not by being true; the hint is still waiting in the event's own sheet
+for anyone who opens it.
+
+The kind glyphs went the same way. They stay in **Tasks**, where you're choosing
+something that fits how you're depleted, and in the cost sheet's Kind picker,
+which doubles as their legend. In a day's agenda you already know what your own
+meetings are.
+
+An agenda row is now: **the time, the name, the cost** — plus one ⚠ on the one
+row the app has something to say about. Times read as times (`9am`, `10:30am`,
+`3pm`), not as `09:00`.
 
 **"Room on Sunday" moved to the forecast rather than being deleted.** It had only
 ever rendered on the calendar outside burnout mode, so simplifying this page
