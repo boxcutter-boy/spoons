@@ -6,11 +6,16 @@ accounts, no streaks, no guilt.
 Spoon reads your calendar, learns what things actually cost you, and tells you
 what the week ahead is going to do to you — early enough to change it.
 
+**→ [Try it](https://boxcutter-boy.github.io/spoons/)**
+
+It runs entirely in your browser. Nothing is sent anywhere; your state lives in
+`localStorage` on your own device and goes no further.
+
 ## What's here
 
 | | |
 |---|---|
-| `prototype.html` | The whole app. One file, no build step, no dependencies. |
+| `index.html` | The whole app. One file, no build step, no dependencies. |
 | `concept.md` | The design document — every decision and why, including the ones that got reversed. |
 | `open-questions.md` | Things not yet settled. |
 | `dev-server.py` | A static server, so the prototype loads over `http://` and its fonts and `localStorage` work. |
@@ -22,12 +27,11 @@ what the week ahead is going to do to you — early enough to change it.
 python3 dev-server.py
 ```
 
-Then open <http://localhost:5173/prototype.html>. It reloads when the file
-changes.
+Then open <http://localhost:5173>. It reloads when the file changes.
 
-Opening `prototype.html` straight off disk mostly works, but `file://` blocks
-`localStorage`, so nothing persists between reloads, and the web fonts don't
-load.
+You only need the server to edit it. Opening `index.html` straight off disk
+mostly works, but `file://` blocks `localStorage`, so nothing persists between
+reloads, and the web fonts don't load.
 
 ## The model, briefly
 
