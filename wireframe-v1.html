@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spoon — wireframe v1</title>
+<style>
+  :root{
+    --ink:#222; --muted:#767676; --faint:#9a9a9a;
+    --line:#c8c8c8; --line-strong:#8a8a8a;
+    --fill:#fff; --ph:#f0f0f0; --stage:#e9e8e6;
+    --ok:#7ea37a; --tight:#d6b25e; --over:#c47c6c; --unknown:#cfcfcf;
+    --ok-bg:#e8efe7; --tight-bg:#f7f0dd; --over-bg:#f6e5e1; --unknown-bg:#f0f0f0;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 24px 64px; background:var(--stage);
+    font:400 14px/1.45 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    color:var(--ink);
+  }
+  .page-head{max-width:1720px;margin:0 auto 32px}
+  .page-head h1{font-size:17px;font-weight:600;margin:0 0 4px;letter-spacing:.01em}
+  .page-head p{margin:0;color:var(--muted);font-size:13px;max-width:56ch}
+
+  .frames{display:flex;flex-wrap:wrap;gap:40px;justify-content:center;max-width:1720px;margin:0 auto}
+  .col{width:380px}
+  .col > figcaption{font-size:12px;color:var(--muted);margin:12px 2px 0;line-height:1.5}
+  .col > figcaption b{color:var(--ink);font-weight:600;display:block;margin-bottom:2px;font-size:12px}
+
+  /* phone */
+  .phone{
+    width:380px;height:760px;background:var(--fill);
+    border:1px solid var(--line-strong);border-radius:18px;
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  .statusbar{
+    height:26px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;font-size:10px;color:var(--faint);border-bottom:1px solid #ececec;
+  }
+  .screen{flex:1;overflow:hidden;padding:16px 16px 8px}
+  .tabs{
+    flex:none;height:52px;border-top:1px solid var(--line);display:flex;
+  }
+  .tabs div{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;font-size:10px;color:var(--faint);
+  }
+  .tabs div.on{color:var(--ink);font-weight:600}
+  .tabs .ti{width:18px;height:18px;border:1px solid currentColor;border-radius:3px;opacity:.55}
+  .tabs div.on .ti{opacity:1}
+
+  /* bits */
+  .scr-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px}
+  .scr-head h2{margin:0;font-size:15px;font-weight:600}
+  .scr-head .sub{font-size:11px;color:var(--muted)}
+  .label{
+    font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
+    margin:0 0 7px;font-weight:600;
+  }
+  .card{border:1px solid var(--line);border-radius:8px;padding:14px}
+  .ph{
+    background:var(--ph);border:1px solid var(--line);border-radius:4px;
+    background-image:linear-gradient(to top right,transparent calc(50% - .5px),var(--line) 50%,transparent calc(50% + .5px)),
+                     linear-gradient(to bottom right,transparent calc(50% - .5px),var(--line) 50%,transparent calc(50% + .5px));
+  }
+  .btn{
+    border:1px solid var(--line-strong);border-radius:6px;padding:9px 12px;
+    font-size:12px;text-align:center;
+  }
+  .hint{font-size:10px;color:var(--faint)}
+
+  /* 1 — conditions */
+  .cond{display:flex;gap:16px;align-items:center;margin-bottom:14px}
+  .cond .ph{width:82px;height:82px;flex:none}
+  .charge{font-size:40px;line-height:1;font-weight:300;letter-spacing:-.02em}
+  .charge span{font-size:15px;color:var(--muted);font-weight:400}
+  .blurb{font-size:13px;line-height:1.5;margin:0}
+  .trend{font-size:10.5px;color:var(--muted);margin-top:6px}
+
+  /* forecast strip */
+  .strip{display:flex;gap:5px;margin-bottom:22px}
+  .day{
+    flex:1;border:1px solid var(--line);border-radius:6px;padding:7px 2px 6px;
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+  }
+  .day .dl{font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .day .ph{width:26px;height:26px}
+  .day .dn{font-size:12px;font-weight:600}
+  .day .bar{width:100%;height:3px;border-radius:2px}
+  .day.sel{border-color:var(--line-strong);border-width:1.5px}
+
+  /* heads up */
+  .figs{display:flex;gap:18px;margin:9px 0 12px}
+  .fig{font-size:11px;color:var(--muted)}
+  .fig b{display:block;font-size:16px;color:var(--ink);font-weight:600;margin-top:1px}
+
+  /* 2 — calendar */
+  .cal-nav{display:flex;gap:8px}
+  .cal-nav i{width:22px;height:22px;border:1px solid var(--line);border-radius:4px;display:block}
+  .dow{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px}
+  .dow span{font-size:9px;color:var(--faint);text-align:center;text-transform:uppercase}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+  .cell{
+    height:38px;border:1px solid var(--line);border-radius:4px;
+    display:flex;align-items:flex-start;justify-content:flex-end;padding:3px 4px;
+    font-size:10.5px;color:var(--ink);
+  }
+  .cell.pastish{color:var(--faint);background:#fafafa}
+  .cell.blank{border:none;background:none}
+  .cell.ok{background:var(--ok-bg);border-color:var(--ok)}
+  .cell.tight{background:var(--tight-bg);border-color:var(--tight)}
+  .cell.over{background:var(--over-bg);border-color:var(--over)}
+  .cell.unknown{background:var(--unknown-bg);border-color:var(--unknown);color:var(--faint)}
+  .cell.sel{outline:1.5px solid var(--ink);outline-offset:1px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 18px}
+  .legend span{font-size:9.5px;color:var(--muted);display:flex;align-items:center;gap:4px}
+  .legend i{width:9px;height:9px;border-radius:2px;display:block;border:1px solid}
+  .agenda{border-top:1px solid var(--line);padding-top:11px}
+  .ev{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid #efefef}
+  .ev .t{font-size:10px;color:var(--faint);width:38px;flex:none}
+  .ev .n{flex:1;font-size:12.5px}
+  .ev .g{width:13px;height:13px;border:1px solid var(--line);border-radius:50%;flex:none}
+  .ev .c{font-size:12px;font-weight:600;width:26px;text-align:right;flex:none}
+  .ev .c.none{font-weight:400;color:var(--faint)}
+  .ev .c.plus{color:var(--ok)}
+  .ev.open{
+    background:repeating-linear-gradient(135deg,#fff,#fff 4px,#f4f4f4 4px,#f4f4f4 8px);
+    border-bottom:1px solid #efefef;
+  }
+  .ev.open .n{color:var(--muted);font-style:italic;font-size:11.5px}
+  .tot{display:flex;justify-content:space-between;padding:10px 0 0;font-size:11px;color:var(--muted)}
+  .tot b{color:var(--ink)}
+
+  /* 4 — day view */
+  .sumline{font-size:12.5px;line-height:1.5;margin:0 0 4px}
+  .sumline b{font-weight:600}
+  .tl{position:relative;height:380px;margin:16px 0 14px}
+  .rail{
+    position:absolute;left:36px;top:0;bottom:0;width:9px;border-radius:5px;
+    background:linear-gradient(to bottom,
+      var(--ok) 0%, var(--ok) 17%,
+      var(--tight) 26%, var(--tight) 50%,
+      var(--over) 57%, var(--over) 100%);
+  }
+  .tick{position:absolute;left:0;width:32px;text-align:right;font-size:9px;color:var(--faint)}
+  .node{position:absolute;left:32px;width:17px;height:17px;margin-left:-4px;
+        border-radius:50%;background:#fff;border:1.5px solid var(--line-strong)}
+  .evt{
+    position:absolute;left:58px;right:0;border:1px solid var(--line);border-radius:6px;
+    padding:6px 9px;background:#fff;display:flex;align-items:center;gap:8px;
+  }
+  .evt .n{flex:1;font-size:12px}
+  .evt .d{font-size:11px;color:var(--muted);flex:none}
+  .evt .d b{color:var(--ink);font-weight:600}
+  .evt.key{border-color:var(--line-strong);border-width:1.5px}
+  .evt.open{background:repeating-linear-gradient(135deg,#fff,#fff 4px,#f4f4f4 4px,#f4f4f4 8px)}
+  .evt.open .n{font-style:italic;color:var(--muted);font-size:11.5px}
+  .cross{position:absolute;left:30px;right:0;border-top:1px dashed var(--over)}
+  .cross span{
+    position:absolute;right:0;top:3px;font-size:9px;color:var(--over);
+    background:#fff;padding:0 3px;letter-spacing:.02em;
+  }
+
+  /* 3 — log */
+  .states{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+  .state{
+    border:1px solid var(--line-strong);border-radius:8px;padding:15px 14px;
+    font-size:14px;display:flex;align-items:center;gap:11px;
+  }
+  .state .dot{width:11px;height:11px;border-radius:50%;border:1px solid var(--line-strong);flex:none}
+  .divider{display:flex;align-items:center;gap:9px;margin:0 0 16px}
+  .divider hr{flex:1;border:none;border-top:1px solid var(--line);margin:0}
+  .divider span{font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--faint)}
+  .row{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .box{width:17px;height:17px;border:1px solid var(--line-strong);border-radius:3px;flex:none}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{border:1px solid var(--line);border-radius:14px;padding:5px 10px;font-size:11px;color:var(--muted)}
+  .chip.add{border-style:dashed}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Spoon — wireframe v1</h1>
+  <p>Structure only. Neutral greys, no type direction. Crossed boxes are placeholders for
+     artwork you haven't drawn yet. Traffic-light colour is the day-affordability value from
+     §4 — used on the calendar day blocks, the forecast strip and the day-view gradient, since
+     they're all the same number.</p>
+</div>
+
+<div class="frames">
+
+  <!-- ============ 1. FORECAST ============ -->
+  <figure class="col" style="margin:0">
+  <div class="phone">
+    <div class="statusbar"><span>9:41</span><span>▮▮▮</span></div>
+    <div class="screen">
+      <div class="scr-head">
+        <h2>Saturday 12 Sept</h2>
+        <span class="sub">settings</span>
+      </div>
+
+      <p class="label">Right now</p>
+      <div class="cond">
+        <div class="ph"></div>
+        <div>
+          <div class="charge">7<span> / 10</span></div>
+          <div class="trend">steady since Thursday</div>
+        </div>
+      </div>
+      <p class="blurb">Good charge, and this week fits — taking it easy is still the smart call.</p>
+
+      <p class="label" style="margin-top:22px">Next 7 days</p>
+      <div class="strip">
+        <div class="day sel"><span class="dl">Sat</span><div class="ph"></div><span class="dn">7</span><span class="bar" style="background:var(--ok)"></span></div>
+        <div class="day"><span class="dl">Sun</span><div class="ph"></div><span class="dn">8</span><span class="bar" style="background:var(--ok)"></span></div>
+        <div class="day"><span class="dl">Mon</span><div class="ph"></div><span class="dn">6</span><span class="bar" style="background:var(--ok)"></span></div>
+        <div class="day"><span class="dl">Tue</span><div class="ph"></div><span class="dn">5</span><span class="bar" style="background:var(--tight)"></span></div>
+        <div class="day"><span class="dl">Wed</span><div class="ph"></div><span class="dn">5</span><span class="bar" style="background:var(--tight)"></span></div>
+        <div class="day"><span class="dl">Thu</span><div class="ph"></div><span class="dn">2</span><span class="bar" style="background:var(--over)"></span></div>
+        <div class="day"><span class="dl">Fri</span><div class="ph"></div><span class="dn">–</span><span class="bar" style="background:var(--unknown)"></span></div>
+      </div>
+
+      <p class="label">Heads up</p>
+      <div class="card">
+        <div style="font-size:13px;line-height:1.45">Thursday is asking for more than you'll have.</div>
+        <div class="figs">
+          <span class="fig">it needs<b>8</b></span>
+          <span class="fig">you'll have<b>5</b></span>
+        </div>
+        <div class="btn">See what could move</div>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="on"><span class="ti"></span>Forecast</div>
+      <div><span class="ti"></span>Calendar</div>
+      <div><span class="ti"></span>Log</div>
+    </div>
+  </div>
+  <figcaption><b>1 · Forecast</b>
+    Current conditions, then the days ahead. The strip is where the shrinking horizon lives —
+    7 days here, 3 when you're low, today only when crashed. The heads-up card is triage
+    surfacing early rather than as its own mode. Friday is unestimated on purpose.</figcaption>
+  </figure>
+
+  <!-- ============ 2. CALENDAR ============ -->
+  <figure class="col" style="margin:0">
+  <div class="phone">
+    <div class="statusbar"><span>9:41</span><span>▮▮▮</span></div>
+    <div class="screen">
+      <div class="scr-head">
+        <h2>September</h2>
+        <span class="cal-nav"><i></i><i></i></span>
+      </div>
+
+      <div class="dow"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+      <div class="grid">
+        <div class="cell blank"></div><div class="cell blank"></div>
+        <div class="cell pastish">1</div><div class="cell pastish">2</div><div class="cell pastish">3</div><div class="cell pastish">4</div><div class="cell pastish">5</div>
+        <div class="cell pastish">6</div><div class="cell pastish">7</div><div class="cell pastish">8</div><div class="cell pastish">9</div><div class="cell pastish">10</div><div class="cell pastish">11</div>
+        <div class="cell ok sel">12</div>
+        <div class="cell ok">13</div><div class="cell ok">14</div><div class="cell tight">15</div><div class="cell tight">16</div>
+        <div class="cell over">17</div><div class="cell unknown">18</div><div class="cell unknown">19</div>
+        <div class="cell ok">20</div><div class="cell unknown">21</div><div class="cell tight">22</div><div class="cell unknown">23</div><div class="cell unknown">24</div><div class="cell unknown">25</div><div class="cell unknown">26</div>
+        <div class="cell unknown">27</div><div class="cell unknown">28</div><div class="cell unknown">29</div><div class="cell unknown">30</div>
+      </div>
+
+      <div class="legend">
+        <span><i style="background:var(--ok-bg);border-color:var(--ok)"></i>fits</span>
+        <span><i style="background:var(--tight-bg);border-color:var(--tight)"></i>you'll pay for it</span>
+        <span><i style="background:var(--over-bg);border-color:var(--over)"></i>over</span>
+        <span><i style="background:var(--unknown-bg);border-color:var(--unknown)"></i>no estimate</span>
+      </div>
+
+      <div class="agenda">
+        <p class="label">Thursday 17</p>
+        <div class="ev"><span class="t">9:00</span><span class="n">Standup</span><span class="g"></span><span class="c">1</span></div>
+        <div class="ev"><span class="t">10:30</span><span class="n">1:1 with boss</span><span class="g"></span><span class="c">3</span></div>
+        <div class="ev open"><span class="t">12–15</span><span class="n">open</span><span class="g" style="opacity:0"></span><span class="c plus">+1</span></div>
+        <div class="ev"><span class="t">15:00</span><span class="n">Client workshop</span><span class="g"></span><span class="c">3</span></div>
+        <div class="ev"><span class="t">19:00</span><span class="n">Dinner at Sam's</span><span class="g"></span><span class="c">4</span></div>
+        <div class="ev"><span class="t">—</span><span class="n">Pick up prescription</span><span class="g"></span><span class="c none">tap</span></div>
+        <div class="tot"><span>day total <b>10</b></span><span>you'll start with <b>8</b></span></div>
+      </div>
+    </div>
+    <div class="tabs">
+      <div><span class="ti"></span>Forecast</div>
+      <div class="on"><span class="ti"></span>Calendar</div>
+      <div><span class="ti"></span>Log</div>
+    </div>
+  </div>
+  <figcaption><b>2 · Calendar</b>
+    Colour on the day block only. Tapping a day opens its agenda below, where events carry a
+    cost figure but no colour — the day says how heavy, the list says why. Open time shows as
+    a hatched row with a positive value, since white space is the recovery input. Unpriced
+    events read as "tap", never as neutral. Tapping through opens the day view →</figcaption>
+  </figure>
+
+  <!-- ============ 3. LOG ============ -->
+  <figure class="col" style="margin:0">
+  <div class="phone">
+    <div class="statusbar"><span>9:41</span><span>▮▮▮</span></div>
+    <div class="screen">
+      <div class="scr-head">
+        <h2>How are you doing?</h2>
+      </div>
+      <p class="blurb" style="color:var(--muted);font-size:12px;margin:-8px 0 20px">
+        It's been 9 days. This sets where you are now.</p>
+
+      <div class="states">
+        <div class="state"><span class="dot" style="background:var(--ok)"></span>I'm good</div>
+        <div class="state"><span class="dot" style="background:var(--ok)"></span>I'm okay</div>
+        <div class="state"><span class="dot" style="background:var(--tight)"></span>I'm running low</div>
+        <div class="state"><span class="dot" style="background:var(--over)"></span>I'm crashing</div>
+      </div>
+
+      <div class="divider"><hr><span>optional</span><hr></div>
+
+      <div class="row"><span class="box"></span><span style="font-size:12.5px">Rough night</span></div>
+
+      <p class="label">Anything not on the calendar?</p>
+      <div class="chips">
+        <span class="chip">hard phone call</span>
+        <span class="chip">unplanned errand</span>
+        <span class="chip">meltdown</span>
+        <span class="chip">visitor</span>
+        <span class="chip add">+ something else</span>
+      </div>
+
+      <div class="btn" style="margin-top:26px;border-width:1.5px">Done</div>
+      <p class="hint" style="text-align:center;margin-top:10px">or just close this</p>
+    </div>
+    <div class="tabs">
+      <div><span class="ti"></span>Forecast</div>
+      <div><span class="ti"></span>Calendar</div>
+      <div class="on"><span class="ti"></span>Log</div>
+    </div>
+  </div>
+  <figcaption><b>3 · Log</b>
+    Four big targets instead of a slider — the buttons are the charge input. Everything below
+    the divider is optional and skippable, including the bad-night flag, which withholds the
+    overnight refill rather than recording a sleep metric. Chips are recalled from previous
+    entries so it's never a blank field.</figcaption>
+  </figure>
+
+  <!-- ============ 4. DAY VIEW ============ -->
+  <figure class="col" style="margin:0">
+  <div class="phone">
+    <div class="statusbar"><span>9:41</span><span>▮▮▮</span></div>
+    <div class="screen">
+      <div class="scr-head">
+        <h2>Thursday 17</h2>
+        <span class="sub">back</span>
+      </div>
+
+      <p class="sumline">Starts at <b>8</b>. You go under around <b>3:40pm</b> —
+        dinner is on borrowed time.</p>
+
+      <div class="tl">
+        <div class="rail"></div>
+
+        <span class="tick" style="top:-5px">8am</span>
+        <span class="tick" style="top:103px">12pm</span>
+        <span class="tick" style="top:212px">4pm</span>
+        <span class="tick" style="top:321px">8pm</span>
+
+        <div class="node" style="top:19px"></div>
+        <div class="evt" style="top:12px">
+          <span class="n">Standup</span><span class="d">−1 → <b>7</b></span></div>
+
+        <div class="node" style="top:60px"></div>
+        <div class="evt key" style="top:53px">
+          <span class="n">1:1 with boss</span><span class="d">−3 → <b>4</b></span></div>
+
+        <div class="node" style="top:114px;opacity:.45"></div>
+        <div class="evt open" style="top:107px">
+          <span class="n">open · 12–3</span><span class="d">+1 → <b>5</b></span></div>
+
+        <div class="node" style="top:182px"></div>
+        <div class="evt" style="top:175px">
+          <span class="n">Client workshop</span><span class="d">−3 → <b>2</b></span></div>
+
+        <div class="cross" style="top:215px"><span>under from here</span></div>
+
+        <div class="node" style="top:290px"></div>
+        <div class="evt" style="top:283px">
+          <span class="n">Dinner at Sam's</span><span class="d">−4 → <b>0</b></span></div>
+      </div>
+
+      <div class="btn" style="border-width:1.5px">What if I moved something?</div>
+    </div>
+    <div class="tabs">
+      <div><span class="ti"></span>Forecast</div>
+      <div class="on"><span class="ti"></span>Calendar</div>
+      <div><span class="ti"></span>Log</div>
+    </div>
+  </div>
+  <figcaption><b>4 · Day view</b>
+    The gradient answers a question no other screen can: not <i>does this day fit</i> but
+    <i>when do I run out.</i> Charge runs down the rail, recovers slightly in open time, and
+    the dashed line marks the crossing. Dinner lands at 0 rather than −2 — the floor rule.
+    Order is visible here too: the boss meeting at 10:30 is what makes the afternoon yellow.
+    Rehearse-a-change lives at the bottom.</figcaption>
+  </figure>
+
+</div>
+</body>
+</html>
