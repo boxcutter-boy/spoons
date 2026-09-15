@@ -1309,11 +1309,9 @@ red on the chip; teal over the day, green on the chip. One colour language at tw
 scales, agreeing in direction — which is why the collision reads as reinforcement
 rather than as two palettes fighting.
 
-**The label follows its own chip.** At full vibrance the four fills land on both
-sides of the contrast line — green and amber read at 4.6:1 and 5.1:1 against dark
-type, red and blue at 4.9:1 and 4.7:1 against light — so each chip carries its own
-ink colour rather than one being forced to work on all four. An invitation you
-haven't answered keeps the hollow outline, now in its own state colour.
+**White labels on all four**, including the hollow outline an unanswered
+invitation carries. The fills are still being tuned — treat the hex values as
+Ferri's to set, not settled.
 
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type

@@ -241,7 +241,7 @@
   .stepper .val .zero{color:var(--faint)}
   /* Hollow means one thing only: an invitation you haven't answered. It's on
      your calendar but it isn't yours yet — the same outline Google draws. */
-  .cev.inv{background:transparent;color:var(--c);
+  .cev.inv{background:transparent;color:#fff;
            box-shadow:inset 3px 0 0 var(--rail), inset 0 0 0 1.5px var(--c)}
   /* "+1" sits wherever the chip stack happens to end, which on a gradient cell
      could be navy or full-strength colour — so it's light rather than dark, the
@@ -780,20 +780,17 @@ function calOf(e){ return e.cal || CAL_OF[e.name] || "Personal" }
    The NOTCH down the left edge says which calendar it came from. That's real
    information but it isn't a decision, so it gets three pixels instead of the
    whole chip — four hues across a week was a rainbow you had to look past. */
+/* Stoplight, plus blue for the things that don't touch you either way. Labels
+   are white on all four. */
 const CHIP = {
   give:  "#12905f",   /* green  — gives back   */
   flat:  "#2360c4",   /* blue   — neither      */
   thin:  "#b07c07",   /* amber  — getting thin */
   drain: "#c81f38"    /* red    — draining     */
 };
-/* At full vibrance the four fills land on both sides of the contrast line —
-   green and amber read at 4.6:1 and 5.1:1 against dark type, red and blue at
-   4.9:1 and 4.7:1 against light. So the label follows its own chip rather than
-   one colour being forced to work on all four. */
-const CHIP_INK = { give:"#04160e", flat:"#eef1fb", thin:"#1a1204", drain:"#fdeff2" };
 function calInk(e){
   if(e.src==="spoon" && e.color) return "#0e1128";   /* your own, on your own colour */
-  return CHIP_INK[chipState(e)];
+  return "#ffffff";
 }
 function chipState(e){
   /* a multi-day span carries no per-day price, only a direction */
