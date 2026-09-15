@@ -1144,9 +1144,11 @@ string in that mode.)
 
 **Two lines came out.** *"No rush — this is easier once you've had time to feel
 it"* was reassurance about a question that isn't stressful, sitting above the
-question itself. And *"One more after this"* became **1 / 2**, in the window's
-bottom-right corner — the same fact as a page number on the thing rather than one
-more line of content to read before you can answer the question.
+question itself. And *"One more after this"* became **1 / 2**, set on the
+question's own baseline at the top right — the same fact as a page number on the
+thing rather than one more line of content to read before you can answer. The
+baseline alignment comes from a flex row rather than from guessing at font
+metrics, so it holds if either size changes.
 
 **"Fine — it'll ask again next time you're in"** became **"Left as it is. It'll
 keep."** "Fine —" reads as a sigh. Declining to rate something is a legitimate

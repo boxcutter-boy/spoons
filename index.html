@@ -588,13 +588,14 @@
   }
   .sheet.modal.on{transform:translateY(-50%) scale(1); opacity:1}
   .sheet.modal .askrow{margin:2px 0 4px}
-  /* Where you are in the queue — a position rather than a sentence about one.
-     It sits in the window's bottom-right corner, inside the padding band under
-     the buttons, so it reads as a page number on the thing rather than as one
-     more line of content to get through. */
-  .sheet.modal{padding-bottom:32px}
-  .askpos{position:absolute;right:15px;bottom:8px;margin:0;
-          font-size:10.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+  /* Where you are in the queue — a position rather than a sentence about one,
+     set on the question's own baseline so it reads as part of the heading
+     rather than as one more line of content to get through. Baseline alignment
+     comes from the flex row, not from guessing at font metrics. */
+  .askhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+           margin:0 0 14px}
+  .askhead h3{margin:0}
+  .askpos{flex:none;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
   .askpos i{font-style:normal;opacity:.5;margin:0 1px}
   .sheet h3{margin:0 0 3px;font-family:var(--serif);font-size:18px;font-weight:500;line-height:1.25}
   .sheet .sub{font-size:11px;color:var(--muted);margin:0 0 16px}
@@ -2922,7 +2923,10 @@ function sheetAsk(){
   askTouched={};
   const e=q[0], more=q.length-1;
   openSheet(`
-    <h3 style="margin-bottom:14px">How did yesterday go?</h3>
+    <div class="askhead">
+      <h3>How did yesterday go?</h3>
+      ${more?`<span class="askpos">${q.length-more} <i>/</i> ${q.length}</span>`:""}
+    </div>
     <div class="askrow">
       <div class="askrow-h"><span class="n">${e.name}</span>
         <span class="e" id="ans-${e.id}">you said ${noNums()?costArrows(costOf(e)):fmt(Math.abs(costOf(e)))}</span></div>
@@ -2938,7 +2942,6 @@ function sheetAsk(){
     <button class="btn strong" data-askdone="1">Done</button>
     <div style="height:8px"></div>
     <button class="btn" data-deferall="1" style="border-color:var(--line);color:var(--muted)">Not now</button>
-    ${more?`<p class="askpos">${q.length-more} <i>/</i> ${q.length}</p>`:""}
   `, null, true);
   return true;
 }
