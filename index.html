@@ -205,6 +205,18 @@
   .z-tight{background-image:linear-gradient(180deg,rgba(217,146,0,0) 68%,var(--tight-deep) 100%)}
   .z-over{background-image:linear-gradient(180deg,rgba(198,23,79,0) 68%,var(--over-deep) 100%)}
   .z-unknown{background:var(--unknown-bg)}
+  /* On the forecast strip the zone gets a rule across the TOP of the day and
+     nothing else. A wash behind a column is a lot of screen spent on one word,
+     and the column is where the events live — they should sit on the app's own
+     ground, not on a coloured panel. The day letters are already tinted the same
+     way, so the bar and the label say it together.
+     (The month grid keeps its wash for now: there, a cell IS the day, and there
+     are no chips to compete with in most of them.) */
+  .colbg i{background-image:none;background-color:transparent}
+  .colbg i.z-ok{border-top:3px solid var(--ok-deep)}
+  .colbg i.z-tight{border-top:3px solid var(--tight-deep)}
+  .colbg i.z-over{border-top:3px solid var(--over-deep)}
+  .colbg i.z-unknown{border-top:3px solid var(--line-strong)}
   .stripgrid button.z-ok .dl{color:var(--ok)}
   .stripgrid button.z-tight .dl{color:var(--tight)}
   .stripgrid button.z-over .dl{color:var(--over)}

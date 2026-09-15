@@ -1279,18 +1279,26 @@ three pixels tall — no room for a notch — so they carry state only.
 *(The seed's "Flare" is now "Sick" — plainer, and it's the word you'd actually
 use.)*
 
-### The zone colour sits at the bottom
+### The strip says the zone with a rule, not a wash
 
-The day cells and strip columns ramped their zone colour from 12% down, which
-meant a week read as blocks of saturated colour with the events floating on top
-of them. Loud, and backwards: the gradient was the biggest thing on the screen
-while saying the smallest thing.
+Two passes at this. First the day cells and strip columns ramped their zone
+colour from 12% down, which made a week read as blocks of saturated colour with
+the events floating on top — the biggest thing on screen saying the smallest
+thing. Moving the ramp to 68% helped: a band along the bottom rather than a wash
+through the whole cell.
 
-It starts at 68% now — a band along the bottom of the cell. It only ever has to
-say *this is how the day ends*, and a band says that as well as a wash does while
-leaving the rest of the cell to the chips, which are the part you actually read.
+On the forecast strip it went further, to no fill at all. **A 3px rule across the
+top of each day, and nothing else.** The column is where the events live, and
+they should sit on the app's own ground rather than on a coloured panel. The day
+letters were already tinted the same way, so the bar and the label say it
+together and neither has to shout.
 
-Same colours, same meaning, a third of the area.
+> ▬▬▬ red   ▬▬▬ yellow   ▬▬▬ teal
+> SAT 12    SUN 13       MON 14
+
+**The month grid keeps its wash for now.** Different problem: there, a cell *is*
+the day, most cells have no chips to compete with, and the wash is doing the work
+of a heat map across five rows at once.
 
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
