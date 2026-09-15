@@ -197,9 +197,13 @@
   .colbg i:first-child{box-shadow:none}
   .stripcols .stripgrid,.stripcols .spans{position:relative;z-index:1}
   .stripcols .stripgrid button{background:none;background-image:none}
-  .z-ok{background-image:linear-gradient(180deg,rgba(0,158,163,0) 12%,var(--ok-deep) 100%)}
-  .z-tight{background-image:linear-gradient(180deg,rgba(217,146,0,0) 12%,var(--tight-deep) 100%)}
-  .z-over{background-image:linear-gradient(180deg,rgba(198,23,79,0) 12%,var(--over-deep) 100%)}
+  /* The zone colour was ramping through the whole cell, which made a week of
+     days read as blocks of saturated colour with the events floating in them.
+     It only has to say "this is how the day ends" — so it sits in the bottom
+     third and lets the chips have the rest. */
+  .z-ok{background-image:linear-gradient(180deg,rgba(0,158,163,0) 68%,var(--ok-deep) 100%)}
+  .z-tight{background-image:linear-gradient(180deg,rgba(217,146,0,0) 68%,var(--tight-deep) 100%)}
+  .z-over{background-image:linear-gradient(180deg,rgba(198,23,79,0) 68%,var(--over-deep) 100%)}
   .z-unknown{background:var(--unknown-bg)}
   .stripgrid button.z-ok .dl{color:var(--ok)}
   .stripgrid button.z-tight .dl{color:var(--tight)}
@@ -462,9 +466,9 @@
   /* The tint rises from the bottom of the cell rather than filling it flat: at
      this height a flat wash of saturated colour would fight the day number and
      the chips, and the ramp leaves the top of every cell quiet enough to read. */
-  .cell.ok{background-image:linear-gradient(180deg,rgba(0,158,163,0) 12%,var(--ok-deep) 100%)}
-  .cell.tight{background-image:linear-gradient(180deg,rgba(217,146,0,0) 12%,var(--tight-deep) 100%)}
-  .cell.over{background-image:linear-gradient(180deg,rgba(198,23,79,0) 12%,var(--over-deep) 100%)}
+  .cell.ok{background-image:linear-gradient(180deg,rgba(0,158,163,0) 68%,var(--ok-deep) 100%)}
+  .cell.tight{background-image:linear-gradient(180deg,rgba(217,146,0,0) 68%,var(--tight-deep) 100%)}
+  .cell.over{background-image:linear-gradient(180deg,rgba(198,23,79,0) 68%,var(--over-deep) 100%)}
   .cell.unknown{background:var(--unknown-bg);color:var(--faint)}
   /* today is filled, the selected day is ringed — Google's own shorthand, and it
      frees the cell edge to stay part of the grid */

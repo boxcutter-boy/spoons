@@ -1279,6 +1279,19 @@ three pixels tall — no room for a notch — so they carry state only.
 *(The seed's "Flare" is now "Sick" — plainer, and it's the word you'd actually
 use.)*
 
+### The zone colour sits at the bottom
+
+The day cells and strip columns ramped their zone colour from 12% down, which
+meant a week read as blocks of saturated colour with the events floating on top
+of them. Loud, and backwards: the gradient was the biggest thing on the screen
+while saying the smallest thing.
+
+It starts at 68% now — a band along the bottom of the cell. It only ever has to
+say *this is how the day ends*, and a band says that as well as a wash does while
+leaving the rest of the cell to the chips, which are the part you actually read.
+
+Same colours, same meaning, a third of the area.
+
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
 glyphs, inheriting `currentColor` — so the selected tab lights its icon and its
