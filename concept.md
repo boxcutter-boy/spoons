@@ -1144,8 +1144,9 @@ string in that mode.)
 
 **Two lines came out.** *"No rush — this is easier once you've had time to feel
 it"* was reassurance about a question that isn't stressful, sitting above the
-question itself. And *"One more after this"* became **1 / 2** — the same fact as
-a position rather than a sentence you have to parse to learn you're halfway.
+question itself. And *"One more after this"* became **1 / 2**, in the window's
+bottom-right corner — the same fact as a page number on the thing rather than one
+more line of content to read before you can answer the question.
 
 **"Fine — it'll ask again next time you're in"** became **"Left as it is. It'll
 keep."** "Fine —" reads as a sigh. Declining to rate something is a legitimate

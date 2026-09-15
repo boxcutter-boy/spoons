@@ -588,10 +588,14 @@
   }
   .sheet.modal.on{transform:translateY(-50%) scale(1); opacity:1}
   .sheet.modal .askrow{margin:2px 0 4px}
-  /* where you are in the queue, as a position rather than a sentence about it */
-  .askpos{text-align:center;margin:12px 0 0;font-size:11px;color:var(--faint);
-          font-variant-numeric:tabular-nums}
-  .askpos i{font-style:normal;opacity:.5;margin:0 2px}
+  /* Where you are in the queue — a position rather than a sentence about one.
+     It sits in the window's bottom-right corner, inside the padding band under
+     the buttons, so it reads as a page number on the thing rather than as one
+     more line of content to get through. */
+  .sheet.modal{padding-bottom:32px}
+  .askpos{position:absolute;right:15px;bottom:8px;margin:0;
+          font-size:10.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .askpos i{font-style:normal;opacity:.5;margin:0 1px}
   .sheet h3{margin:0 0 3px;font-family:var(--serif);font-size:18px;font-weight:500;line-height:1.25}
   .sheet .sub{font-size:11px;color:var(--muted);margin:0 0 16px}
   .stepper{display:flex;align-items:center;justify-content:center;gap:20px;margin:6px 0 14px}
