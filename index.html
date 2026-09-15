@@ -209,8 +209,11 @@
   /* The chips are light enough now that their labels have to be dark — and each
      one carries a navy stroke, so a pale event still reads as a separate object
      against a saturated day rather than melting into it. */
-  .cev{height:7px;border-radius:2px;overflow:hidden;color:#0e1128;background:var(--c);
-       box-shadow:0 0 0 1.5px var(--chipstroke);
+  /* Dark fill, light type, and a notch of the calendar's own colour down the
+     left edge. The stroke is light rather than navy now — a navy outline round a
+     navy chip is a chip with no edge. */
+  .cev{height:7px;border-radius:2px;overflow:hidden;color:var(--ink);background:var(--c);
+       box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16);
        display:flex;align-items:center;gap:3px}
   .cev b,.cev .arrow{display:none}
   .arrow{flex:none;font-size:11px;line-height:1;opacity:.9}
@@ -222,7 +225,8 @@
   .stepper .val .zero{color:var(--faint)}
   /* Hollow means one thing only: an invitation you haven't answered. It's on
      your calendar but it isn't yours yet — the same outline Google draws. */
-  .cev.inv{background:transparent;box-shadow:inset 0 0 0 1.5px var(--c),0 0 0 1.5px var(--chipstroke);color:var(--c)}
+  .cev.inv{background:transparent;color:var(--ink);
+           box-shadow:inset 3px 0 0 var(--rail), inset 0 0 0 1.5px var(--c)}
   /* "+1" sits wherever the chip stack happens to end, which on a gradient cell
      could be navy or full-strength colour — so it's light rather than dark, the
      one value that holds at both ends. */
@@ -231,17 +235,19 @@
             text-shadow:0 1px 2px rgba(9,11,26,.55)}
   .cev.more b{display:block;font-weight:600;letter-spacing:.02em}
   /* labels only fit when the horizon is short */
-  .stripgrid.wide .cev{height:auto;padding:2px 4px;font-size:9px;line-height:1.25}
+  .stripgrid.wide .cev{height:auto;padding:2px 5px 2px 7px;font-size:9px;line-height:1.25}
   .stripgrid.wide .cev b{display:block;font-weight:500;overflow:hidden;
                      text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
   .stripgrid.wide .cev .arrow{display:block}
   .spans{position:relative}
   .spanbar{
     position:absolute;top:4px;height:14px;border-radius:3px;
-    font-size:9px;font-weight:600;color:#0e1128;padding:0 6px;
+    font-size:9px;font-weight:600;color:var(--ink);padding:0 6px 0 8px;
     display:flex;align-items:center;gap:3px;overflow:hidden;white-space:nowrap;
-    box-shadow:0 0 0 1.5px var(--chipstroke);
+    box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16);
   }
+  /* a condition is yours and keeps the colour you gave it, so it keeps dark type */
+  .spanbar.mine{color:#0e1128;box-shadow:0 0 0 1.5px var(--chipstroke)}
   /* conditions are pills, calendar spans stay rectangular like the chips —
      shape carries the difference even before you notice the emoji */
   .spanbar.mine{border-radius:999px;padding:0 9px}
@@ -467,9 +473,10 @@
      number — the cell is what you picked, so the cell is what lights up */
   .cell.sel{box-shadow:inset 0 0 0 2px #eef0ff}
   .cell .cevs{display:flex;flex-direction:column;gap:3px;min-width:0}
+  /* three pixels tall is no room for a notch, so these carry state only */
   .cell .cevs i{height:3px;border-radius:1px;display:block;background:var(--c);
-                box-shadow:0 0 0 1px var(--chipstroke)}
-  .cell .cevs i.inv{background:transparent;box-shadow:inset 0 0 0 1px var(--c),0 0 0 1px var(--chipstroke)}
+                box-shadow:0 0 0 1px rgba(233,232,243,.14)}
+  .cell .cevs i.inv{background:transparent;box-shadow:inset 0 0 0 1px var(--c)}
   /* an unpriced event keeps its slot but not its colour — that's what used to be
      said by a dashed outline round the whole day, and this says which one */
   .cell .cevs i.un{background:#8a92b7}
@@ -636,9 +643,11 @@
   /* a condition or a multi-day event runs ACROSS the day rather than sitting at
      a time inside it, so it stacks above the timeline as the bar it is */
   .condline{display:flex;flex-direction:column;gap:3px;margin:0 0 12px}
-  .condline span{display:flex;align-items:center;gap:5px;height:17px;padding:0 8px;
-                 border-radius:3px;font-size:9.5px;font-weight:600;color:#0e1128;
-                 background:var(--c);box-shadow:0 0 0 1.5px var(--chipstroke)}
+  .condline span{display:flex;align-items:center;gap:5px;height:17px;padding:0 8px 0 10px;
+                 border-radius:3px;font-size:9.5px;font-weight:600;color:var(--ink);
+                 background:var(--c);
+                 box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16)}
+  .condline span.mine{color:#0e1128;box-shadow:0 0 0 1.5px var(--chipstroke)}
   .condline span.mine{border-radius:999px;padding:0 10px}
   .opt .arrow2{font-size:12px;color:var(--faint)}
   /* the one thing worth saying about a day that's already happened */
@@ -742,23 +751,40 @@ const CAL_OF = {
   "Physio":"Health","Dentist":"Health","Pick up prescription":"Health","Long bath":"Health"
 };
 function calOf(e){ return e.cal || CAL_OF[e.name] || "Personal" }
-/* Four calendar colours across a week is a rainbow, and none of it means
-   anything you act on — "this one is from the Work calendar" is not a fact that
-   changes what you do next. The chips now say the only thing about an event this
-   app has an opinion on: whether it takes from you, gives back, or does neither.
-   Three values instead of four arbitrary ones, and the arrow on the chip is
-   saying the same thing, so the two reinforce rather than compete.
-   (CALENDARS is still here — a real build reads these from EventKit, and this is
-   where they'd come back if the colours ever earn their place.) */
-/* All three carry dark chip text, so they're separated by saturation rather than
-   brightness — neutral being the desaturated one is the point, not a compromise. */
-const CHIP = { drain:"#9aa2e0", flat:"#a3a8bd", give:"#5ccfae" };
-function calColor(e){
-  if(e.color && (isSpan(e)||e.src==="spoon")) return e.color;   /* your own conditions stay yours */
+/* Two channels on one chip, because two different things are worth knowing and
+   only one of them is worth a whole colour.
+
+   The FILL says what the event does to you — the only thing this app has an
+   opinion about. Dark and saturated rather than the pale Google-calendar wash
+   it started as: these sit on a coloured day cell, and a deep chip with light
+   type holds its edge against a gradient where a pastel one dissolved into it.
+
+   The NOTCH down the left edge says which calendar it came from. That's real
+   information but it isn't a decision, so it gets three pixels instead of the
+   whole chip — four hues across a week was a rainbow you had to look past. */
+const CHIP = {
+  give:  "#1b6d5d",   /* green  — gives back            */
+  flat:  "#2b4585",   /* blue   — neither               */
+  thin:  "#8a6216",   /* yellow — getting thin          */
+  drain: "#8e2544"    /* red    — draining              */
+};
+function chipState(e){
+  /* a multi-day span carries no per-day price, only a direction */
+  if(isSpan(e)) return e.dir==="up" ? "give" : e.dir==="down" ? "thin" : "flat";
   const c=costOf(e);
-  if(c==null) return CHIP.flat;
-  return c<0 ? CHIP.give : c===0 ? CHIP.flat : CHIP.drain;
+  if(c==null)  return "flat";
+  if(c<0)      return "give";
+  if(c===0)    return "flat";
+  return c<COST_BANDS[1] ? "thin" : "drain";
 }
+function calColor(e){
+  /* Only a condition YOU made keeps the colour you gave it. A multi-day thing
+     off the calendar is still an event, and gets read the same way as the rest. */
+  if(e.src==="spoon" && e.color) return e.color;
+  return CHIP[chipState(e)];
+}
+/* the notch: which calendar, at three pixels */
+function calRail(e){ return e.color || CALENDARS[calOf(e)] }
 function calColorRaw(e){ return e.color || CALENDARS[calOf(e)] }
 /* Google's palette, for conditions you create yourself */
 const PALETTE = ["#F0608C","#F394A8","#F7C264","#45C6A6","#5FBDEC","#BC7BD6","#8a92b7"];
@@ -2055,7 +2081,7 @@ function renderForecast(){
             ${sp.map(s=>{
             const left=s.from/dates.length*100, w=(s.to-s.from+1)/dates.length*100;
             const labelled = s.group==="mine" || wide;
-            return `<button class="spanbar ${s.group==="mine"?"mine":"cal"} ${labelled?"":"slim"}" data-editcond="${s.e.id}" style="left:calc(${left}% + 6px);width:calc(${w}% - 12px);top:${topOf(s)}px;background:${calColor(s.e)}">${
+            return `<button class="spanbar ${s.group==="mine"?"mine":"cal"} ${labelled?"":"slim"}" data-editcond="${s.e.id}" style="left:calc(${left}% + 6px);width:calc(${w}% - 12px);top:${topOf(s)}px;background:${calColor(s.e)};--rail:${calRail(s.e)}">${
             labelled
               ? `${s.e.emoji?`<span class="emo">${s.e.emoji}</span>`:""}${s.open?"‹ ":""}${s.e.name}${s.e.cap?` · max ${fmt(s.e.cap)}`:""}${s.e.every?`<span class="arrow rep">${REPEAT}</span>`:""}${trendIcon(s.e)}`
               : ""
@@ -2069,7 +2095,7 @@ function renderForecast(){
         return `<button data-goday="${d.date}" class="z-${st} ${isPartial(d.date)?"partial":""}">
           <span class="evs">
             ${shown.map(e=>`<span class="cev${e.inv?" inv":""}"
-                style="--c:${calColor(e)}">${trendIcon(e)}<b>${e.name}</b></span>`).join("")}
+                style="--c:${calColor(e)};--rail:${calRail(e)}">${trendIcon(e)}<b>${e.name}</b></span>`).join("")}
             ${extraN>0?`<span class="cev more"><b>+${extraN}</b></span>`:""}
           </span>
         </button>`;
@@ -2307,7 +2333,7 @@ function renderDay(){
     <div class="scr-head"><h2>${niceDate(date)}</h2>
       <button class="act" data-tab2="${S.dayBack||"calendar"}">back</button></div>
     <p class="sumline">${sum}</p>
-    ${dspans.length?`<div class="condline" style="margin-top:12px">${dspans.map(e=>`<span class="${e.src==="spoon"?"mine":""}" style="--c:${calColor(e)}"
+    ${dspans.length?`<div class="condline" style="margin-top:12px">${dspans.map(e=>`<span class="${e.src==="spoon"?"mine":""}" style="--c:${calColor(e)};--rail:${calRail(e)}"
        >${e.emoji?`<span class="emo">${e.emoji}</span>`:""}${e.name}${e.cap&&!noNums()?` · max ${fmt(e.cap)}`:""}</span>`).join("")}</div>`:""}
     <div class="tl" style="height:${H}px">
       <div class="rail" style="background:linear-gradient(to bottom,${stops.join(",")})"></div>

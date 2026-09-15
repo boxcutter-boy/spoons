@@ -1247,27 +1247,34 @@ This is the other half of the decay model. Decay makes a thing *cheap*; neutral
 lets you say outright that it's free. One is the app learning, the other is you
 telling it.
 
-**Four calendar colours across a week is a rainbow, and none of it is actionable.**
-"This one is from the Work calendar" doesn't change what you do next. The chips
-now carry the only thing this app has an opinion about:
+**Two channels on one chip.** Two things are worth knowing about an event and
+only one of them deserves a whole colour.
+
+The **fill** says what it does to you — the only thing this app has an opinion
+about:
 
 | | |
 |---|---|
-| indigo | takes something |
-| grey | neither |
-| teal | gives back |
+| blue | neither |
+| yellow | getting thin |
+| red | draining |
+| green | gives back |
 
-Three values instead of four arbitrary hues, separated by **saturation rather
-than brightness** — all three carry dark chip text, and neutral being the
-desaturated one is the point rather than a compromise. The arrow on the chip says
-the same thing, so colour and glyph reinforce instead of competing, and the day
-cell's own gradient is left to carry affordability without three other colour
-systems shouting over it.
+The **notch** — three pixels of colour down the left edge — says which calendar it
+came from. That's real information, but it isn't a decision, so it gets three
+pixels instead of the whole chip. Four hues across a week was a rainbow you had
+to look past to find anything.
 
-Conditions you create keep their own colour: those are yours, and you chose them.
-`CALENDARS` and `calColorRaw()` are still in the file — a real build reads them
-from EventKit, and that's where they'd come back from if the colours ever earn
-their place.
+**Dark and saturated, not the pale Google wash it started as.** These chips sit
+on a coloured day cell; a deep fill with light type holds its edge against a
+gradient where a pastel one dissolved into it. The stroke went light, too — a
+navy outline round a navy chip is a chip with no edge.
+
+Only a condition **you** made keeps the colour you gave it, and with it the dark
+type it was designed for. A multi-day thing off the calendar is still an event
+and gets read like one: "Replenish mana" is green because it gives back, with a
+teal notch because it's on your Personal calendar. In the month grid the bars are
+three pixels tall — no room for a notch — so they carry state only.
 
 *(The seed's "Flare" is now "Sick" — plainer, and it's the word you'd actually
 use.)*
