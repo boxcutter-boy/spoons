@@ -50,6 +50,14 @@ Spoon never writes to your calendar. It prepares a change and hands it over —
 you save it there, so anyone else on an invite hears it from their own calendar
 rather than silently from us.
 
+## Type
+
+**EB Garamond** for display, **Benton Sans** for everything working. Benton Sans
+is a licensed Font Bureau face, so it can't be served from this page — it's first
+in the stack and renders anywhere it's installed. The served fallback is **Public
+Sans**, which descends from Libre Franklin → Franklin Gothic → Morris Fuller
+Benton, the same designer as Benton Sans. A cousin, not a lookalike.
+
 ## Design notes
 
 Nothing in the app generates prose at runtime. Every sentence is a fixed
