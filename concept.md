@@ -1364,6 +1364,53 @@ strokes.
 
 The month grid keeps its boxes. It really is a calendar.
 
+### "I'm overwhelmed" — four questions, one answer
+
+I argued for a two-tap lookup here, on the grounds that an overwhelmed person
+can't answer a questionnaire. Ferri: *"i think i would find it helpful to have a
+more robust quiz point to what i can do in that moment."*
+
+That's the better read, and the reason is worth keeping: **being led through small
+questions is less work than choosing from a list.** The questions do the executive
+function you haven't got. Four forced choices with big targets and no typing is
+*easier* than one screen of twelve options, even though it's more taps.
+
+> **What's loudest right now?** — physically worn out · overstimulated · brain's
+> fried · social battery `likely` · emotionally wrung out · directionless ·
+> *I don't know, go on my week*
+> **Which way?** — too much of it, or too little
+> **What can you manage?** — can't really get up · can move around at home · could
+> leave the house
+> **How long have you got?** — a few minutes · an hour · the rest of the day · a
+> whole day
+>
+> → **Dark room and lie down**
+
+**The first two questions pick the branch. That's Ferri's own flowchart** and it
+was already there. The new ones are the third and fourth, and they're what the
+tree was missing: every item is now tagged with what it **asks of you**
+(`down` / `in` / `out`) and what it **costs in time** (`mins` → `day`). Without
+that, the tree offered *"get a massage"* to someone who couldn't get off the
+floor. Feasibility has to filter before preference.
+
+**Tailoring without asking.** The week's own answer is marked `likely` on question
+one, so the first tap is usually confirming rather than deciding — and *"I don't
+know, go on my week"* takes it outright. The answer pool is the tree, which is
+Ferri's own words. And the order learns: `helped` weights an item up, `passed`
+weights it down, on exactly the same principle as marking an event draining.
+
+**One answer, not a list** — a list is another decision. *Something else* cycles;
+when only one thing fits, that button stops pretending there's a choice and
+becomes **"Nothing else fits — widen it"**, relaxing time first and capacity
+second, because asking for more of your body is the bigger ask. And it can never
+dead-end: if the filters empty the branch it offers the nearest thing and says so.
+
+**The door is always open.** Burnout mode is triggered by the *model*; overwhelm
+is a state you're in, and you can be at a 7 and still in it. An app that offers
+help only when its own arithmetic approves is calling you a liar about your own
+day — so *I'm overwhelmed* sits next to *Check in* at every charge, and takes over
+as the main action when you're crashed.
+
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
 glyphs, inheriting `currentColor` — so the selected tab lights its icon and its

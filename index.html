@@ -670,6 +670,24 @@
     vertical-align:-2px;
   }
   .tiredgrid button.on{border-color:var(--ink);background:var(--surface2)}
+  /* one answer, in the display face, because it's the only thing on the screen */
+  /* the question and where you are in it, on one baseline — the alignment comes
+     from the flex row rather than from guessing at font metrics */
+  .askhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+           margin:0 0 3px}
+  .askhead h3{margin:0}
+  .askpos{flex:none;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .askpos i{font-style:normal;opacity:.5;margin:0 1px}
+  .helpbig{font-family:var(--serif);font-size:23px;line-height:1.25;margin:4px 0 18px;
+           color:var(--ink)}
+  .tiredgrid button i{font-style:normal}
+  .tiredgrid .sub2{display:block;font-size:10.5px;color:var(--faint);margin-top:3px}
+  .tiredgrid .likely{float:right;font-size:9px;letter-spacing:.05em;text-transform:uppercase;
+                     color:var(--faint);border:1px solid var(--line);border-radius:4px;
+                     padding:1px 5px;margin-top:1px}
+  .tiredgrid button.dim{border-color:var(--line);color:var(--muted);font-size:12px}
+  .pillrow{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+  .pill.quiet{border-color:var(--line);color:var(--muted)}
   .chartgroup{margin-bottom:16px}
   .chartq{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);
           margin:0 0 4px;font-weight:600}
@@ -1026,35 +1044,57 @@ const OVERWHELMED = {
   frozen:  "Give yourself permission to stop what you're doing and breathe.",
   anxious: "Look at what's actually coming. Knowing the shape of it is the thing that helps."
 };
+/* Every item now says what it ASKS OF YOU and what it COSTS IN TIME, because the
+   most useless advice is advice you can't act on in the state you're in. A tree
+   that offers "get a massage" to someone who can't get off the floor hasn't met
+   them.
+     needs — "down" can't get up · "in" upright, at home · "out" can leave
+     takes — "mins" · "hour" · "evening" · "day"
+   Both nest: if you can go out you can also do the lying-down ones, and an
+   evening contains an hour. */
+const I = (n,needs,takes)=>({n,needs,takes});
 const RECOVERY_TREE = {
   physical: {label:"Physical", short:"Physically worn out", branches:[
-    {dir:"much", label:"On your feet all day",
-     items:["Lie down","Relax","Take a bath","Get a massage"]},
-    {dir:"little", label:"Sat still all day",
-     items:["Exercise","Take a walk"]}]},
+    {dir:"much", label:"On your feet all day", items:[
+      I("Lie down","down","mins"), I("Relax","down","hour"),
+      I("Take a bath","in","hour"), I("Get a massage","out","hour")]},
+    {dir:"little", label:"Sat still all day", items:[
+      I("Take a walk","out","mins"), I("Exercise","out","hour")]}]},
   sensory: {label:"Sensory", short:"Overstimulated", branches:[
-    {dir:"much", label:"Crowds, noise, bright lights, chatter",
-     items:["Dark room and lie down","No phone or screens","Calm music","Deep breathing"]}]},
+    {dir:"much", label:"Crowds, noise, bright lights, chatter", items:[
+      I("Dark room and lie down","down","mins"), I("Deep breathing","down","mins"),
+      I("Calm music","down","mins"), I("No phone or screens","down","hour")]}]},
   executive: {label:"Mentally taxing", short:"Brain's fried", branches:[
-    {dir:"much", label:"Thinking hard all day",
-     items:["Turn off your phone for a bit","No screens","Meditate"]}]},
+    {dir:"much", label:"Thinking hard all day", items:[
+      I("Meditate","down","mins"), I("Turn off your phone for a bit","down","hour"),
+      I("No screens","down","evening")]}]},
   social: {label:"Social", short:"Social battery", branches:[
-    {dir:"much", label:"Talking to people a lot",
-     items:["Alone time",
-            "Look ahead at what you've committed to — you can cancel, real friends will understand",
-            "Be honest with yourself about your battery level",
-            "Take yourself out on a solo date"]},
-    {dir:"little", label:"Lonely, not enough that meant anything",
-     items:["Spend time with close friends","Reach out to friends and family","Make plans with friends"]}]},
+    {dir:"much", label:"Talking to people a lot", items:[
+      I("Be honest with yourself about your battery level","down","mins"),
+      I("Look ahead at what you've committed to — you can cancel, real friends will understand","in","mins"),
+      I("Alone time","in","evening"),
+      I("Take yourself out on a solo date","out","evening")]},
+    {dir:"little", label:"Lonely, not enough that meant anything", items:[
+      I("Reach out to friends and family","down","mins"),
+      I("Make plans with friends","in","mins"),
+      I("Spend time with close friends","out","evening")]}]},
   emotional: {label:"Emotionally taxing", short:"Emotionally wrung out", branches:[
-    {dir:"much", label:"A lot to feel",
-     items:["Alone time","Talk to a friend, vent","Avoid social situations for a bit",
-            "Journal — get them out"]}]},
+    {dir:"much", label:"A lot to feel", items:[
+      I("Talk to a friend, vent","in","hour"), I("Journal — get them out","in","hour"),
+      I("Alone time","in","evening"), I("Avoid social situations for a bit","in","evening")]}]},
   spiritual: {label:"Directionless", short:"Directionless", branches:[
-    {dir:"any", label:"Lacking meaning or purpose",
-     items:["Listen to music or look at art that inspires you","Volunteer locally",
-            "A spiritual practice of some kind","Meditation","Engage with your community"]}]}
+    {dir:"any", label:"Lacking meaning or purpose", items:[
+      I("Meditation","down","mins"),
+      I("Listen to music or look at art that inspires you","down","hour"),
+      I("A spiritual practice of some kind","in","hour"),
+      I("Engage with your community","out","evening"),
+      I("Volunteer locally","out","day")]}]}
 };
+/* the tree's items used to be plain strings; everything that prints one goes
+   through here so both shapes still read */
+function itemName(i){ return typeof i==="string" ? i : i.n }
+const NEEDS_RANK = {down:0, in:1, out:2};
+const TAKES_RANK = {mins:0, hour:1, evening:2, day:3};
 
 /* The quick row exists so the thing you want is already there. Both lists are
    Ferri's own words, written 13 Sept 2026 — the same rule as the recovery tree
@@ -1120,6 +1160,8 @@ function fresh(){
     marksFrom: {},          /* name -> when its quiet clock was last restarted */
     planned: SEED_PLANNED.map((x,i)=>Object.assign({id:"p"+i},x)),
     nextPlanId: SEED_PLANNED.length,
+    helped: {},                     /* what you've said worked, by name */
+    passed:  {},                    /* what you've passed over */
     plannedFor: [],                 /* days already offered something restorative */
     deferred: {}
   };
@@ -1814,21 +1856,29 @@ function planBlock(days){
    you most need to correct was the one state you couldn't tell the app about —
    and since the check-in is how the charge goes back up, it was a room with no
    door. */
-function checkinPill(){ return `<button class="pill" data-checkin="1">Check in</button>` }
+/* Burnout mode is triggered by the MODEL. Overwhelm is a state you're in, and
+   you can be at a 7 and still in it — an app that offers help only when its own
+   arithmetic approves is calling you a liar about your own day. So the door is
+   always here, next to the other one. */
+function checkinPill(low){
+  return `<div class="pillrow">
+    <button class="pill" data-checkin="1">Check in</button>
+    ${low?"":`<button class="pill quiet" data-tstart="1">I'm overwhelmed</button>`}
+  </div>`;
+}
 
 function tiredBlock(){
   const r=S.tiredResult;
-  if(!r||r.at!==TODAY) return "";
-  return `<p class="label" style="margin-top:20px">What might help</p>
-    <div class="card chartcard">
-      ${chartHTML(r.picks,r.dirs,true)}
-      <div class="recalt" style="margin-top:2px">
-        <button data-tstart="1">check in again</button>
+  if(!r||r.at!==TODAY||!r.name) return "";
+  return `<p class="label" style="margin-top:20px">What you landed on</p>
+    <div class="card">
+      <p class="helpbig" style="margin:2px 0 10px">${r.name}</p>
+      <div class="recalt">
+        <button data-tstart="1">ask again</button>
         <button data-tclear="1">clear</button>
       </div>
     </div>`;
 }
-
 function taskRow(e,plain){
   const par=parentOf(e), dl=deadlineLine(e);
   const nudgeable = e.added&&daysBetween(e.added,TODAY)>=STALE_DAYS
@@ -2177,31 +2227,22 @@ function renderForecast(){
        the help: a guess at what would help now, a way to interrogate that guess,
        and — because the thing you can't do while crashed is arrange anything —
        an offer to put recovery in a day that still has room. */
-    const g=inferBranch(), other=g.tree.branches.find(b=>b!==g.branch);
-    const r=S.tiredResult, hasR=!!(r&&r.at===TODAY);
+    const r=S.tiredResult, hasR=!!(r&&r.at===TODAY&&r.name);
     extra = `<div class="rec-note">
         <b>Today only.</b> The week can wait.<br>${OVERWHELMED.frozen}
       </div>
       ${hasR
-        ? `<p class="label">What might help</p>
-           <div class="card chartcard">
-             ${chartHTML(r.picks,r.dirs,true)}
-             <div class="recalt" style="margin-top:2px">
-               <button data-tstart="1">check in again</button>
+        ? `<p class="label">What you landed on</p>
+           <div class="card">
+             <p class="helpbig" style="margin:2px 0 10px">${r.name}</p>
+             <div class="recalt">
+               <button data-tstart="1">ask again</button>
                <button data-tclear="1">clear</button>
              </div>
            </div>
            <div style="height:18px"></div>`
-        : `<p class="label">${g.branch.label}?</p>
-           <div class="card">
-             ${g.branch.items.map(i=>`<div class="recitem">${i}</div>`).join("")}
-             ${other?`<div class="recalt" style="margin-top:10px">
-               <button data-branch="${g.key}|${other.dir}">no — ${other.label.toLowerCase()}</button>
-             </div>`:""}
-           </div>
-           <div style="height:12px"></div>
-           <button class="btn" data-tstart="1">See what can help</button>
-           <div style="height:18px"></div>`}
+        : `<button class="btn strong" data-tstart="1">I'm overwhelmed</button>
+           <p class="hint" style="text-align:center;margin:9px 0 18px">Four questions, then one thing to do.</p>`}
       ${planBlock(7)}
       <button class="btn strong" data-goday="${TODAY}">See just today</button>
       <div style="height:24px"></div>`;
@@ -2241,7 +2282,7 @@ function renderForecast(){
       ${headed?`<button class="headline" data-settings="1">${headline()}</button>`:""}
       <button class="condbtn" data-settings="1">${chargeBlock}</button>
       <p class="blurb">${blurb(headed)}</p>
-      ${checkinPill()}
+      ${checkinPill(low)}
       ${low?"":tiredBlock()}
     </div>
     ${S.roughNight?`<p class="hint" style="margin:-10px 0 14px;text-align:center">Bad sleep logged — tonight's refill is withheld.</p>`:""}
@@ -2685,7 +2726,7 @@ function tiredChart(picks,dirs){
   picks.forEach(k=>{
     const cat=RECOVERY_TREE[k];
     const b=cat.branches.find(x=>x.dir===(dirs[k]||cat.branches[0].dir))||cat.branches[0];
-    b.items.forEach(i=>{ count[i]=(count[i]||0)+1 });
+    b.items.forEach(i=>{ const n=itemName(i); count[n]=(count[n]||0)+1 });
     groups.push({key:k,label:cat.label,branch:b});
   });
   /* something that answers two kinds of tired at once is the highest-leverage
@@ -2701,65 +2742,127 @@ function chartHTML(picks,dirs,compact){
       ${shared.map(i=>`<div class="recitem">${i}</div>`).join("")}
     </div>`:""}
     ${groups.map(g=>{
-      const items=g.branch.items.filter(i=>shared.indexOf(i)<0);
+      const items=g.branch.items.filter(i=>shared.indexOf(itemName(i))<0);
       if(!items.length) return "";
       return `<div class="chartgroup">
         <p class="chartq">${g.label}${g.branch.dir==="any"?"":` · ${g.branch.label.toLowerCase()}`}</p>
-        ${items.map(i=>`<div class="recitem">${i}</div>`).join("")}
+        ${items.map(i=>`<div class="recitem">${itemName(i)}</div>`).join("")}
       </div>`;
     }).join("")}`;
 }
 
-/* which of the chosen categories still need a too-much / too-little answer */
-function pendingDirs(c){
-  return c.picks.filter(k=>RECOVERY_TREE[k].branches.length>1 && !c.dirs[k]);
+/* ---------------------------------------------------------------------------
+   I'M OVERWHELMED
+   Being LED through small questions is less work than choosing from a list —
+   the questions do the executive function you haven't got. So this is longer
+   than a two-tap lookup would be, and easier: four forced choices with big
+   targets, no typing, no multi-select, ending on ONE thing.
+
+   Each question is a filter rather than a preference. Kind and direction pick
+   the branch — that part is Ferri's own flowchart. Capacity and time decide
+   which of its items you can actually do at 9pm on the floor.
+--------------------------------------------------------------------------- */
+const CAPACITY = [
+  {k:"down", n:"I can't really get up",     s:"lying down, phone in hand"},
+  {k:"in",   n:"I can move around at home", s:"upright, but not going anywhere"},
+  {k:"out",  n:"I could leave the house",   s:"if it were worth it"}
+];
+const DURATION = [
+  {k:"mins",    n:"A few minutes"},
+  {k:"hour",    n:"An hour or so"},
+  {k:"evening", n:"The rest of the day"},
+  {k:"day",     n:"A whole day"}
+];
+
+/* Everything in the chosen branch you could actually do right now, best first.
+   The ranking is learned the same way costs are: what you've said helped comes
+   up, what you've passed over goes down. */
+function helpPicks(c){
+  const cat=RECOVERY_TREE[c.kind]; if(!cat) return {list:[],stretch:false};
+  const br=cat.branches.find(x=>x.dir===c.dir)||cat.branches[0];
+  const cap=NEEDS_RANK[c.cap], tim=TAKES_RANK[c.time];
+  const fits=i=>NEEDS_RANK[i.needs]<=cap && TAKES_RANK[i.takes]<=tim;
+  const score=i=>{ const n=itemName(i);
+    return ((S.helped||{})[n]||0)*2 - ((S.passed||{})[n]||0) };
+  const rank=list=>list.map((i,idx)=>({i,idx}))
+      .sort((x,y)=>score(y.i)-score(x.i) || x.idx-y.idx).map(x=>x.i);
+  const ok=rank(br.items.filter(fits));
+  /* Never dead-end. If the filters leave nothing, offer the smallest thing in
+     the branch and say plainly that it's a stretch — an empty result is the one
+     answer this screen must never give. */
+  return ok.length ? {list:ok, stretch:false}
+                   : {list:rank(br.items).slice(0,2), stretch:true};
 }
 
-function sheetTired(reset){
-  if(reset||!sheetCtx||!sheetCtx.tired) sheetCtx={tired:true,picks:[],dirs:{}};
-  const c=sheetCtx;
+/* One item that fits is an answer; "something else" that returns the same item
+   is a broken button. When the filters leave exactly one thing, the second
+   option stops pretending there's a choice and offers to relax a constraint
+   instead — more time first, then more capacity, because asking for more of
+   your body is the bigger ask. */
+function canWiden(c){ return TAKES_RANK[c.time]<3 || NEEDS_RANK[c.cap]<2 }
+function widen(c){
+  if(TAKES_RANK[c.time]<3) c.time=DURATION[TAKES_RANK[c.time]+1].k;
+  else if(NEEDS_RANK[c.cap]<2) c.cap=CAPACITY[NEEDS_RANK[c.cap]+1].k;
+  c.skip=0;
+}
 
-  if(!c.done){
-    const need=pendingDirs(c);
-    if(c.asked && need.length){                      /* follow-ups, one at a time */
-      const k=need[0], cat=RECOVERY_TREE[k];
-      openSheet(`
-        <h3>${cat.label}</h3>
-        <p class="sub">Which was it?${need.length>1?`  (${need.length} to go)`:""}</p>
-        <div class="tiredgrid">
-          ${cat.branches.map(b=>`<button data-tdir="${k}|${b.dir}">${b.label}</button>`).join("")}
-        </div>
-        <div style="height:16px"></div>
-        <button class="btn" data-tstart="1" style="border-color:var(--line);color:var(--muted)">Start over</button>`,c);
-      return;
-    }
-    if(!c.asked){                                    /* check all that apply */
-      openSheet(`
-        <h3>What kind of tired are you?</h3>
-        <p class="sub">Check everything that applies. However it feels — the numbers don't have to agree.</p>
-        <div class="tiredgrid">
-          ${Object.entries(RECOVERY_TREE).map(([k,cat])=>
-            `<button data-tpick="${k}" class="${c.picks.indexOf(k)>=0?"on":""}">
-               <span class="bx">${c.picks.indexOf(k)>=0?"✓":""}</span>${cat.short}</button>`).join("")}
-        </div>
-        <div style="height:16px"></div>
-        <button class="btn strong" data-tnext="1" ${c.picks.length?"":'style="opacity:.45"'}>
-          ${c.picks.length?`Show me what helps`:`Pick at least one`}</button>
-        <div style="height:8px"></div>
-        <button class="btn" data-tguess="1" style="border-color:var(--line);color:var(--muted)">Not sure — go on my week</button>`,c);
-      return;
-    }
+function sheetHelp(reset){
+  if(reset||!sheetCtx||!sheetCtx.help) sheetCtx={help:true, n:0};
+  const c=sheetCtx;
+  const back = c.n>0
+    ? `<div style="height:14px"></div><button class="btn" data-hback="1" style="border-color:var(--line);color:var(--muted)">Back</button>`
+    : "";
+  const step=(title,sub,body)=>openSheet(`
+    <div class="askhead"><h3>${title}</h3><span class="askpos">${Math.min(c.n+1,4)} <i>/</i> 4</span></div>
+    ${sub?`<p class="sub">${sub}</p>`:""}
+    <div class="tiredgrid">${body}</div>${back}`, c, true);
+
+  /* 1 — which kind. Single choice: "what's loudest" is answerable when
+     "check all that apply" isn't, and the week's own guess is offered first. */
+  if(c.n===0){
+    const g=inferBranch();
+    return step("What's loudest right now?", "One is enough — you can go back.",
+      Object.entries(RECOVERY_TREE).map(([k,cat])=>
+        `<button data-hkind="${k}">${cat.short}${k===g.key?`<i class="likely">likely</i>`:""}</button>`).join("")
+      + `<button class="dim" data-hkind="${g.key}">I don't know — go on my week</button>`);
   }
-  /* the chart, and it stays on the forecast afterwards */
-  S.tiredResult={picks:c.picks,dirs:c.dirs,at:TODAY};
+  /* 2 — too much of it, or too little */
+  if(c.n===1){
+    const cat=RECOVERY_TREE[c.kind];
+    if(cat.branches.length<2){ c.dir=cat.branches[0].dir; c.n=2 }
+    else return step(cat.label, "Which way?",
+      cat.branches.map(b=>`<button data-hdir="${b.dir}">${b.label}</button>`).join(""));
+  }
+  /* 3 — what you can physically manage. This is the question the old tree
+     never asked, and the reason it kept suggesting a massage to someone who
+     couldn't stand up. */
+  if(c.n===2) return step("What can you manage?", "Be honest. None of this is graded.",
+    CAPACITY.map(x=>`<button data-hcap="${x.k}">${x.n}<i class="sub2">${x.s}</i></button>`).join(""));
+  /* 4 — how much time there is */
+  if(c.n===3) return step("How long have you got?", "",
+    DURATION.map(x=>`<button data-htime="${x.k}">${x.n}</button>`).join(""));
+
+  /* the answer — one thing, because a list is another decision */
+  const {list,stretch}=helpPicks(c);
+  const pick=list.length?list[(c.skip||0)%list.length]:null;
+  if(!pick){ closeSheet(); toast("Nothing on your list for that. Add something on a better day."); return }
+  const name=itemName(pick);
+  S.tiredResult={name, at:TODAY};
   openSheet(`
-    <h3>What might help</h3>
-    <p class="sub">From your own list. This stays on your forecast for today.</p>
-    ${chartHTML(c.picks,c.dirs)}
-    <div style="height:18px"></div>
-    <button class="btn" data-tstart="1" style="border-color:var(--line);color:var(--muted)">Start over</button>
+    <h3 style="margin-bottom:3px">Do this</h3>
+    <p class="sub">${stretch
+      ? "Nothing on your list fits that exactly. This is the nearest thing."
+      : "From your own list, for the state you're actually in."}</p>
+    <p class="helpbig">${name}</p>
+    <button class="btn strong" data-hdone="${encodeURIComponent(name)}">Okay</button>
     <div style="height:8px"></div>
-    <button class="btn strong" data-closesheet="1">Done</button>`,c);
+    ${list.length>1
+      ? `<button class="btn" data-hskip="${encodeURIComponent(name)}" style="border-color:var(--line);color:var(--muted)">Something else</button>`
+      : (canWiden(c)
+        ? `<button class="btn" data-hwiden="1" style="border-color:var(--line);color:var(--muted)">Nothing else fits — widen it</button>`
+        : `<p class="hint" style="text-align:center;margin:2px 0 8px">That's everything on your list for this.</p>`)}
+    <div style="height:8px"></div>
+    <button class="btn" data-tstart="1" style="border-color:var(--line);color:var(--muted)">Start over</button>`, c, true);
   render();
 }
 
@@ -2774,7 +2877,7 @@ function sheetRecovery(openKey){
         <h4>${cat.label}</h4>
         ${cat.branches.map(b=>`
           <p class="treeq">${b.label}</p>
-          ${b.items.map(i=>`<div class="recitem">${i}</div>`).join("")}
+          ${b.items.map(i=>`<div class="recitem">${itemName(i)}</div>`).join("")}
         `).join("")}
       </div>`).join("")}
     <button class="btn" data-closesheet="1">Close</button>`);
@@ -3158,7 +3261,7 @@ function toast(msg){
 document.addEventListener("click",ev=>{
   const t0=ev.target.closest("[data-hmenu],[data-horizon]");
   if(S.hmenu && !t0){ S.hmenu=false; render() }        /* click away closes it */
-  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-noplan],[data-dobook],[data-tstart],[data-tpick],[data-tnext],[data-tdir],[data-tguess],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
+  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-noplan],[data-dobook],[data-tstart],[data-hkind],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hdone],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
   if(!t){ return }
   const D=t.dataset;   /* every clickable in the app routes through here */
 
@@ -3367,28 +3470,29 @@ document.addEventListener("click",ev=>{
     toast(`${e.name} done.`);
     return;
   }
-  if(D.tstart){ sheetTired(true); return }
-  if(D.tpick&&sheetCtx&&sheetCtx.tired){
-    const i=sheetCtx.picks.indexOf(D.tpick);
-    if(i>=0) sheetCtx.picks.splice(i,1); else sheetCtx.picks.push(D.tpick);
-    sheetTired(); return;
+  if(D.tstart){ sheetHelp(true); return }
+  if(D.hkind&&sheetCtx&&sheetCtx.help){ sheetCtx.kind=D.hkind; sheetCtx.n=1; sheetHelp(); return }
+  if(D.hdir&&sheetCtx&&sheetCtx.help){ sheetCtx.dir=D.hdir; sheetCtx.n=2; sheetHelp(); return }
+  if(D.hcap&&sheetCtx&&sheetCtx.help){ sheetCtx.cap=D.hcap; sheetCtx.n=3; sheetHelp(); return }
+  if(D.htime&&sheetCtx&&sheetCtx.help){ sheetCtx.time=D.htime; sheetCtx.n=4; sheetCtx.skip=0; sheetHelp(); return }
+  if(D.hback&&sheetCtx&&sheetCtx.help){
+    sheetCtx.n=Math.max(0,sheetCtx.n-1);
+    /* a one-branch category was skipped on the way in, so skip it going back */
+    if(sheetCtx.n===1 && RECOVERY_TREE[sheetCtx.kind].branches.length<2) sheetCtx.n=0;
+    sheetHelp(); return;
   }
-  if(D.tnext&&sheetCtx&&sheetCtx.tired){
-    if(!sheetCtx.picks.length){ toast("Pick at least one."); return }
-    sheetCtx.asked=true;
-    if(!pendingDirs(sheetCtx).length) sheetCtx.done=true;
-    sheetTired(); return;
+  if(D.hskip&&sheetCtx&&sheetCtx.help){
+    const n=decodeURIComponent(D.hskip);
+    S.passed=Object.assign({},S.passed||{},{[n]:((S.passed||{})[n]||0)+1});
+    sheetCtx.skip=(sheetCtx.skip||0)+1; sheetHelp(); return;
   }
-  if(D.tdir&&sheetCtx&&sheetCtx.tired){
-    const [k,dir]=D.tdir.split("|");
-    sheetCtx.dirs[k]=dir;
-    if(!pendingDirs(sheetCtx).length) sheetCtx.done=true;
-    sheetTired(); return;
-  }
-  if(D.tguess){
-    const g=inferBranch();
-    sheetCtx={tired:true,picks:[g.key],dirs:{[g.key]:g.branch.dir},asked:true,done:true};
-    sheetTired(); return;
+  if(D.hwiden&&sheetCtx&&sheetCtx.help){ widen(sheetCtx); sheetHelp(); return }
+  if(D.hdone){
+    /* "that one helped" is the only thing this screen learns from, and it's the
+       same shape as marking an event draining: your word, weighted over time */
+    const n=decodeURIComponent(D.hdone);
+    S.helped=Object.assign({},S.helped||{},{[n]:((S.helped||{})[n]||0)+1});
+    closeSheet(); render(); toast("Noted — that one comes up first next time."); return;
   }
   if(D.tclear){ S.tiredResult=null; render(); return }
   if(D.rectree){ sheetRecovery(); return }
@@ -3398,7 +3502,7 @@ document.addEventListener("click",ev=>{
     openSheet(`
       <h3>${b.label}?</h3>
       <p class="sub">${cat.label}</p>
-      ${b.items.map(i=>`<div class="recitem">${i}</div>`).join("")}
+      ${b.items.map(i=>`<div class="recitem">${itemName(i)}</div>`).join("")}
       <div style="height:18px"></div>
       <button class="btn" data-rectree="1" style="border-color:var(--line);color:var(--muted)">Something else</button>
       <div style="height:8px"></div>
