@@ -109,6 +109,13 @@ how many, **Scale units** says what they're called — *spoons / energy / mana*.
 The name is the part that makes the number feel like yours, and it has no
 business being locked to a count of twelve.
 
+**The unit names the stuff, not just the figures.** The Log's headings read
+*Took away spoons* / *Gave me spoons* — or mana, or energy. They'd been hardcoded
+to "energy", which quietly made the setting a label for numbers rather than the
+name of the thing you're spending. Under **no numbers** there are no units to
+name and the setting is hidden along with them, so the word falls back to
+"energy": the one everybody understands without being told.
+
 **Three words, no write-in.** There was a fourth option — *your own*, with a text
 field — and it went. Three words already cover the ground: the borrowed metaphor,
 the plain one, and the playful one. A free-text field bought very little and

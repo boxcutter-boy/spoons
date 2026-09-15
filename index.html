@@ -1054,6 +1054,11 @@ function unitName(){
    unit its subject needs the verb to agree, and with a closed set of three
    that's a lookup rather than a guess. */
 function unitPlural(){ return S.unit==="spoons" || !S.unit }
+/* The unit is also the word for the STUFF, not just for the figures — "took away
+   spoons", "this gave me mana". Under "no numbers" there are no units to name,
+   and the Scale units setting is hidden along with them, so the word falls back
+   to the plain one everybody already understands. */
+function unitWord(){ return noNums() ? "energy" : unitName() }
 /* The crossing hour is computed to the minute, which makes "under from 6:46pm"
    look like a fact. It isn't one — it's the output of a model built on guesses.
    Four buckets is the honest resolution, and the timeline draws the exact line
@@ -2379,14 +2384,14 @@ function renderLog(){
     <p class="screen-sub">Whatever the calendar missed.</p>
 
     <div class="group">
-      <p class="label">Took away energy</p>
+      <p class="label">Took away ${unitWord()}</p>
       <div class="chips">
         ${quickList().map((q,i)=>[q,i]).filter(([q])=>q.cost>0).map(([q,i])=>
           `<button class="chip ${loggedToday(q.n)?"on":""}" data-off="${i}">${q.n}</button>`).join("")}
       </div>
     </div>
     <div class="group">
-      <p class="label">Gave me energy</p>
+      <p class="label">Gave me ${unitWord()}</p>
       <div class="chips">
         ${quickList().map((q,i)=>[q,i]).filter(([q])=>q.cost<0).map(([q,i])=>
           `<button class="chip ${loggedToday(q.n)?"on":""}" data-off="${i}">${q.n}</button>`).join("")}
@@ -2438,7 +2443,7 @@ function sheetLogItem(editId){
     </div>
     <button class="row" data-lrest="1" style="margin-bottom:16px">
       <span class="box">${d.rest?"✓":""}</span>
-      <span style="font-size:12.5px">This gave me energy</span>
+      <span style="font-size:12.5px">This gave me ${unitWord()}</span>
     </button>
     <button class="btn strong" data-savelog="1">${d.editId?"Save":"Log it"}</button>
     <div style="height:8px"></div>
