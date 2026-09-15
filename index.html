@@ -221,6 +221,37 @@
   .stripgrid button.z-tight .dl{color:var(--tight)}
   .stripgrid button.z-over .dl{color:var(--over)}
   .stripgrid button.sel .dd{text-decoration:underline;text-underline-offset:3px}
+  /* --- the strip, unboxed -------------------------------------------------
+     Everything above this was a calendar drawn inside a card: a bordered panel,
+     ruled columns, filled rectangles in a grid. It's the one screen that isn't
+     a calendar — it's a reading — so it loses the furniture. No panel, no column
+     rules, and the events stop being boxes: a notch, a name, and the app's own
+     ground behind them. The coloured rule over each day is the only fill left,
+     and the notch survives because it was never the noisy part. */
+  .arcbox.plain{border:none;border-radius:0;background:none;box-shadow:none;overflow:visible}
+  .arcbox.plain .colbg i{box-shadow:none}
+  /* no column rules either — the coloured bar over each day already divides them,
+     and a ruled grid is the most calendar-like thing on the screen */
+  .arcbox.plain .stripgrid button{box-shadow:none}
+  .arcbox.plain .arc{padding:0 2px}
+  .arcbox.plain .stripgrid.head button{padding:9px 6px 8px}
+  .arcbox.plain .stripgrid.body button{padding:0 4px 12px}
+  .arcbox.plain .stripgrid .dd{font-size:21px}
+  .arcbox.plain .cev{
+    height:auto;padding:1px 0 1px 8px;border-radius:0;background:none;
+    box-shadow:inset 2px 0 0 var(--rail);color:var(--ink);
+    font-size:9.5px;line-height:1.3;
+  }
+  .arcbox.plain .stripgrid.wide .cev b{display:block;font-weight:500;overflow:hidden;
+                       text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+  .arcbox.plain .stripgrid.wide .cev .arrow{display:block;color:var(--c);opacity:1;font-size:10px}
+  .arcbox.plain .cev.inv b{font-style:italic;opacity:.8}
+  /* seven columns have no room for names, so there they stay bars — but flat
+     ones in the state colour rather than chips with strokes */
+  .arcbox.plain .stripgrid:not(.wide) .cev{height:4px;padding:0;border-radius:2px;
+        background:var(--c);box-shadow:none;overflow:hidden}
+  .arcbox.plain .spanbar{box-shadow:inset 3px 0 0 var(--rail)}
+  .arcbox.plain .spanbar.slim{box-shadow:none;background:var(--c)}
   .evs{display:flex;flex-direction:column;gap:3px}
   /* The chips are light enough now that their labels have to be dark — and each
      one carries a navy stroke, so a pale event still reads as a separate object
@@ -263,7 +294,7 @@
     box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16);
   }
   /* a condition is yours and keeps the colour you gave it, so it keeps dark type */
-  .spanbar.mine{color:#0e1128;box-shadow:0 0 0 1.5px var(--chipstroke)}
+
   /* conditions are pills, calendar spans stay rectangular like the chips —
      shape carries the difference even before you notice the emoji */
   .spanbar.mine{border-radius:999px;padding:0 9px}
@@ -665,7 +696,7 @@
                  border-radius:3px;font-size:9.5px;font-weight:600;color:var(--ct,var(--ink));
                  background:var(--c);
                  box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16)}
-  .condline span.mine{color:#0e1128;box-shadow:0 0 0 1.5px var(--chipstroke)}
+
   .condline span.mine{border-radius:999px;padding:0 10px}
   .opt .arrow2{font-size:12px;color:var(--faint)}
   /* the one thing worth saying about a day that's already happened */
@@ -783,14 +814,19 @@ function calOf(e){ return e.cal || CAL_OF[e.name] || "Personal" }
 /* Stoplight, plus blue for the things that don't touch you either way. Labels
    are white on all four. */
 const CHIP = {
-  give:  "#12905f",   /* green  — gives back   */
-  flat:  "#2360c4",   /* blue   — neither      */
-  thin:  "#b07c07",   /* amber  — getting thin */
-  drain: "#c81f38"    /* red    — draining     */
+  give:  "#0f8a5f",   /* emerald   — gives back   */
+  flat:  "#4a72c8",   /* periwinkle — neither     */
+  thin:  "#b5822c",   /* gold      — getting thin */
+  drain: "#c9334f"    /* crimson   — draining     */
 };
-function calInk(e){
-  if(e.src==="spoon" && e.color) return "#0e1128";   /* your own, on your own colour */
-  return "#ffffff";
+function calInk(){ return "#ffffff" }
+/* A condition you made keeps YOUR hue, but deepened to the same weight as the
+   rest — a pastel bar with dark type was the last thing on screen still dressed
+   as a Google Calendar event. */
+function deepen(hex,k){
+  const n=parseInt(hex.slice(1),16);
+  const r=Math.round((n>>16)*k), g=Math.round(((n>>8)&255)*k), b=Math.round((n&255)*k);
+  return "#"+[r,g,b].map(v=>Math.max(0,Math.min(255,v)).toString(16).padStart(2,"0")).join("");
 }
 function chipState(e){
   /* a multi-day span carries no per-day price, only a direction */
@@ -804,7 +840,7 @@ function chipState(e){
 function calColor(e){
   /* Only a condition YOU made keeps the colour you gave it. A multi-day thing
      off the calendar is still an event, and gets read the same way as the rest. */
-  if(e.src==="spoon" && e.color) return e.color;
+  if(e.src==="spoon" && e.color) return deepen(e.color,.62);
   return CHIP[chipState(e)];
 }
 /* the notch: which calendar, at three pixels */
@@ -2073,7 +2109,7 @@ function renderForecast(){
           </div>`:""}
         </div>
       </div>
-      <div class="arcbox">
+      <div class="arcbox plain">
         <button class="arc" data-arcinfo="1">${arc.axis}${arc.svg}</button>
         <div class="stripcols">
         <div class="colbg">${f.map(d=>`<i class="z-${cellState(d.date)}"></i>`).join("")}</div>

@@ -1310,8 +1310,36 @@ scales, agreeing in direction — which is why the collision reads as reinforcem
 rather than as two palettes fighting.
 
 **White labels on all four**, including the hollow outline an unanswered
-invitation carries. The fills are still being tuned — treat the hex values as
-Ferri's to set, not settled.
+invitation carries. The hues warmed from pure stoplight toward gold, emerald,
+crimson and periwinkle — the same four meanings, less traffic sign. Conditions
+you made keep **your** hue but deepened to the same weight (`deepen(hex, .62)`),
+because a pastel bar with dark type was the last thing on screen still dressed as
+a Google Calendar event; the notch keeps the colour you actually picked.
+
+### The forecast strip, unboxed
+
+Everything above was a calendar drawn inside a card: a bordered panel, ruled
+columns, filled rectangles in a grid. But this is the one screen that **isn't a
+calendar** — it's a reading — so it loses the furniture.
+
+> ▬▬▬ crimson    ▬▬▬ gold    ▬▬▬ teal
+> **SAT 12**      **SUN 13**  **MON 14**
+>
+> ▏Farmers market   ▏Call parents   ▏Standup
+> ▏Coffee with Jo   ▏Long bath      ▏Deep work block
+
+No panel, no column rules, and the events stop being boxes — a notch, a name, and
+the app's own grainy ground behind them. The Garamond date gets larger now that
+it isn't competing with a grid. The coloured rule over each day is the only fill
+left, and the **notch survives because it was never the noisy part**: three
+pixels of calendar identity was always the right size for it.
+
+Multi-day spans stay filled, because they're banners rather than events — a
+condition *is* a block of the week. At seven columns the chips have no room for
+names, so there they're flat bars in the state colour rather than chips with
+strokes.
+
+The month grid keeps its boxes. It really is a calendar.
 
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
