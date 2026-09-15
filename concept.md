@@ -1336,14 +1336,16 @@ calendar** — it's a reading — so it loses the furniture.
 > ▏Farmers market   ▏Call parents   ▏Standup
 > ▏Coffee with Jo   ▏Long bath      ▏Deep work block
 
-No panel, and the events stop being boxes — a notch, a name, and the app's own
-grainy ground behind them. **The column rules stayed**, though: they're what makes
+The **events** stop being boxes — a notch, a name, and the panel behind them
+instead of a filled rectangle each. The container and the column rules stayed,
+because it was the boxes-inside-a-box that read as Google Calendar, not the box:
+the panel separates the reading from the rest of the screen, and the rules make
 three days read as three days rather than as one list that changes subject twice.
 They're drawn on the background layer, so a single line runs the full height
 behind the header, the banners and the events instead of restarting at every row —
 and the spans and the chips share one inset, so a banner's left edge lands on the
-notches below it. The Garamond date gets larger now that
-it isn't competing with a grid. The coloured rule over each day is the only fill
+notches below it. The Garamond date gets larger now that it isn't
+competing with a rectangle. The coloured rule over each day is the only fill
 left, and the **notch survives because it was never the noisy part**: three
 pixels of calendar identity was always the right size for it.
 

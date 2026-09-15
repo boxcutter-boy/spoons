@@ -227,11 +227,12 @@
   /* --- the strip, unboxed -------------------------------------------------
      Everything above this was a calendar drawn inside a card: a bordered panel,
      ruled columns, filled rectangles in a grid. It's the one screen that isn't
-     a calendar — it's a reading — so it loses the furniture. No panel, no column
-     rules, and the events stop being boxes: a notch, a name, and the app's own
-     ground behind them. The coloured rule over each day is the only fill left,
-     and the notch survives because it was never the noisy part. */
-  .arcbox.plain{border:none;border-radius:0;background:none;box-shadow:none;overflow:visible}
+     a calendar — it's a reading — so the EVENTS lose the furniture: a notch, a
+     name, and the panel behind them instead of a filled rectangle each. The
+     container and the column rules stay, because they're doing structural work
+     rather than decorative — the panel separates the reading from the rest of
+     the screen, and the rules make three days read as three days. It was the
+     boxes-inside-a-box that made it look like Google Calendar, not the box. */
   /* The column rules stay — they're what makes three days read as three days
      rather than as one list that changes subject twice. They come from the
      background layer only, so a single line runs the full height behind the
