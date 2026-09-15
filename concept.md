@@ -1316,6 +1316,14 @@ you made keep **your** hue but deepened to the same weight (`deepen(hex, .62)`),
 because a pastel bar with dark type was the last thing on screen still dressed as
 a Google Calendar event; the notch keeps the colour you actually picked.
 
+### Instrument Sans for the working type
+
+The sans was the system stack, which on a Mac means SF — so every label in the
+app was the OS talking. Instrument Sans is a shade narrower and taller, which
+means it doesn't sit on the same width as Garamond and the two read as a
+deliberate pair rather than a serif with the default next to it. It holds up at
+9px, which most of this interface is.
+
 ### The forecast strip, unboxed
 
 Everything above was a calendar drawn inside a card: a bordered panel, ruled
@@ -1328,8 +1336,13 @@ calendar** — it's a reading — so it loses the furniture.
 > ▏Farmers market   ▏Call parents   ▏Standup
 > ▏Coffee with Jo   ▏Long bath      ▏Deep work block
 
-No panel, no column rules, and the events stop being boxes — a notch, a name, and
-the app's own grainy ground behind them. The Garamond date gets larger now that
+No panel, and the events stop being boxes — a notch, a name, and the app's own
+grainy ground behind them. **The column rules stayed**, though: they're what makes
+three days read as three days rather than as one list that changes subject twice.
+They're drawn on the background layer, so a single line runs the full height
+behind the header, the banners and the events instead of restarting at every row —
+and the spans and the chips share one inset, so a banner's left edge lands on the
+notches below it. The Garamond date gets larger now that
 it isn't competing with a grid. The coloured rule over each day is the only fill
 left, and the **notch survives because it was never the noisy part**: three
 pixels of calendar identity was always the right size for it.

@@ -15,7 +15,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d1026'/%3E%3Cpath d='M16 7c3 0 5 2 5 4.6 0 2.3-1.6 3.6-3.4 4.1l.6 8.4a2.2 2.2 0 0 1-4.4 0l.6-8.4C12.6 15.2 11 13.9 11 11.6 11 9 13 7 16 7Z' fill='%23e9e8f3'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* Dark blue, from Ferri's moodboard: a grainy gradient ground, containers a
      deep navy that sits on it, and the traffic colours pulled toward the same
@@ -24,7 +24,10 @@
   :root{
     --serif:"EB Garamond","Adobe Garamond Pro","Garamond","Hoefler Text",
             "Iowan Old Style","Times New Roman",Georgia,serif;
-    --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Inter",Arial,sans-serif;
+    /* Instrument Sans against Garamond: a shade narrower and taller than a
+       system face, so the two don't sit on the same width and the working type
+       stops reading as the OS talking. */
+    --sans:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
 
     --ink:#e9e8f3; --muted:#a0a3ba; --faint:#6f7492;
     --line:#333b5e; --line-strong:#525c86; --hair:#262c49;
@@ -229,13 +232,14 @@
      ground behind them. The coloured rule over each day is the only fill left,
      and the notch survives because it was never the noisy part. */
   .arcbox.plain{border:none;border-radius:0;background:none;box-shadow:none;overflow:visible}
-  .arcbox.plain .colbg i{box-shadow:none}
-  /* no column rules either — the coloured bar over each day already divides them,
-     and a ruled grid is the most calendar-like thing on the screen */
+  /* The column rules stay — they're what makes three days read as three days
+     rather than as one list that changes subject twice. They come from the
+     background layer only, so a single line runs the full height behind the
+     header, the banners and the events instead of restarting at every row. */
   .arcbox.plain .stripgrid button{box-shadow:none}
   .arcbox.plain .arc{padding:0 2px}
   .arcbox.plain .stripgrid.head button{padding:9px 6px 8px}
-  .arcbox.plain .stripgrid.body button{padding:0 4px 12px}
+  .arcbox.plain .stripgrid.body button{padding:0 6px 12px}
   .arcbox.plain .stripgrid .dd{font-size:21px}
   .arcbox.plain .cev{
     height:auto;padding:1px 0 1px 8px;border-radius:0;background:none;
