@@ -228,7 +228,7 @@
   /* Dark fill, light type, and a notch of the calendar's own colour down the
      left edge. The stroke is light rather than navy now — a navy outline round a
      navy chip is a chip with no edge. */
-  .cev{height:7px;border-radius:2px;overflow:hidden;color:var(--ink);background:var(--c);
+  .cev{height:7px;border-radius:2px;overflow:hidden;color:var(--ct,var(--ink));background:var(--c);
        box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16);
        display:flex;align-items:center;gap:3px}
   .cev b,.cev .arrow{display:none}
@@ -241,7 +241,7 @@
   .stepper .val .zero{color:var(--faint)}
   /* Hollow means one thing only: an invitation you haven't answered. It's on
      your calendar but it isn't yours yet — the same outline Google draws. */
-  .cev.inv{background:transparent;color:var(--ink);
+  .cev.inv{background:transparent;color:var(--c);
            box-shadow:inset 3px 0 0 var(--rail), inset 0 0 0 1.5px var(--c)}
   /* "+1" sits wherever the chip stack happens to end, which on a gradient cell
      could be navy or full-strength colour — so it's light rather than dark, the
@@ -258,7 +258,7 @@
   .spans{position:relative}
   .spanbar{
     position:absolute;top:4px;height:14px;border-radius:3px;
-    font-size:9px;font-weight:600;color:var(--ink);padding:0 6px 0 8px;
+    font-size:9px;font-weight:600;color:var(--ct,var(--ink));padding:0 6px 0 8px;
     display:flex;align-items:center;gap:3px;overflow:hidden;white-space:nowrap;
     box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16);
   }
@@ -475,13 +475,15 @@
   .cell.adj .d{opacity:.5}
   .cell.adj.sel{box-shadow:inset 0 0 0 2px #eef0ff, inset 0 0 0 999px rgba(9,11,26,.3)}
   .cell.past{color:var(--faint)}
-  /* The tint rises from the bottom of the cell rather than filling it flat: at
-     this height a flat wash of saturated colour would fight the day number and
-     the chips, and the ramp leaves the top of every cell quiet enough to read. */
-  .cell.ok{background-image:linear-gradient(180deg,rgba(0,158,163,0) 68%,var(--ok-deep) 100%)}
-  .cell.tight{background-image:linear-gradient(180deg,rgba(217,146,0,0) 68%,var(--tight-deep) 100%)}
-  .cell.over{background-image:linear-gradient(180deg,rgba(198,23,79,0) 68%,var(--over-deep) 100%)}
-  .cell.unknown{background:var(--unknown-bg);color:var(--faint)}
+  /* Same rule as the forecast strip: the zone is 3px across the top of the day
+     and nothing else. Painted as a hard-stop gradient rather than a border or a
+     box-shadow — a border would shift the contents, and the shadow slot is spoken
+     for by selection and by the adjacent-month dimming. */
+  .cell.ok{background-image:linear-gradient(180deg,var(--ok-deep) 3px,transparent 3px)}
+  .cell.tight{background-image:linear-gradient(180deg,var(--tight-deep) 3px,transparent 3px)}
+  .cell.over{background-image:linear-gradient(180deg,var(--over-deep) 3px,transparent 3px)}
+  .cell.unknown{background-image:linear-gradient(180deg,var(--line-strong) 3px,transparent 3px);
+                color:var(--faint)}
   /* today is filled, the selected day is ringed — Google's own shorthand, and it
      frees the cell edge to stay part of the grid */
   .cell.today .d{background:var(--ink);color:var(--fill);font-weight:600}
@@ -660,7 +662,7 @@
      a time inside it, so it stacks above the timeline as the bar it is */
   .condline{display:flex;flex-direction:column;gap:3px;margin:0 0 12px}
   .condline span{display:flex;align-items:center;gap:5px;height:17px;padding:0 8px 0 10px;
-                 border-radius:3px;font-size:9.5px;font-weight:600;color:var(--ink);
+                 border-radius:3px;font-size:9.5px;font-weight:600;color:var(--ct,var(--ink));
                  background:var(--c);
                  box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16)}
   .condline span.mine{color:#0e1128;box-shadow:0 0 0 1.5px var(--chipstroke)}
@@ -779,11 +781,20 @@ function calOf(e){ return e.cal || CAL_OF[e.name] || "Personal" }
    information but it isn't a decision, so it gets three pixels instead of the
    whole chip — four hues across a week was a rainbow you had to look past. */
 const CHIP = {
-  give:  "#1b6d5d",   /* green  — gives back            */
-  flat:  "#2b4585",   /* blue   — neither               */
-  thin:  "#8a6216",   /* yellow — getting thin          */
-  drain: "#8e2544"    /* red    — draining              */
+  give:  "#12905f",   /* green  — gives back   */
+  flat:  "#2360c4",   /* blue   — neither      */
+  thin:  "#b07c07",   /* amber  — getting thin */
+  drain: "#c81f38"    /* red    — draining     */
 };
+/* At full vibrance the four fills land on both sides of the contrast line —
+   green and amber read at 4.6:1 and 5.1:1 against dark type, red and blue at
+   4.9:1 and 4.7:1 against light. So the label follows its own chip rather than
+   one colour being forced to work on all four. */
+const CHIP_INK = { give:"#04160e", flat:"#eef1fb", thin:"#1a1204", drain:"#fdeff2" };
+function calInk(e){
+  if(e.src==="spoon" && e.color) return "#0e1128";   /* your own, on your own colour */
+  return CHIP_INK[chipState(e)];
+}
 function chipState(e){
   /* a multi-day span carries no per-day price, only a direction */
   if(isSpan(e)) return e.dir==="up" ? "give" : e.dir==="down" ? "thin" : "flat";
@@ -2097,7 +2108,7 @@ function renderForecast(){
             ${sp.map(s=>{
             const left=s.from/dates.length*100, w=(s.to-s.from+1)/dates.length*100;
             const labelled = s.group==="mine" || wide;
-            return `<button class="spanbar ${s.group==="mine"?"mine":"cal"} ${labelled?"":"slim"}" data-editcond="${s.e.id}" style="left:calc(${left}% + 6px);width:calc(${w}% - 12px);top:${topOf(s)}px;background:${calColor(s.e)};--rail:${calRail(s.e)}">${
+            return `<button class="spanbar ${s.group==="mine"?"mine":"cal"} ${labelled?"":"slim"}" data-editcond="${s.e.id}" style="left:calc(${left}% + 6px);width:calc(${w}% - 12px);top:${topOf(s)}px;background:${calColor(s.e)};--rail:${calRail(s.e)};--ct:${calInk(s.e)}">${
             labelled
               ? `${s.e.emoji?`<span class="emo">${s.e.emoji}</span>`:""}${s.open?"‹ ":""}${s.e.name}${s.e.cap?` · max ${fmt(s.e.cap)}`:""}${s.e.every?`<span class="arrow rep">${REPEAT}</span>`:""}${trendIcon(s.e)}`
               : ""
@@ -2111,7 +2122,7 @@ function renderForecast(){
         return `<button data-goday="${d.date}" class="z-${st} ${isPartial(d.date)?"partial":""}">
           <span class="evs">
             ${shown.map(e=>`<span class="cev${e.inv?" inv":""}"
-                style="--c:${calColor(e)};--rail:${calRail(e)}">${trendIcon(e)}<b>${e.name}</b></span>`).join("")}
+                style="--c:${calColor(e)};--rail:${calRail(e)};--ct:${calInk(e)}">${trendIcon(e)}<b>${e.name}</b></span>`).join("")}
             ${extraN>0?`<span class="cev more"><b>+${extraN}</b></span>`:""}
           </span>
         </button>`;
@@ -2349,7 +2360,7 @@ function renderDay(){
     <div class="scr-head"><h2>${niceDate(date)}</h2>
       <button class="act" data-tab2="${S.dayBack||"calendar"}">back</button></div>
     <p class="sumline">${sum}</p>
-    ${dspans.length?`<div class="condline" style="margin-top:12px">${dspans.map(e=>`<span class="${e.src==="spoon"?"mine":""}" style="--c:${calColor(e)};--rail:${calRail(e)}"
+    ${dspans.length?`<div class="condline" style="margin-top:12px">${dspans.map(e=>`<span class="${e.src==="spoon"?"mine":""}" style="--c:${calColor(e)};--rail:${calRail(e)};--ct:${calInk(e)}"
        >${e.emoji?`<span class="emo">${e.emoji}</span>`:""}${e.name}${e.cap&&!noNums()?` · max ${fmt(e.cap)}`:""}</span>`).join("")}</div>`:""}
     <div class="tl" style="height:${H}px">
       <div class="rail" style="background:linear-gradient(to bottom,${stops.join(",")})"></div>

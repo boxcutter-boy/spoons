@@ -1279,26 +1279,41 @@ three pixels tall — no room for a notch — so they carry state only.
 *(The seed's "Flare" is now "Sick" — plainer, and it's the word you'd actually
 use.)*
 
-### The strip says the zone with a rule, not a wash
+### The zone is a rule; the chips are a stoplight
 
-Two passes at this. First the day cells and strip columns ramped their zone
-colour from 12% down, which made a week read as blocks of saturated colour with
-the events floating on top — the biggest thing on screen saying the smallest
-thing. Moving the ramp to 68% helped: a band along the bottom rather than a wash
-through the whole cell.
+Three passes to get here. The zone colour started as a wash ramping from 12% down
+a cell, which made a week read as blocks of saturated colour with the events
+floating on top — the biggest thing on screen saying the smallest thing. Then a
+band at the bottom. Now, on both the forecast strip and the month grid, **3px
+across the top of the day and nothing else.**
 
-On the forecast strip it went further, to no fill at all. **A 3px rule across the
-top of each day, and nothing else.** The column is where the events live, and
-they should sit on the app's own ground rather than on a coloured panel. The day
-letters were already tinted the same way, so the bar and the label say it
-together and neither has to shout.
+> ▬▬▬ magenta   ▬▬▬ amber   ▬▬▬ teal
+> SAT 12        SUN 13      MON 14
 
-> ▬▬▬ red   ▬▬▬ yellow   ▬▬▬ teal
-> SAT 12    SUN 13       MON 14
+Painted as a hard-stop gradient rather than a border or a box-shadow: a border
+would shift the cell's contents, and the shadow slot is already spoken for by
+selection and by the adjacent-month dimming.
 
-**The month grid keeps its wash for now.** Different problem: there, a cell *is*
-the day, most cells have no chips to compete with, and the wash is doing the work
-of a heat map across five rows at once.
+**The chips went the other way — full stoplight, brighter and more saturated:**
+
+| | |
+|---|---|
+| red | draining |
+| amber | getting thin |
+| green | gives back |
+| blue | neither |
+
+**The two systems overlap on purpose.** A day whose rule is amber is a day you'll
+pay for; a chip that's amber is the thing making you pay. Magenta over the day,
+red on the chip; teal over the day, green on the chip. One colour language at two
+scales, agreeing in direction — which is why the collision reads as reinforcement
+rather than as two palettes fighting.
+
+**The label follows its own chip.** At full vibrance the four fills land on both
+sides of the contrast line — green and amber read at 4.6:1 and 5.1:1 against dark
+type, red and blue at 4.9:1 and 4.7:1 against light — so each chip carries its own
+ink colour rather than one being forced to work on all four. An invitation you
+haven't answered keeps the hollow outline, now in its own state colour.
 
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
