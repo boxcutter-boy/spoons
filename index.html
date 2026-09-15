@@ -2774,31 +2774,48 @@ const DURATION = [
   {k:"day",     n:"A whole day"}
 ];
 
-/* Everything in the chosen branch you could actually do right now, best first.
-   The ranking is learned the same way costs are: what you've said helped comes
-   up, what you've passed over goes down. */
+/* Which of the chosen kinds still needs a too-much / too-little answer. */
+function pendingDirs(c){
+  return (c.picks||[]).filter(k=>RECOVERY_TREE[k].branches.length>1 && !c.dirs[k]);
+}
+function dirTotal(c){
+  return (c.picks||[]).filter(k=>RECOVERY_TREE[k].branches.length>1).length;
+}
+function branchOf(c,k){
+  const cat=RECOVERY_TREE[k];
+  return cat.branches.find(x=>x.dir===(c.dirs[k]||cat.branches[0].dir))||cat.branches[0];
+}
+
+/* Everything across the chosen branches you could actually do right now, best
+   first. Multi-select earns its keep here: a thing that appears under two kinds
+   of tired answers both at once, and that's the highest-leverage item on the
+   list — it outranks everything, before any learned preference. */
 function helpPicks(c){
-  const cat=RECOVERY_TREE[c.kind]; if(!cat) return {list:[],stretch:false};
-  const br=cat.branches.find(x=>x.dir===c.dir)||cat.branches[0];
   const cap=NEEDS_RANK[c.cap], tim=TAKES_RANK[c.time];
   const fits=i=>NEEDS_RANK[i.needs]<=cap && TAKES_RANK[i.takes]<=tim;
+  const count={}, order={}, all=[];
+  (c.picks||[]).forEach(k=>branchOf(c,k).items.forEach((i,idx)=>{
+    const n=itemName(i);
+    if(!(n in order)){ order[n]=idx; all.push(i) }
+    count[n]=(count[n]||0)+1;
+  }));
   const score=i=>{ const n=itemName(i);
-    return ((S.helped||{})[n]||0)*2 - ((S.passed||{})[n]||0) };
-  const rank=list=>list.map((i,idx)=>({i,idx}))
-      .sort((x,y)=>score(y.i)-score(x.i) || x.idx-y.idx).map(x=>x.i);
-  const ok=rank(br.items.filter(fits));
-  /* Never dead-end. If the filters leave nothing, offer the smallest thing in
-     the branch and say plainly that it's a stretch — an empty result is the one
-     answer this screen must never give. */
-  return ok.length ? {list:ok, stretch:false}
-                   : {list:rank(br.items).slice(0,2), stretch:true};
+    return count[n]*100 + ((S.helped||{})[n]||0)*2 - ((S.passed||{})[n]||0) };
+  const rank=list=>list.slice().sort((x,y)=>
+      score(y)-score(x) || order[itemName(x)]-order[itemName(y)]);
+  const ok=rank(all.filter(fits));
+  /* Never dead-end. If the filters leave nothing, offer the nearest thing in the
+     branch and say so — an empty result is the one answer this screen must never
+     give. */
+  return ok.length ? {list:ok, stretch:false, count}
+                   : {list:rank(all).slice(0,2), stretch:true, count};
 }
 
 /* One item that fits is an answer; "something else" that returns the same item
    is a broken button. When the filters leave exactly one thing, the second
-   option stops pretending there's a choice and offers to relax a constraint
-   instead — more time first, then more capacity, because asking for more of
-   your body is the bigger ask. */
+   option stops pretending there's a choice and offers to relax a constraint —
+   more time first, then more capacity, because asking for more of your body is
+   the bigger ask. */
 function canWiden(c){ return TAKES_RANK[c.time]<3 || NEEDS_RANK[c.cap]<2 }
 function widen(c){
   if(TAKES_RANK[c.time]<3) c.time=DURATION[TAKES_RANK[c.time]+1].k;
@@ -2806,53 +2823,69 @@ function widen(c){
   c.skip=0;
 }
 
+/* The payoff of checking more than one box: say which of them this answers. */
+function coversLine(n,of){
+  if(n>=of) return of===2 ? "Answers both at once." : `Answers all ${of} at once.`;
+  return `Answers ${n} of the ${of} at once.`;
+}
+
 function sheetHelp(reset){
-  if(reset||!sheetCtx||!sheetCtx.help) sheetCtx={help:true, n:0};
+  if(reset||!sheetCtx||!sheetCtx.help) sheetCtx={help:true, stage:"pick", picks:[], dirs:{}};
   const c=sheetCtx;
-  const back = c.n>0
+  const dt=dirTotal(c), total=1+dt+2;
+  const at={pick:1, dir:1+(dt-pendingDirs(c).length)+1, cap:1+dt+1, time:1+dt+2}[c.stage];
+  const back = c.stage!=="pick"
     ? `<div style="height:14px"></div><button class="btn" data-hback="1" style="border-color:var(--line);color:var(--muted)">Back</button>`
     : "";
-  const step=(title,sub,body)=>openSheet(`
-    <div class="askhead"><h3>${title}</h3><span class="askpos">${Math.min(c.n+1,4)} <i>/</i> 4</span></div>
+  const step=(title,sub,body,foot)=>openSheet(`
+    <div class="askhead"><h3>${title}</h3><span class="askpos">${at} <i>/</i> ${total}</span></div>
     ${sub?`<p class="sub">${sub}</p>`:""}
-    <div class="tiredgrid">${body}</div>${back}`, c, true);
+    <div class="tiredgrid">${body}</div>${foot||""}${back}`, c, true);
 
-  /* 1 — which kind. Single choice: "what's loudest" is answerable when
-     "check all that apply" isn't, and the week's own guess is offered first. */
-  if(c.n===0){
+  /* 1 — which kinds. Check all that apply: more than one thing is usually true
+     at once, and the overlap between them is the most useful thing here. */
+  if(c.stage==="pick"){
     const g=inferBranch();
-    return step("What's loudest right now?", "One is enough — you can go back.",
+    return step("What kind of tired are you?",
+      "Check everything that applies. However it feels — the numbers don't have to agree.",
       Object.entries(RECOVERY_TREE).map(([k,cat])=>
-        `<button data-hkind="${k}">${cat.short}${k===g.key?`<i class="likely">likely</i>`:""}</button>`).join("")
-      + `<button class="dim" data-hkind="${g.key}">I don't know — go on my week</button>`);
+        `<button data-hpick="${k}" class="${c.picks.indexOf(k)>=0?"on":""}">
+           <span class="bx">${c.picks.indexOf(k)>=0?"✓":""}</span>${cat.short}${
+           k===g.key&&c.picks.indexOf(k)<0?`<i class="likely">likely</i>`:""}</button>`).join("")
+      + `<button class="dim" data-hguess="1">I don't know — go on my week</button>`,
+      `<div style="height:14px"></div>
+       <button class="btn strong" data-hgo="1" ${c.picks.length?"":'style="opacity:.45"'}>
+         ${c.picks.length?"Next":"Pick at least one"}</button>`);
   }
-  /* 2 — too much of it, or too little */
-  if(c.n===1){
-    const cat=RECOVERY_TREE[c.kind];
-    if(cat.branches.length<2){ c.dir=cat.branches[0].dir; c.n=2 }
-    else return step(cat.label, "Which way?",
-      cat.branches.map(b=>`<button data-hdir="${b.dir}">${b.label}</button>`).join(""));
+  /* 2 — too much of it, or too little. One kind at a time. */
+  if(c.stage==="dir"){
+    const need=pendingDirs(c);
+    if(!need.length){ c.stage="cap"; return sheetHelp() }
+    const k=need[0], cat=RECOVERY_TREE[k];
+    return step(cat.label, `Which way?${need.length>1?`  (${need.length} to go)`:""}`,
+      cat.branches.map(b=>`<button data-hdir="${k}|${b.dir}">${b.label}</button>`).join(""));
   }
-  /* 3 — what you can physically manage. This is the question the old tree
-     never asked, and the reason it kept suggesting a massage to someone who
-     couldn't stand up. */
-  if(c.n===2) return step("What can you manage?", "Be honest. None of this is graded.",
+  /* 3 — what you can physically manage. This is the question the old tree never
+     asked, and the reason it kept offering a massage to someone who couldn't
+     stand up. */
+  if(c.stage==="cap") return step("What can you manage?", "Be honest. None of this is graded.",
     CAPACITY.map(x=>`<button data-hcap="${x.k}">${x.n}<i class="sub2">${x.s}</i></button>`).join(""));
   /* 4 — how much time there is */
-  if(c.n===3) return step("How long have you got?", "",
+  if(c.stage==="time") return step("How long have you got?", "",
     DURATION.map(x=>`<button data-htime="${x.k}">${x.n}</button>`).join(""));
 
   /* the answer — one thing, because a list is another decision */
-  const {list,stretch}=helpPicks(c);
+  const {list,stretch,count}=helpPicks(c);
   const pick=list.length?list[(c.skip||0)%list.length]:null;
   if(!pick){ closeSheet(); toast("Nothing on your list for that. Add something on a better day."); return }
-  const name=itemName(pick);
-  S.tiredResult={name, at:TODAY};
+  const name=itemName(pick), covers=count[name]>1;
+  S.tiredResult={name, at:TODAY, covers};
   openSheet(`
     <h3 style="margin-bottom:3px">Do this</h3>
     <p class="sub">${stretch
       ? "Nothing on your list fits that exactly. This is the nearest thing."
-      : "From your own list, for the state you're actually in."}</p>
+      : covers ? coversLine(count[name], c.picks.length)
+               : "From your own list, for the state you're actually in."}</p>
     <p class="helpbig">${name}</p>
     <button class="btn strong" data-hdone="${encodeURIComponent(name)}">Okay</button>
     <div style="height:8px"></div>
@@ -3261,7 +3294,7 @@ function toast(msg){
 document.addEventListener("click",ev=>{
   const t0=ev.target.closest("[data-hmenu],[data-horizon]");
   if(S.hmenu && !t0){ S.hmenu=false; render() }        /* click away closes it */
-  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-noplan],[data-dobook],[data-tstart],[data-hkind],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hdone],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
+  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-noplan],[data-dobook],[data-tstart],[data-hpick],[data-hgo],[data-hguess],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hdone],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
   if(!t){ return }
   const D=t.dataset;   /* every clickable in the app routes through here */
 
@@ -3471,14 +3504,41 @@ document.addEventListener("click",ev=>{
     return;
   }
   if(D.tstart){ sheetHelp(true); return }
-  if(D.hkind&&sheetCtx&&sheetCtx.help){ sheetCtx.kind=D.hkind; sheetCtx.n=1; sheetHelp(); return }
-  if(D.hdir&&sheetCtx&&sheetCtx.help){ sheetCtx.dir=D.hdir; sheetCtx.n=2; sheetHelp(); return }
-  if(D.hcap&&sheetCtx&&sheetCtx.help){ sheetCtx.cap=D.hcap; sheetCtx.n=3; sheetHelp(); return }
-  if(D.htime&&sheetCtx&&sheetCtx.help){ sheetCtx.time=D.htime; sheetCtx.n=4; sheetCtx.skip=0; sheetHelp(); return }
+  if(D.hpick&&sheetCtx&&sheetCtx.help){
+    const i=sheetCtx.picks.indexOf(D.hpick);
+    if(i>=0){ sheetCtx.picks.splice(i,1); delete sheetCtx.dirs[D.hpick] }
+    else sheetCtx.picks.push(D.hpick);
+    sheetHelp(); return;
+  }
+  if(D.hgo&&sheetCtx&&sheetCtx.help){
+    if(!sheetCtx.picks.length){ toast("Pick at least one."); return }
+    sheetCtx.stage="dir"; sheetHelp(); return;
+  }
+  if(D.hguess){
+    const g=inferBranch();
+    sheetCtx={help:true, stage:"cap", picks:[g.key], dirs:{[g.key]:g.branch.dir}};
+    sheetHelp(); return;
+  }
+  if(D.hdir&&sheetCtx&&sheetCtx.help){
+    const [k,dir]=D.hdir.split("|");
+    sheetCtx.dirs[k]=dir;
+    if(!pendingDirs(sheetCtx).length) sheetCtx.stage="cap";
+    sheetHelp(); return;
+  }
+  if(D.hcap&&sheetCtx&&sheetCtx.help){ sheetCtx.cap=D.hcap; sheetCtx.stage="time"; sheetHelp(); return }
+  if(D.htime&&sheetCtx&&sheetCtx.help){ sheetCtx.time=D.htime; sheetCtx.stage="answer"; sheetCtx.skip=0; sheetHelp(); return }
   if(D.hback&&sheetCtx&&sheetCtx.help){
-    sheetCtx.n=Math.max(0,sheetCtx.n-1);
-    /* a one-branch category was skipped on the way in, so skip it going back */
-    if(sheetCtx.n===1 && RECOVERY_TREE[sheetCtx.kind].branches.length<2) sheetCtx.n=0;
+    const c=sheetCtx;
+    if(c.stage==="time") c.stage="cap";
+    else if(c.stage==="cap"){
+      /* step back into the last direction answered, if there was one */
+      const asked=(c.picks||[]).filter(k=>RECOVERY_TREE[k].branches.length>1);
+      if(asked.length){ delete c.dirs[asked[asked.length-1]]; c.stage="dir" } else c.stage="pick";
+    }
+    else if(c.stage==="dir"){
+      const asked=(c.picks||[]).filter(k=>RECOVERY_TREE[k].branches.length>1 && c.dirs[k]);
+      if(asked.length) delete c.dirs[asked[asked.length-1]]; else c.stage="pick";
+    }
     sheetHelp(); return;
   }
   if(D.hskip&&sheetCtx&&sheetCtx.help){

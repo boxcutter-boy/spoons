@@ -1375,10 +1375,10 @@ questions is less work than choosing from a list.** The questions do the executi
 function you haven't got. Four forced choices with big targets and no typing is
 *easier* than one screen of twelve options, even though it's more taps.
 
-> **What's loudest right now?** — physically worn out · overstimulated · brain's
-> fried · social battery `likely` · emotionally wrung out · directionless ·
-> *I don't know, go on my week*
-> **Which way?** — too much of it, or too little
+> **What kind of tired are you?** — check all that apply · physically worn out ·
+> overstimulated · brain's fried · social battery `likely` · emotionally wrung
+> out · directionless · *I don't know, go on my week*
+> **Which way?** — too much of it, or too little · one kind at a time
 > **What can you manage?** — can't really get up · can move around at home · could
 > leave the house
 > **How long have you got?** — a few minutes · an hour · the rest of the day · a
@@ -1392,6 +1392,14 @@ tree was missing: every item is now tagged with what it **asks of you**
 (`down` / `in` / `out`) and what it **costs in time** (`mins` → `day`). Without
 that, the tree offered *"get a massage"* to someone who couldn't get off the
 floor. Feasibility has to filter before preference.
+
+**Multi-select earns its keep in the ranking.** More than one thing is usually
+true at once, and the overlap between them is the most useful fact on the screen:
+an item that appears under two of the kinds you checked answers both, and
+outranks everything — before any learned preference. Check *social battery* and
+*emotionally wrung out* and you get **Alone time**, with *"Answers both at once."*
+That's the payoff for the extra taps, and the reason the counter is elastic:
+`1 / 3` until you check something with a too-much/too-little split, then `1 / 4`.
 
 **Tailoring without asking.** The week's own answer is marked `likely` on question
 one, so the first tap is usually confirming rather than deciding — and *"I don't
