@@ -218,6 +218,8 @@
   /* one arrow per band, set tight so three of them read as one mark */
   .arrows{font-size:12px;line-height:1;letter-spacing:-.06em;color:var(--ink);white-space:nowrap}
   .arrows.plus{color:var(--ok)}
+  .arrows.flat{color:var(--faint);letter-spacing:0}
+  .stepper .val .zero{color:var(--faint)}
   /* Hollow means one thing only: an invitation you haven't answered. It's on
      your calendar but it isn't yours yet — the same outline Google draws. */
   .cev.inv{background:transparent;box-shadow:inset 0 0 0 1.5px var(--c),0 0 0 1.5px var(--chipstroke);color:var(--c)}
@@ -740,7 +742,24 @@ const CAL_OF = {
   "Physio":"Health","Dentist":"Health","Pick up prescription":"Health","Long bath":"Health"
 };
 function calOf(e){ return e.cal || CAL_OF[e.name] || "Personal" }
-function calColor(e){ return e.color || CALENDARS[calOf(e)] }
+/* Four calendar colours across a week is a rainbow, and none of it means
+   anything you act on — "this one is from the Work calendar" is not a fact that
+   changes what you do next. The chips now say the only thing about an event this
+   app has an opinion on: whether it takes from you, gives back, or does neither.
+   Three values instead of four arbitrary ones, and the arrow on the chip is
+   saying the same thing, so the two reinforce rather than compete.
+   (CALENDARS is still here — a real build reads these from EventKit, and this is
+   where they'd come back if the colours ever earn their place.) */
+/* All three carry dark chip text, so they're separated by saturation rather than
+   brightness — neutral being the desaturated one is the point, not a compromise. */
+const CHIP = { drain:"#9aa2e0", flat:"#a3a8bd", give:"#5ccfae" };
+function calColor(e){
+  if(e.color && (isSpan(e)||e.src==="spoon")) return e.color;   /* your own conditions stay yours */
+  const c=costOf(e);
+  if(c==null) return CHIP.flat;
+  return c<0 ? CHIP.give : c===0 ? CHIP.flat : CHIP.drain;
+}
+function calColorRaw(e){ return e.color || CALENDARS[calOf(e)] }
 /* Google's palette, for conditions you create yourself */
 const PALETTE = ["#F0608C","#F394A8","#F7C264","#45C6A6","#5FBDEC","#BC7BD6","#8a92b7"];
 /* Conditions carry an emoji you choose — the thing that tells them apart from
@@ -797,40 +816,40 @@ const YESTERDAY = "2026-09-11";
 /* A multi-day event is usually a CONDITION of the week, not a spend — a
    holiday, a flare, a deload. It gets a banner and no per-day cost. */
 const SEED_EVENTS = [
-  ["2026-09-11","09:00","Standup",.05,"executive"],
+  ["2026-09-11","09:00","Standup",0,"executive"],
   ["2026-09-11","13:00","Lunch with Ash",.20,"social"],
   ["2026-09-11","19:30","Pub quiz",.30,"social"],
   ["2026-09-12",null,"Replenish mana",null,null,5,null,null,"#45C6A6","up","cal"],
-  ["2026-09-13",null,"Flare",null,null,4,.60,28,"#F394A8","down","spoon","🤒"],
+  ["2026-09-13",null,"Sick",null,null,4,.60,28,"#F394A8","down","spoon","🤒"],
   ["2026-09-12","10:00","Farmers market",.15,"sensory"],
   ["2026-09-12","15:00","Coffee with Jo",.15,"social"],
   ["2026-09-13","17:00","Call parents",.15,"social"],
   ["2026-09-13","20:00","Long bath",-.15,"physical"],
-  ["2026-09-14","09:00","Standup",.05,"executive"],
-  ["2026-09-14","10:00","Deep work block",.15,"executive"],
+  ["2026-09-14","09:00","Standup",0,"executive"],
+  ["2026-09-14","10:00","Deep work block",0,"executive"],
   ["2026-09-14","18:00","Groceries",.10,"sensory"],
-  ["2026-09-15","09:00","Standup",.05,"executive"],
+  ["2026-09-15","09:00","Standup",0,"executive"],
   ["2026-09-15","11:00","Team planning",.20,"social"],
   ["2026-09-15","17:00","Physio",.10,"physical"],
-  ["2026-09-16","09:00","Standup",.05,"executive"],
+  ["2026-09-16","09:00","Standup",0,"executive"],
   ["2026-09-16","14:00","Client call",.15,"social"],
   ["2026-09-16","19:30","Dinner out",.25,"social"],
-  ["2026-09-17","09:00","Standup",.05,"executive"],
+  ["2026-09-17","09:00","Standup",0,"executive"],
   ["2026-09-17","10:30","1:1 with boss",.20,"social"],
   ["2026-09-17","15:00","Client workshop",.25,"executive"],
   ["2026-09-17","19:00","Dinner at Sam's",.30,"social"],
   ["2026-09-17",null,"Pick up prescription",null,null],
-  ["2026-09-18","09:00","Standup",.05,"executive"],
+  ["2026-09-18","09:00","Standup",0,"executive"],
   ["2026-09-18","11:00","Office day",null,null],
   ["2026-09-19","13:00","Rosie's birthday",null,null],
   ["2026-09-20","11:00","Nothing planned",-.30,"physical"],
-  ["2026-09-21","09:00","Standup",.05,"executive"],
+  ["2026-09-21","09:00","Standup",0,"executive"],
   ["2026-09-21","14:00","Dentist",null,null],
-  ["2026-09-22","09:00","Standup",.05,"executive"],
+  ["2026-09-22","09:00","Standup",0,"executive"],
   ["2026-09-22","10:00","Team offsite",.45,"social"],
-  ["2026-09-23","09:00","Standup",.05,"executive"],
+  ["2026-09-23","09:00","Standup",0,"executive"],
   ["2026-09-24","12:00","Lunch with Ash",null,null],
-  ["2026-09-25","09:00","Standup",.05,"executive"]
+  ["2026-09-25","09:00","Standup",0,"executive"]
 ];
 
 /* Invitations you've been sent and haven't answered yet. In the real app this
@@ -1116,6 +1135,11 @@ function fmtMax(){ const s=SCALES[S.scale]; return s.max==null?"":String(s.max);
    view of the same scale, not a different opinion about it. */
 const COST_BANDS = [.15, .25];
 function costArrows(c){
+  /* Some things are neither. A standup you've stopped noticing doesn't drain you
+     and doesn't give anything back — and an arrow on it is a claim the app can't
+     support. A dash says "this is on your calendar and it costs you nothing",
+     which is a real and common answer. */
+  if(c===0) return `<span class="arrows flat">\u2014</span>`;
   const a=Math.abs(c), up=c<0;
   const n = a<COST_BANDS[0] ? 1 : a<COST_BANDS[1] ? 2 : 3;   /* light | medium | heavy */
   return `<span class="arrows${up?" plus":""}">${(up?TREND.up:TREND.down).repeat(n)}</span>`;
@@ -2520,6 +2544,7 @@ function sheetEvent(id){
   const e=S.events.find(x=>x.id===id); if(!e) return;
   const note = drainNote(e);
   const opening = e.cost==null ? .2 : Math.abs(e.cost);
+  /* 0 is a stated price, so a neutral event must not read as "tap to price me" */
   const draft = sheetCtx&&sheetCtx.id===id ? sheetCtx : {id, cost:opening, rest:e.cost!=null&&e.cost<0, type:e.type||"social"};
   const s=SCALES[S.scale], shown = s.round?s.round(draft.cost):Math.round(draft.cost*10);
   openSheet(`
@@ -2530,9 +2555,13 @@ function sheetEvent(id){
     <p class="label">${draft.rest?"How much does it give back?":"What does it cost you?"}</p>
     <div class="stepper">
       <button data-step="-1">−</button>
-      <div class="val">${draft.rest?"+":""}${shown}<small> / ${fmtMax()||"10"}</small></div>
+      <div class="val">${shown==="0"||shown===0
+        ? `<span class="zero">\u2014</span>`
+        : `${draft.rest?"+":""}${shown}<small> / ${fmtMax()||"10"}</small>`}</div>
       <button data-step="1">+</button>
     </div>
+    ${(shown==="0"||shown===0)?`<p class="hint" style="margin:-8px 0 14px">Neither takes
+      nor gives. It's on your calendar and it costs you nothing.</p>`:""}
     ${note?`<div class="hintbox">${drainText(e,note)}
       <button data-clearmarks="${e.id}">Clear the marks and start again</button>
     </div>`:""}
@@ -2825,7 +2854,7 @@ function sheetMove(id){
     <h3>${e.name}</h3>
     <p class="sub">${e.time?e.time+" \u00b7 ":""}${niceDate(e.date)}${
       c==null?" \u00b7 not priced":` \u00b7 ${c<0?"gives back ":"costs "}${costArrows(c)}`}</p>
-    ${past&&c>0?`<button class="opt mark ${marked?"on":""}" data-mark="${e.id}">
+    ${past&&c!==0?`<button class="opt mark ${marked?"on":""}" data-mark="${e.id}">
       <span class="n">${marked?"Marked as draining":"That took it out of me"}</span>
       <span class="d">${marked?"\u2713":""}</span></button>
       <div style="height:6px"></div>`:""}
@@ -3327,7 +3356,7 @@ document.addEventListener("click",ev=>{
   /* cost sheet */
   if(D.step&&sheetCtx){
     const s=SCALES[S.scale], stepFrac=(s.step||1)/(s.max||10);
-    sheetCtx.cost=Math.max(stepFrac,Math.min(1,sheetCtx.cost+Number(D.step)*stepFrac));
+    sheetCtx.cost=Math.max(0,Math.min(1,sheetCtx.cost+Number(D.step)*stepFrac));
     sheetEvent(sheetCtx.id); return;
   }
   if(D.type&&sheetCtx){ sheetCtx.type=D.type; sheetEvent(sheetCtx.id); return }

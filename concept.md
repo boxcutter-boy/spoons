@@ -1234,6 +1234,44 @@ overruling. The clock restart matters as much as the clearing: without it,
 "start again" on a five-month-old event drops it straight through to the floor,
 which is the opposite of what those words mean.
 
+### Neutral is a real answer, and the chips stopped being a rainbow
+
+**Some things are neither.** A standup you've stopped noticing doesn't drain you
+and doesn't give anything back, and an arrow on it is a claim the app can't
+support. Cost `0` is now a stated price — it renders as **—**, the stepper goes
+down to it, and the sheet says what it means: *"Neither takes nor gives. It's on
+your calendar and it costs you nothing."* Marking is hidden for a neutral event,
+because there's nothing to mark.
+
+This is the other half of the decay model. Decay makes a thing *cheap*; neutral
+lets you say outright that it's free. One is the app learning, the other is you
+telling it.
+
+**Four calendar colours across a week is a rainbow, and none of it is actionable.**
+"This one is from the Work calendar" doesn't change what you do next. The chips
+now carry the only thing this app has an opinion about:
+
+| | |
+|---|---|
+| indigo | takes something |
+| grey | neither |
+| teal | gives back |
+
+Three values instead of four arbitrary hues, separated by **saturation rather
+than brightness** — all three carry dark chip text, and neutral being the
+desaturated one is the point rather than a compromise. The arrow on the chip says
+the same thing, so colour and glyph reinforce instead of competing, and the day
+cell's own gradient is left to carry affordability without three other colour
+systems shouting over it.
+
+Conditions you create keep their own colour: those are yours, and you chose them.
+`CALENDARS` and `calColorRaw()` are still in the file — a real build reads them
+from EventKit, and that's where they'd come back from if the colours ever earn
+their place.
+
+*(The seed's "Flare" is now "Sick" — plainer, and it's the word you'd actually
+use.)*
+
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
 glyphs, inheriting `currentColor` — so the selected tab lights its icon and its
