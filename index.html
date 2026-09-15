@@ -404,7 +404,10 @@
      usually the honest answer. The labels stay; they're the anchors. */
   .askslide{position:relative;margin:2px 0 0}
   .askslide .strack{background:linear-gradient(to right,var(--ok),var(--tight) 52%,var(--over))}
-  .ticks.three{margin:-2px 2px 18px}
+  .ticks.three{margin:-2px 2px 12px}
+  /* the estimate, as a sentence under the slider — it answers back as you move */
+  .askline{margin:0 2px 16px;font-size:11.5px;line-height:1.45;color:var(--muted)}
+  .askline b{color:var(--ink);font-weight:600}
   .ask-set{display:flex;gap:7px;margin:0 0 10px}
   .ask-set button{
     flex:1;border:1px solid var(--line-strong);border-radius:7px;padding:14px 0;
@@ -1068,6 +1071,14 @@ function unitPlural(){ return S.unit==="spoons" || !S.unit }
    and the Scale units setting is hidden along with them, so the word falls back
    to the plain one everybody already understands. */
 function unitWord(){ return noNums() ? "energy" : unitName() }
+/* "2 spoons" but "1 spoon" — and "energy" and "mana" don't inflect at all. With
+   a closed set of three this is a lookup; it was a heuristic when the unit could
+   be anything the user typed, which is one more reason that option went. */
+const UNIT_ONE = { spoons:"spoon", energy:"energy", mana:"mana" };
+function unitCount(v){
+  const n=fmt(Math.abs(v));
+  return `${n} ${n==="1" ? (UNIT_ONE[unitName()]||unitName()) : unitName()}`;
+}
 /* The crossing hour is computed to the minute, which makes "under from 6:46pm"
    look like a fact. It isn't one — it's the output of a model built on guesses.
    Four buckets is the honest resolution, and the timeline draws the exact line
@@ -2488,9 +2499,11 @@ function askTouch(el){
      the thing being corrected. Showing only the word left you rating a feeling
      with no idea what you were signing the event up for. */
   const lab=$("ans-"+id), ev=S.events.find(x=>x.id===id);
-  if(lab){
-    const act = ev ? Math.round(Math.max(.05,Math.min(1,Math.abs(costOf(ev))*ASK_MULT[v]))*1000)/1000 : null;
-    lab.innerHTML=`<b>${ASK_WORD[v]}</b>${act==null?"":` \u00b7 ${noNums()?costArrows(act*(costOf(ev)<0?-1:1)):fmt(act)}`}`;
+  if(lab && ev){
+    const act = Math.round(Math.max(.05,Math.min(1,Math.abs(costOf(ev))*ASK_MULT[v]))*1000)/1000;
+    const word = ASK_WORD[v][0].toUpperCase()+ASK_WORD[v].slice(1);
+    lab.innerHTML=`<b>${word}</b> — call it
+      <b>${noNums()?costArrows(act*(costOf(ev)<0?-1:1)):unitCount(act)}</b>.`;
   }
   el.closest(".askrow")?.classList.add("touched");
 }
@@ -2928,8 +2941,7 @@ function sheetAsk(){
       ${more?`<span class="askpos">${q.length-more} <i>/</i> ${q.length}</span>`:""}
     </div>
     <div class="askrow">
-      <div class="askrow-h"><span class="n">${e.name}</span>
-        <span class="e" id="ans-${e.id}">you said ${noNums()?costArrows(costOf(e)):fmt(Math.abs(costOf(e)))}</span></div>
+      <div class="askrow-h"><span class="n">${e.name}</span></div>
       <div class="askslide">
         <div class="strack"></div>
         <div class="notches">${[1,2,3].map(i=>
@@ -2938,8 +2950,10 @@ function sheetAsk(){
                aria-label="How ${e.name} went">
       </div>
       <div class="ticks three"><span>easier</span><span>about right</span><span>harder</span></div>
+      <p class="askline" id="ans-${e.id}">Previously for events like this you said
+        <b>${noNums()?costArrows(costOf(e)):unitCount(costOf(e))}</b>.</p>
     </div>
-    <button class="btn strong" data-askdone="1">Done</button>
+    <button class="btn strong" data-askdone="1">${more?"Next":"Done"}</button>
     <div style="height:8px"></div>
     <button class="btn" data-deferall="1" style="border-color:var(--line);color:var(--muted)">Not now</button>
   `, null, true);

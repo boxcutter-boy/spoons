@@ -1135,12 +1135,30 @@ point. Everywhere else you're reading a cost; here you're *setting* one. Rating
 "much harder" and seeing only the word left you signing an event up for a figure
 you couldn't see:
 
-> **Lunch with Ash**              much harder · **3**
+> **Lunch with Ash**
+> ─────●─────
+> easier    about right    harder
+> Previously for events like this you said **2 spoons**.
+
+and the moment you move it, the same line answers:
+
+> **Much harder** — call it **3 spoons**.
 
 The word is how it felt, the number is what it cost, and the number is the thing
-being corrected. (Under "no numbers" it falls back to arrows — and that branch
-was printing `you said ` with nothing after it, because `fmt()` returns an empty
+being corrected. It sits under the slider rather than tucked against the event's
+name, because it's a sentence about the answer you're giving, not a label on the
+event. (Under "no numbers" both halves fall back to arrows — and that branch was
+printing `you said ` with nothing after it, because `fmt()` returns an empty
 string in that mode.)
+
+**`unitCount()` handles "1 spoon" vs "2 spoons".** Energy and mana don't inflect;
+spoons does. With a closed set of three that's a lookup — it would have been a
+heuristic when the unit could be anything the user typed, which is one more thing
+that option was costing.
+
+**The button says what it does.** *Next* while there's another question behind
+this one, *Done* on the last. It had said Done throughout, which on the first of
+two is a promise the modal doesn't keep.
 
 **Two lines came out.** *"No rush — this is easier once you've had time to feel
 it"* was reassurance about a question that isn't stressful, sitting above the
