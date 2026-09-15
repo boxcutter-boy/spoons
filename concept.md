@@ -1173,6 +1173,67 @@ keep."** "Fine —" reads as a sigh. Declining to rate something is a legitimate
 answer in an app built for people with nothing spare, not a concession the app
 tolerates.
 
+### Nothing is rated. You mark what took it out of you.
+
+The post-event ask is gone — the modal, the five-stop slider, the multipliers,
+the estimate-versus-actual history, all of it. Ferri's argument killed it, and
+it's a better argument than "the slider is fiddly":
+
+> if we give every single event a spoon reading it weirdly ends up being less
+> accurate. life doesnt really work that way. a business meeting you have every
+> day with your boss becomes trivial after a while.
+
+**A cost is not a property of an event. It's a property of an event at a point in
+your life.** The whole calibration loop assumed each event had a true number the
+app was converging on — which is why rating everything *felt* like it should help
+and didn't. The daily 1:1 doesn't have a stable cost we were measuring badly. It
+genuinely costs less than it did in March, and averaging six months of ratings
+actively hides that.
+
+**So the only input is a mark, and silence is the other answer.** You say *that
+took it out of me*; everything you don't say anything about drifts downward on
+its own:
+
+```
+factor = 1 + 0.35·(marks, capped at 3) − 0.07·(weeks since the last one)
+         clamped to [0.35, 2.1]
+```
+
+Walk the seed forward and the model tells the story by itself: **Standup**, five
+months old and never marked, sits at 0.35 — a `↘` that barely moves the day.
+**1:1 with boss**, marked three times in three weeks, sits at 2.02 and shows
+`↘↘↘` with a ⚠. Habituation isn't a feature anyone had to build; it's what
+happens when the default is decay.
+
+And silence is *free*, which is the point for this audience. The old design's
+cost was an interrogation every time you opened the app. This one asks nothing,
+and the thing it does want is the thing you'd remember anyway.
+
+**The asymmetry is deliberate.** Draining is specific — you know exactly which
+meeting did it, so it attaches to an event. Recovery is diffuse — you don't know
+which of six good things left you at a 7, you just know you're at a 7 — so it
+stays a level you report at check-in, and the Log keeps its off-calendar chips
+for both directions.
+
+**Marking lives in two places** because the two moments are different. On the day
+screen, tapping an event that's already happened offers *"That took it out of
+me"* where a future event offers move and cancel — there is nothing to move about
+yesterday, and one thing worth saying about it. And the Log lists today's
+calendar as chips, for catching up at the end of the day.
+
+**"Worth a second look" became "What's been draining you."** It used to report
+where your estimates disagreed with your ratings; now it reports where your own
+marks have moved a price, which is the one place your input has silently changed
+the forecast. Its closing line is the thesis: *anything you stop marking drifts
+back down on its own — a thing that used to cost you doesn't have to go on
+costing you.*
+
+**Setting a price outright clears the marks and restarts the clock.** Otherwise
+the number you just typed gets immediately multiplied by the history you were
+overruling. The clock restart matters as much as the clearing: without it,
+"start again" on a five-month-old event drops it straight through to the floor,
+which is the opposite of what those words mean.
+
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
 glyphs, inheriting `currentColor` — so the selected tab lights its icon and its

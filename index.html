@@ -392,28 +392,6 @@
            border-radius:3px;padding:1px 4px;margin-left:6px;flex:none}
   .ev.isp .n,.evt.isp .n{opacity:.72}
 
-  /* post-event ask (an overlay on open, not a parked card) */
-  .askrow{margin:0 0 16px}
-  .askrow.touched .askrow-h .e{color:var(--ink);font-size:10.5px}
-  .askrow-h .e b{font-weight:600}
-  .askrow-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:7px;gap:8px}
-  .askrow-h .n{font-size:13px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .askrow-h .e{font-size:10px;color:var(--faint);flex:none}
-  /* One drag instead of three targets: the three words were a forced choice
-     between coarse buckets, and a track says "somewhere between" — which is
-     usually the honest answer. The labels stay; they're the anchors. */
-  .askslide{position:relative;margin:2px 0 0}
-  .askslide .strack{background:linear-gradient(to right,var(--ok),var(--tight) 52%,var(--over))}
-  .ticks.three{margin:-2px 2px 12px}
-  /* the estimate, as a sentence under the slider — it answers back as you move */
-  .askline{margin:0 2px 16px;font-size:11.5px;line-height:1.45;color:var(--muted)}
-  .askline b{color:var(--ink);font-weight:600}
-  .ask-set{display:flex;gap:7px;margin:0 0 10px}
-  .ask-set button{
-    flex:1;border:1px solid var(--line-strong);border-radius:7px;padding:14px 0;
-    font-size:12.5px;text-align:center;
-  }
-  .ask-set button:active{background:var(--surface2)}
 
   /* calibration */
   .hintbox{
@@ -590,16 +568,6 @@
     box-shadow:0 24px 60px rgba(0,0,0,.5);
   }
   .sheet.modal.on{transform:translateY(-50%) scale(1); opacity:1}
-  .sheet.modal .askrow{margin:2px 0 4px}
-  /* Where you are in the queue — a position rather than a sentence about one,
-     set on the question's own baseline so it reads as part of the heading
-     rather than as one more line of content to get through. Baseline alignment
-     comes from the flex row, not from guessing at font metrics. */
-  .askhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-           margin:0 0 14px}
-  .askhead h3{margin:0}
-  .askpos{flex:none;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
-  .askpos i{font-style:normal;opacity:.5;margin:0 1px}
   .sheet h3{margin:0 0 3px;font-family:var(--serif);font-size:18px;font-weight:500;line-height:1.25}
   .sheet .sub{font-size:11px;color:var(--muted);margin:0 0 16px}
   .stepper{display:flex;align-items:center;justify-content:center;gap:20px;margin:6px 0 14px}
@@ -671,6 +639,12 @@
                  background:var(--c);box-shadow:0 0 0 1.5px var(--chipstroke)}
   .condline span.mine{border-radius:999px;padding:0 10px}
   .opt .arrow2{font-size:12px;color:var(--faint)}
+  /* the one thing worth saying about a day that's already happened */
+  .opt.mark{border:1px solid var(--line-strong);border-radius:10px;padding:12px 13px;
+            border-bottom:1px solid var(--line-strong)}
+  .opt.mark.on{border-color:var(--tight);color:var(--tight);
+               background:linear-gradient(180deg,rgba(217,146,0,.13),rgba(217,146,0,.03))}
+  .opt.mark .d{font-size:13px}
 
   /* An alert, not a panel — sized so you can't scroll past it without noticing,
      and holding only what it takes to decide whether to open it. The amber is
@@ -799,9 +773,7 @@ const WARN_ICON = `<svg class="wi" viewBox="0 0 16 16" fill="none" stroke="curre
    news with nothing to do about it, and it's still waiting in the event's own
    sheet for anyone who opens it. A row in an agenda earns a mark by being
    actionable, not by being true. */
-function flagMark(h){
-  return (h && h.kind==="higher") ? `<span class="warn">${WARN_ICON}</span>` : "";
-}
+function flagMark(e){ return drainNote(e) ? `<span class="warn">${WARN_ICON}</span>` : "" }
 
 function typeIcon(t){
   if(!t||!ICONS[t]) return "";
@@ -911,20 +883,24 @@ const SEED_PLANNED = [
 
 /* Estimate-vs-actual history, matched by event name. Real calendars give
    recurring-series ids; here the name is the series. */
-const SEED_ACTUALS = [
-  ["1:1 with boss",   .20, .35], ["1:1 with boss",  .20, .30],
-  ["1:1 with boss",   .20, .40], ["1:1 with boss",  .20, .35],
-  ["Client workshop", .25, .35], ["Client workshop",.25, .30],
-  ["Client workshop", .25, .35],
-  ["Dinner at Sam's", .30, .20], ["Dinner at Sam's",.30, .15],
-  ["Dinner at Sam's", .30, .25],
-  ["Groceries",       .10, .20], ["Groceries",      .10, .25],
-  ["Groceries",       .10, .20],
-  ["Standup",         .05, .05], ["Standup",        .05, .10],
-  ["Standup",         .05, .05],
-  ["Office day",      null,.30], ["Office day",     null,.35],
-  ["Office day",      null,.25],
-  ["Team offsite",    .45, .60], ["Team offsite",   .45, .55]
+/* Which things you MARKED as draining, and when. Not a rating of everything —
+   just the times you said "that one took it out of me". Standup and Office day
+   appear nowhere, which is the point: they've been quietly fine for weeks and
+   the app prices them accordingly. */
+/* A real calendar arrives with months behind it; this prototype carries three
+   days. So recurring names get a "known since" — demo scaffolding standing in
+   for history the seed doesn't hold, and the thing that lets habituation show:
+   Standup has been fine for five months, and is priced like it. */
+const SEED_KNOWN = {
+  "Standup":        150, "Office day":     120, "Groceries":       95,
+  "Dinner at Sam's": 70, "1:1 with boss":  140, "Client workshop": 60,
+  "Team planning":   90, "Physio":         80,  "Client call":     45
+};
+const SEED_DRAINS = [
+  ["1:1 with boss",    3], ["1:1 with boss",   10], ["1:1 with boss",   17],
+  ["Client workshop",  6], ["Client workshop", 20],
+  ["Team offsite",    12],
+  ["Groceries",       26]
 ];
 
 /* Ferri's own recovery tree (photographed 13 Sept 2026), minus the creative
@@ -1029,13 +1005,12 @@ function fresh(){
                                       added:addDays(TODAY,-s[3]),due:s[4],parent:null}))),
     nextId: SEED_EVENTS.length + SEED_TASKS.length,
     nudged: [],                     /* tasks already offered a breakdown */
-    actuals: SEED_ACTUALS.map(a=>({name:a[0],est:a[1],act:a[2]})),
+    drains: SEED_DRAINS.map(d=>({name:d[0], date:addDays(TODAY,-d[1])})),
+    marksFrom: {},          /* name -> when its quiet clock was last restarted */
     planned: SEED_PLANNED.map((x,i)=>Object.assign({id:"p"+i},x)),
     nextPlanId: SEED_PLANNED.length,
     plannedFor: [],                 /* days already offered something restorative */
-    logged: [],                     /* event ids whose actual has been recorded */
-    skipped: [],                    /* retired from the ask entirely */
-    deferred: {}                    /* id -> how many times "not now" was tapped */
+    deferred: {}
   };
 }
 function load(){
@@ -1049,6 +1024,7 @@ function load(){
     if(!SCALES[v.scale]) v.scale="ten";
     if(["spoons","energy","mana"].indexOf(v.unit)<0) v.unit="spoons";
     if(!Array.isArray(v.events)||!v.events.length) return null;
+    if(!Array.isArray(v.drains)) return null;   /* pre-marks schema — start clean */
     return v;
   }catch(e){ return null }
 }
@@ -1374,42 +1350,89 @@ function isPartial(date){
    never silently overridden. Unpriced events do take the historical mean as
    their suggested default, which is where the learning gets applied.
 ---------------------------------------------------------------------------- */
-const MIN_SAMPLES = 3, MIN_GAP = .10, MIN_AGREEMENT = .66;
+/* A cost is not a property of an event. It's a property of an event AT A POINT
+   IN YOUR LIFE. The daily 1:1 doesn't have a true number the app was measuring
+   badly — it genuinely costs less than it did in March, and averaging six months
+   of ratings actively hides that. So nothing is rated. You mark the things that
+   took it out of you, and everything else drifts quietly downward.
 
-function pastOf(name){ return (S.actuals||[]).filter(a=>a.name===name) }
-function meanAct(h){ return h.reduce((s,a)=>s+a.act,0)/h.length }
+   Silence means it was fine, and silence is free — which is the whole point for
+   someone with nothing spare. */
+const DRAIN_WINDOW = 56;   /* days a mark still counts for */
+const DRAIN_BUMP   = .35;  /* what one mark adds */
+const DRAIN_CAP    = 3;    /* marks past this add nothing — it's already expensive */
+const QUIET_FADE   = .07;  /* what a week of not marking it takes off */
+const FACTOR_MIN   = .35, FACTOR_MAX = 2.1;
 
-function hintFor(ev){
-  const h=pastOf(ev.name);
-  if(h.length<MIN_SAMPLES) return null;
-  const m=meanAct(h);
-  /* an inferred price came from this history — it can't disagree with itself */
-  if(ev.cost==null) return isInferred(ev) ? null : {kind:"suggest", n:h.length, act:m};
-  const delta=m-ev.cost;
-  if(Math.abs(delta)<MIN_GAP) return null;
-  const agree=h.filter(a=>Math.sign(a.act-ev.cost)===Math.sign(delta)).length;
-  if(agree/h.length<MIN_AGREEMENT) return null;
-  return {kind:delta>0?"higher":"lower", n:h.length, act:m, delta};
+function drainHits(name){
+  return (S.drains||[])
+    .filter(d=>d.name===name && daysBetween(d.date,TODAY)>=0
+                             && daysBetween(d.date,TODAY)<=DRAIN_WINDOW)
+    .sort((a,b)=>a.date<b.date?-1:1);
 }
-function hintText(ev,hint){
-  const a=fmt(hint.act), c=ev.cost!=null?fmt(Math.abs(ev.cost)):null;
-  if(hint.kind==="suggest")
-    return `Across ${hint.n} of these you've come out around ${a}. Starting there.`;
-  if(hint.kind==="higher")
-    return `You've put these at about ${a} afterwards, ${hint.n} times running — not ${c}.`;
-  return `These usually land nearer ${a} — less than the ${c} you're bracing for.`;
+/* Up on evidence, down on silence, clamped at both ends: a thing you've never
+   flagged settles at about a third of its stated price, and one you've flagged
+   three times sits at twice. */
+function drainFactor(name){
+  const hits=drainHits(name);
+  /* the clock runs from whichever came last: the final mark, a deliberate
+     reset, or the first time the app saw the name at all */
+  const from = [hits.length?hits[hits.length-1].date:null,
+                (S.marksFrom||{})[name] || null,
+                nameFirstSeen(name)].filter(Boolean).sort().pop();
+  const weeksQuiet = from ? daysBetween(from, TODAY)/7 : 0;
+  const f = 1 + DRAIN_BUMP*Math.min(hits.length,DRAIN_CAP) - QUIET_FADE*Math.max(0,weeksQuiet);
+  return Math.max(FACTOR_MIN, Math.min(FACTOR_MAX, f));
 }
-/* An event whose name has enough consistent history prices itself. It reads as
-   inferred, not unpriced — this is what stops the app demanding you label
-   everything by hand. Inconsistent history infers nothing. */
-function inferredCost(name){
-  const h=pastOf(name);
-  if(h.length<MIN_SAMPLES) return null;
-  const v=h.map(a=>a.act);
-  if(Math.max(...v)-Math.min(...v) > .25) return null;   /* too scattered to assume */
-  return meanAct(h);
+/* How long the app has known this name — a brand-new event hasn't earned any
+   fade yet, and shouldn't open at a discount it didn't earn. */
+function nameFirstSeen(name){
+  if(SEED_KNOWN[name]!=null) return addDays(TODAY,-SEED_KNOWN[name]);
+  let first=null;
+  for(const e of S.events){
+    if(e.name!==name || !e.date) continue;
+    if(daysBetween(e.date,TODAY)<0) continue;            /* future */
+    if(first===null || e.date<first) first=e.date;
+  }
+  return first;
 }
-function costOf(e){ return e.cost!=null ? e.cost : inferredCost(e.name); }
+/* Restores don't habituate this way — a bath doesn't stop working because you
+   didn't complain about it. */
+function drainNote(e){
+  const c=e.cost;
+  if(c==null||c<=0) return null;
+  const hits=drainHits(e.name);
+  if(!hits.length) return null;
+  const f=drainFactor(e.name);
+  if(f<=1.05) return null;
+  return {n:hits.length, factor:f, last:hits[hits.length-1].date, cost:c*f};
+}
+function markedOn(name,date){ return (S.drains||[]).some(d=>d.name===name&&d.date===date) }
+function toggleMark(name,date){
+  if(markedOn(name,date)) S.drains=(S.drains||[]).filter(d=>!(d.name===name&&d.date===date));
+  else S.drains=(S.drains||[]).concat({name,date});
+}
+/* Setting a price outright is a fresh statement about the thing, so the marks
+   behind it are spent — otherwise the number you just typed is immediately
+   multiplied by a history you were trying to overrule. It also restarts the
+   quiet clock: without that, clearing the marks on a five-month-old event drops
+   it straight through to the floor, which is the opposite of what "start again"
+   means. */
+function clearMarks(name){
+  S.drains=(S.drains||[]).filter(d=>d.name!==name);
+  S.marksFrom=Object.assign({}, S.marksFrom||{}, {[name]:TODAY});
+}
+function drainText(e,note){
+  const times = note.n===1 ? "once" : note.n===2 ? "twice" : `${note.n} times`;
+  return `You've marked this draining ${times} in the last while, so it's priced
+          at ${noNums()?costArrows(note.cost):unitCount(note.cost)} rather than
+          the ${noNums()?costArrows(e.cost):unitCount(e.cost)} you set.`;
+}
+/* The stated price, adjusted for how this thing has actually been landing. */
+function costOf(e){
+  if(e.cost==null) return null;
+  return e.cost<0 ? e.cost : e.cost*drainFactor(e.name);
+}
 /* An invitation you haven't answered might not happen. Counting it at full
    price makes the week look worse than it is; dropping it makes it look better
    than it is. So it counts, at a discount, until you answer (concept.md §10b).
@@ -1417,9 +1440,6 @@ function costOf(e){ return e.cost!=null ? e.cost : inferredCost(e.name); }
    printed price — the dinner costs what it costs if you go. */
 const INVITE_DISCOUNT = .6;
 function planned(e){ const c=costOf(e); return c==null?null:(e.inv?c*INVITE_DISCOUNT:c) }
-function isInferred(e){ return e.cost==null && costOf(e)!=null }
-/* an event the app has learned well enough to stop asking about */
-function isLearned(name){ return inferredCost(name)!=null }
 
 /* Chronotype multiplier: the same meeting costs more in your bad hours.
    Applied to drains only, and to the charge curve rather than to the printed
@@ -1444,17 +1464,19 @@ function todMult(h){
   return pts[pts.length-1][1];
 }
 
-/* events in the horizon whose estimate reads low — these are the ones that
-   change the forecast, so they're worth surfacing unprompted */
-function underestimated(days){
-  const out=[];
+/* Events in the horizon you've marked draining, so the app is pricing them
+   above what you set. Worth surfacing unprompted: it's the one place your own
+   input has silently changed the forecast. */
+function markedUp(days){
+  const out=[], seen={};
   for(let i=0;i<days;i++){
     for(const e of eventsOn(addDays(TODAY,i))){
-      const h=hintFor(e);
-      if(h&&h.kind==="higher") out.push({ev:e,hint:h});
+      const note=drainNote(e);
+      if(!note || seen[e.name]) continue;
+      seen[e.name]=1; out.push({ev:e, note});
     }
   }
-  return out.sort((a,b)=>b.hint.delta-a.hint.delta);
+  return out.sort((a,b)=>b.note.factor-a.note.factor);
 }
 
 /* What the week ahead asks of you, by kind. Read-only: it changes no
@@ -1618,50 +1640,43 @@ function sheetArc(){
    the app noticed, not a panel you came here to read — and an alert should be
    one line you can't miss, with the detail a tap away. */
 function lookNote(days){
-  const flags=underestimated(days);
+  const flags=markedUp(days);
   if(!flags.length) return "";
   const n=flags.length;
   return `<button class="note" data-look="${days}">
       <span class="warn">${WARN_ICON}</span>
       <span class="nb">
         <span class="nh">${n===1
-          ? `<b>${flags[0].ev.name}</b> is costing more than you thought.`
-          : `${n} events are costing more than you thought.`}</span>
-        <span class="np">Tap to see what ${n===1?"it's":"they're"} really running at.</span>
+          ? `<b>${flags[0].ev.name}</b> has been draining you.`
+          : `${n} things have been draining you.`}</span>
+        <span class="np">${n===1?"It's":"They're"} priced higher than you set ${n===1?"it":"them"}. Tap to see.</span>
       </span>
       <span class="chev">\u203a</span>
     </button>
     <div style="height:22px"></div>`;
 }
 
-/* The same numbers the notification is counting, plus what they do to the week
-   if they're right. Rows open the cost sheet, so accepting one is two taps. */
+/* What your own marks have done to the week. Rows open the cost sheet, where
+   setting a price outright clears the marks and starts the count again. */
 function sheetLook(days){
-  const flags=underestimated(days).slice(0,4);
+  const flags=markedUp(days).slice(0,4);
   if(!flags.length) return;
-  const fw=whatIf(()=>{ flags.forEach(x=>{ S.events.find(e=>e.id===x.ev.id).cost=x.hint.act }) });
-  const date=flags[0].ev.date, i=daysBetween(TODAY,date);
-  const d0=dayAt(date), d1=fw[i];
-  let line=null;
-  if(d0&&d1){
-    const pb0=paybackDays(d0.debt), pb1=paybackDays(d1.debt);
-    if(pb1>pb0) line=`Taken at those rates, ${dowL(date)} needs about ${pb1} low-demand day${pb1===1?"":"s"} to clear${pb0?` rather than ${pb0}`:", where it now needs none"}.`;
-    else if(d1.end<d0.end-.04) line=`Taken at those rates, ${dowL(date)} ends at ${fmt(d1.end)} rather than ${fmt(d0.end)}.`;
-  }
   openSheet(`
-    <h3>Worth a second look</h3>
-    <p class="sub">What you've actually come out at, against what you'd guessed.</p>
+    <h3>What's been draining you</h3>
+    <p class="sub">Marked by you, and priced up accordingly.</p>
     ${flags.map(x=>`<button class="opt" data-ev="${x.ev.id}">
-      <span class="n">${x.ev.name} <span class="hint">\u00b7 ${dow(x.ev.date)}</span><br>
-        <span class="hint">you've come out around ${costArrows(x.hint.act)}, not ${costArrows(x.ev.cost)}</span></span>
-      <span class="d">${costArrows(x.hint.act)}</span>
+      <span class="n">${x.ev.name}<br>
+        <span class="hint">marked ${x.note.n===1?"once":x.note.n===2?"twice":x.note.n+" times"},
+          last on ${niceDate(x.note.last)}</span></span>
+      <span class="d">${costArrows(x.note.cost)}</span>
     </button>`).join("")}
-    ${line?`<p class="hint" style="margin:13px 0 0;line-height:1.45">${line}</p>`:""}
+    <p class="hint" style="margin:13px 0 0;line-height:1.45">Anything you stop marking
+      drifts back down on its own — a thing that used to cost you doesn't have to
+      go on costing you.</p>
     <div style="height:18px"></div>
     <button class="btn" data-closesheet="1" style="border-color:var(--line);color:var(--muted)">Close</button>
   `, null, true);
 }
-
 function planBlock(days){
   const roomy=roomyDay(days);
   if(!roomy || (S.plannedFor||[]).indexOf(roomy.date)>=0) return "";
@@ -1712,28 +1727,6 @@ function taskRow(e,plain){
     ${dl?`<p class="due ${affordableBefore(e).count===0?"tight":""}">${dl}</p>`:""}
     ${!plain&&nudgeable?`<p class="nudge"><button data-breakdown="${e.id}">sitting a while — break it into smaller chunks?</button></p>`:""}
   </div>`;
-}
-
-/* Asked the next morning, batched — not an hour after the event.
-   Working out how something landed takes time, and an event's real cost
-   includes payback that hasn't arrived yet, so a next-day rating is MORE
-   accurate here, not less (concept.md §7).
-
-   Decay: nothing is asked about once its name is learned well enough to price
-   itself. The better it knows you, the less it speaks. */
-const ASK_DEFER_LIMIT = 3;
-function askable(e){
-  return costOf(e)>0
-      && !(S.logged||[]).includes(e.id)
-      && !(S.skipped||[]).includes(e.id)
-      && ((S.deferred||{})[e.id]||0) < ASK_DEFER_LIMIT
-      && !isLearned(e.name);
-}
-function askQueue(){
-  const events = eventsOn(YESTERDAY).filter(e=>e.time!=null && askable(e));
-  const tasks  = S.events.filter(e=>e.task&&e.done
-                   &&(e.doneAt===YESTERDAY||e.doneAt===TODAY)&&askable(e));
-  return events.concat(tasks).sort((a,b)=>(a.time?hm(a.time):99)-(b.time?hm(b.time):99));
 }
 
 /* ---------- blurb ---------- */
@@ -2175,13 +2168,13 @@ function renderCalendar(){
   const d=daysBetween(TODAY,sel)>=0?f[f.length-1]:null;
 
   let rows = evs.map(e=>{
-    const h=hintFor(e), flag=flagMark(h);
+    const flag=flagMark(e);
     return `<button class="ev ${e.pending?"isp":""}" data-ev="${e.id}">
       <span class="t">${e.time?clockLabel(hm(e.time)):"—"}</span>
       <span class="n">${e.name}</span>
       ${e.pending?`<span class="pending">pending</span>`:""}
       ${e.inv?`<span class="invited">invited</span>`:""}
-      ${flag}${costText(costOf(e),isInferred(e))}
+      ${flag}${costText(costOf(e))}
     </button>`}).join("");
 
   if(d && d.bestGap && d.bestGap.len>=1.5){
@@ -2250,8 +2243,8 @@ function renderDay(){
     const cv=costOf(e);
     /* the arrow is what it takes, the figure is what you're left holding */
     const delta = cv==null ? "not priced"
-      : `<span class="${isInferred(e)?"inf":""}">${costArrows(cv)}</span> → <b>${fmt(after)}</b>`;
-    const h=hintFor(e), flag=flagMark(h);
+      : `<span>${costArrows(cv)}</span> → <b>${fmt(after)}</b>`;
+    const flag=flagMark(e);
     nodes+=`<div class="node" style="top:${y(hm(e.time))-8}px"></div>
       <button class="evt ${isRest?"rest":""} ${e.pending?"isp":""} ${isHeavy(e)?"drain":""}" data-mv="${e.id}" style="top:${top}px">
         <span class="n">${e.name}</span>${e.pending?`<span class="pending">pending</span>`:""}${e.inv?`<span class="invited">invited</span>`:""}${flag}<span class="d">${delta}</span></button>`;
@@ -2299,7 +2292,7 @@ function renderDay(){
     ${untimed.length?`<p class="label">No time set</p>
       ${untimed.map(e=>`<button class="ev ${isHeavy(e)?"drain":""}" data-mv="${e.id}">
         <span class="n">${e.name}</span>
-        ${costText(costOf(e),isInferred(e))}</button>`).join("")}
+        ${costText(costOf(e))}</button>`).join("")}
       <div style="height:16px"></div>`:""}
     <button class="btn" data-cantmove="${date}" style="border-color:var(--line);color:var(--muted)">I can't move anything</button>`;
 }
@@ -2363,7 +2356,6 @@ function applyLog(name, cost, type){
   S.lastLog=TODAY;
   S.offlog=(S.offlog||[]).concat({id:"L"+(S.nextLogId=(S.nextLogId||0)+1),
                                   name, cost, type:type||null, at:TODAY});
-  S.actuals=(S.actuals||[]).concat({name, est:Math.abs(cost), act:Math.abs(cost)});
 }
 
 /* Logging is one tap, so un-logging has to be too — a mis-tap on a chip
@@ -2374,8 +2366,6 @@ function unlog(id){
   const x=(S.offlog||[]).find(e=>e.id===id); if(!x) return null;
   S.charge=Math.max(0, Math.min(capOn(TODAY)||1, S.charge + x.cost));
   S.offlog=S.offlog.filter(e=>e.id!==id);
-  const a=S.actuals||[];
-  for(let i=a.length-1;i>=0;i--) if(a[i].name===x.name){ a.splice(i,1); break }
   return x;
 }
 
@@ -2384,9 +2374,6 @@ function unlog(id){
 function relog(id, name, cost, type){
   const x=(S.offlog||[]).find(e=>e.id===id); if(!x) return;
   S.charge=Math.max(0, Math.min(capOn(TODAY)||1, S.charge + x.cost - cost));
-  const a=S.actuals||[];
-  for(let i=a.length-1;i>=0;i--) if(a[i].name===x.name){ a.splice(i,1); break }
-  S.actuals=(S.actuals||[]).concat({name, est:Math.abs(cost), act:Math.abs(cost)});
   x.name=name; x.cost=cost; x.type=type||null;
 }
 
@@ -2398,20 +2385,32 @@ function loggedToday(name){
 }
 
 function renderLog(){
+  /* The calendar already knows what you did today; the only thing it can't know
+     is which of it cost you. Marking here is the same act as marking from the
+     day view — this is just the end-of-day version of it. */
+  const todayEvents = eventsOn(TODAY).filter(e=>!e.task && costOf(e)>0);
   const today=(S.offlog||[]).filter(x=>x.at===TODAY);
   $("v-log").innerHTML=`
     <div class="scr-head"><h2>What happened?</h2></div>
-    <p class="screen-sub">Whatever the calendar missed.</p>
+    <p class="screen-sub">Mark what took it out of you. Everything else, the app assumes was fine.</p>
+
+    ${todayEvents.length?`<div class="group">
+      <p class="label">On your calendar today</p>
+      <div class="chips">
+        ${todayEvents.map(e=>`<button class="chip ${markedOn(e.name,TODAY)?"on":""}"
+          data-markday="${e.name}|${TODAY}">${e.name}</button>`).join("")}
+      </div>
+    </div>`:""}
 
     <div class="group">
-      <p class="label">Took away ${unitWord()}</p>
+      <p class="label">Off the calendar — took away ${unitWord()}</p>
       <div class="chips">
         ${quickList().map((q,i)=>[q,i]).filter(([q])=>q.cost>0).map(([q,i])=>
           `<button class="chip ${loggedToday(q.n)?"on":""}" data-off="${i}">${q.n}</button>`).join("")}
       </div>
     </div>
     <div class="group">
-      <p class="label">Gave me ${unitWord()}</p>
+      <p class="label">Off the calendar — gave me ${unitWord()}</p>
       <div class="chips">
         ${quickList().map((q,i)=>[q,i]).filter(([q])=>q.cost<0).map(([q,i])=>
           `<button class="chip ${loggedToday(q.n)?"on":""}" data-off="${i}">${q.n}</button>`).join("")}
@@ -2487,28 +2486,6 @@ document.addEventListener("input",e=>{
   S.charge=v;
   if(!dragRaf) dragRaf=requestAnimationFrame(()=>{ dragRaf=0; render() });
 });
-/* Touching a slider records the answer against the row and says it back in
-   words; nothing is filed until Done. Both events are needed: `input` for a
-   drag, `click` for a tap that leaves the thumb where it already was — which is
-   how you agree with "about right" in one tap. */
-function askTouch(el){
-  if(!askTouched) return;
-  const id=Number(el.dataset.ask), v=Number(el.value);
-  askTouched[id]=ASK_MULT[v];
-  /* "much easier" is how it felt; the figure is what it cost, and the cost is
-     the thing being corrected. Showing only the word left you rating a feeling
-     with no idea what you were signing the event up for. */
-  const lab=$("ans-"+id), ev=S.events.find(x=>x.id===id);
-  if(lab && ev){
-    const act = Math.round(Math.max(.05,Math.min(1,Math.abs(costOf(ev))*ASK_MULT[v]))*1000)/1000;
-    const word = ASK_WORD[v][0].toUpperCase()+ASK_WORD[v].slice(1);
-    lab.innerHTML=`<b>${word}</b> — call it
-      <b>${noNums()?costArrows(act*(costOf(ev)<0?-1:1)):unitCount(act)}</b>.`;
-  }
-  el.closest(".askrow")?.classList.add("touched");
-}
-document.addEventListener("input",e=>{ const el=e.target.closest?.('input[data-ask]'); if(el) askTouch(el) });
-document.addEventListener("click",e=>{ const el=e.target.closest('input[data-ask]'); if(el) askTouch(el) });
 document.addEventListener("change",e=>{
   if(e.target.id!=="chargeSlider") return;
   const v=e.target.value/(Number(e.target.max)||100);
@@ -2541,12 +2518,8 @@ function closeSheet(){ $("sheet").classList.remove("on"); $("scrim").classList.r
 
 function sheetEvent(id){
   const e=S.events.find(x=>x.id===id); if(!e) return;
-  const hint = hintFor(e);
-  /* an unpriced event starts at its historical mean — learning applied where
-     there's no explicit choice to override */
-  const opening = e.cost==null
-    ? (hint&&hint.kind==="suggest" ? hint.act : .2)
-    : Math.abs(e.cost);
+  const note = drainNote(e);
+  const opening = e.cost==null ? .2 : Math.abs(e.cost);
   const draft = sheetCtx&&sheetCtx.id===id ? sheetCtx : {id, cost:opening, rest:e.cost!=null&&e.cost<0, type:e.type||"social"};
   const s=SCALES[S.scale], shown = s.round?s.round(draft.cost):Math.round(draft.cost*10);
   openSheet(`
@@ -2560,9 +2533,8 @@ function sheetEvent(id){
       <div class="val">${draft.rest?"+":""}${shown}<small> / ${fmtMax()||"10"}</small></div>
       <button data-step="1">+</button>
     </div>
-    ${hint?`<div class="hintbox ${hint.kind==="lower"?"lower":""}">
-      ${hintText(e,hint)}
-      ${Math.abs(hint.act-draft.cost)>.02?`<button data-usehist="${hint.act.toFixed(3)}">Use ${fmt(hint.act)}</button>`:""}
+    ${note?`<div class="hintbox">${drainText(e,note)}
+      <button data-clearmarks="${e.id}">Clear the marks and start again</button>
     </div>`:""}
     <p class="label">Kind</p>
     <div class="seg">
@@ -2845,21 +2817,29 @@ function sheetMove(id){
   const {moves,off,drop,day}=movesFor(id);
   const c=costOf(e);
   const fig=v=>noNums()?zoneOf(v).k:`<b>${fmt(v)}</b>`;
+  /* Once a day has happened there is nothing to move, and one thing worth
+     saying about it. Before it happens it's the other way round. */
+  const past = daysBetween(TODAY, e.date) <= 0;
+  const marked = markedOn(e.name, e.date);
   openSheet(`
     <h3>${e.name}</h3>
     <p class="sub">${e.time?e.time+" \u00b7 ":""}${niceDate(e.date)}${
       c==null?" \u00b7 not priced":` \u00b7 ${c<0?"gives back ":"costs "}${costArrows(c)}`}</p>
-    ${moves.length ? `<p class="label">Move it to</p>
+    ${past&&c>0?`<button class="opt mark ${marked?"on":""}" data-mark="${e.id}">
+      <span class="n">${marked?"Marked as draining":"That took it out of me"}</span>
+      <span class="d">${marked?"\u2713":""}</span></button>
+      <div style="height:6px"></div>`:""}
+    ${!past&&moves.length ? `<p class="label">Move it to</p>
       ${moves.map(m=>`<button class="opt" data-pmove="${id}|${m.date}">
         <span class="n">${dowL(m.date)} ${dayNum(m.date)}</span>
         <span class="d">that day ends on ${fig(m.there)}</span></button>`).join("")}
       <p class="hint" style="margin:9px 0 0">Any of them leaves ${dowL(e.date)} on ${
         noNums()?zoneOf(off).k:fmt(off)} instead of ${noNums()?zoneOf(day.end).k:fmt(day.end)}.</p>`
-      : `<p class="hint" style="padding:6px 0 2px">Nothing later in the week absorbs this without costing you more than it saves.</p>`}
-    <p class="label" style="margin-top:18px">Or</p>
+      : (past?"":`<p class="hint" style="padding:6px 0 2px">Nothing later in the week absorbs this without costing you more than it saves.</p>`)}
+    ${past?"":`<p class="label" style="margin-top:18px">Or</p>
     <button class="opt" data-pdrop="${id}">
       <span class="n">Cancel it altogether</span>
-      <span class="d">${dowL(e.date)} ends on ${fig(drop)}</span></button>
+      <span class="d">${dowL(e.date)} ends on ${fig(drop)}</span></button>`}
     <button class="opt" data-ev="${id}">
       <span class="n">Change what it costs</span><span class="d arrow2">\u203a</span></button>
     <div style="height:16px"></div>
@@ -2905,59 +2885,6 @@ function sheetHandoff(id,kind,to){
     <div style="height:8px"></div>
     <button class="btn" data-closesheet="1" style="border-color:var(--line);color:var(--muted)">Not now</button>
   `);
-}
-
-/* Asked once, when the app is opened — not parked at the top of the screen.
-   One thing only; anything else waits on the Log screen rather than queuing up
-   as an interrogation. */
-/* Recording how an event actually landed — state only. The multiplier is what
-   the rating means relative to the estimate. */
-function recordActual(id, mult){
-  const e=S.events.find(x=>x.id===id); if(!e) return null;
-  const base=Math.abs(costOf(e));
-  const act=Math.round(Math.max(.05,Math.min(1,base*mult))*1000)/1000;
-  S.actuals=(S.actuals||[]).concat({name:e.name,est:base,act});
-  S.logged=(S.logged||[]).concat(e.id);
-  return e;
-}
-
-/* What the five stops mean, and what to call them back to you. */
-const ASK_MULT=[.55,.75,1,1.3,1.6];
-const ASK_WORD=["much easier","easier","about right","harder","much harder"];
-
-/* Ratings set but not yet filed. The overlay used to commit the moment you
-   touched a slider, which meant it vanished mid-gesture and you never saw where
-   you'd left the thumb — and rating the second event was impossible. */
-let askTouched=null;
-
-function sheetAsk(){
-  const q=askQueue();
-  if(!q.length) return false;
-  askTouched={};
-  const e=q[0], more=q.length-1;
-  openSheet(`
-    <div class="askhead">
-      <h3>How did yesterday go?</h3>
-      ${more?`<span class="askpos">${q.length-more} <i>/</i> ${q.length}</span>`:""}
-    </div>
-    <div class="askrow">
-      <div class="askrow-h"><span class="n">${e.name}</span></div>
-      <div class="askslide">
-        <div class="strack"></div>
-        <div class="notches">${[1,2,3].map(i=>
-          `<i style="left:calc(17px + (100% - 34px) * ${(i/4).toFixed(4)})"></i>`).join("")}</div>
-        <input type="range" min="0" max="4" step="1" value="2" data-ask="${e.id}"
-               aria-label="How ${e.name} went">
-      </div>
-      <div class="ticks three"><span>easier</span><span>about right</span><span>harder</span></div>
-      <p class="askline" id="ans-${e.id}">Previously for events like this you said
-        <b>${noNums()?costArrows(costOf(e)):unitCount(costOf(e))}</b>.</p>
-    </div>
-    <button class="btn strong" data-askdone="1">${more?"Next":"Done"}</button>
-    <div style="height:8px"></div>
-    <button class="btn" data-deferall="1" style="border-color:var(--line);color:var(--muted)">Not now</button>
-  `, null, true);
-  return true;
 }
 
 function renderTasks(){
@@ -3110,7 +3037,7 @@ function toast(msg){
 document.addEventListener("click",ev=>{
   const t0=ev.target.closest("[data-hmenu],[data-horizon]");
   if(S.hmenu && !t0){ S.hmenu=false; render() }        /* click away closes it */
-  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-ev],[data-look],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-noplan],[data-dobook],[data-tstart],[data-tpick],[data-tnext],[data-tdir],[data-tguess],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-usehist],[data-askdone],[data-deferall],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
+  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-noplan],[data-dobook],[data-tstart],[data-tpick],[data-tnext],[data-tdir],[data-tguess],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
   if(!t){ return }
   const D=t.dataset;   /* every clickable in the app routes through here */
 
@@ -3128,6 +3055,15 @@ document.addEventListener("click",ev=>{
     S.dayBack = (S.tab==="day"?S.dayBack:S.tab); S.tab="day"; render(); return }
   if(D.ev){ sheetEvent(Number(D.ev)); return }
   if(D.look){ sheetLook(Number(D.look)); return }
+  if(D.mark){ const e=S.events.find(x=>x.id===Number(D.mark));
+    toggleMark(e.name, e.date); render(); sheetMove(e.id);
+    toast(markedOn(e.name,e.date)
+      ? `Noted. ${e.name} is priced up from here.`
+      : `Unmarked. ${e.name} goes back to what you set.`); return }
+  if(D.markday){ const [name,date]=D.markday.split("|"); toggleMark(name,date); render(); return }
+  if(D.clearmarks){ const e=S.events.find(x=>x.id===Number(D.clearmarks));
+    clearMarks(e.name); render(); sheetEvent(e.id);
+    toast(`Cleared. ${e.name} costs what you set it to.`); return }
   if(D.mv){ sheetMove(Number(D.mv)); return }
   if(D.cantmove){ sheetCantMove(D.cantmove); return }
   if(D.pmove){ const [id,to]=D.pmove.split("|"); sheetHandoff(Number(id),"move",to); return }
@@ -3388,27 +3324,6 @@ document.addEventListener("click",ev=>{
     toast(`Opening your calendar… ${spec.n} shows as pending until it lands there.`);
     return;
   }
-  if(D.deferall){
-    /* deferring is the normal case, not a refusal — it comes back next open,
-       and only goes quiet after a few passes */
-    S.deferred=S.deferred||{};
-    askQueue().forEach(e=>{ S.deferred[e.id]=(S.deferred[e.id]||0)+1 });
-    closeSheet(); render();
-    toast("Left as it is. It'll keep."); return;
-  }
-  if(D.askdone){
-    const ids=Object.keys(askTouched||{});
-    if(!ids.length){ closeSheet(); toast("Nothing rated — it'll ask again."); return }
-    const names=ids.map(id=>recordActual(Number(id), askTouched[id])).filter(Boolean);
-    askTouched=null; render();
-    /* straight on to the next one, or out — one question on screen at a time */
-    if(!sheetAsk()) closeSheet();
-    const learned=names.filter(e=>isLearned(e.name));
-    toast(learned.length ? `Logged — ${learned[0].name} is learned now, it'll price itself.`
-                         : `Logged — ${names[0].name}.`);
-    return;
-  }
-
   /* cost sheet */
   if(D.step&&sheetCtx){
     const s=SCALES[S.scale], stepFrac=(s.step||1)/(s.max||10);
@@ -3422,6 +3337,7 @@ document.addEventListener("click",ev=>{
     const e=S.events.find(x=>x.id===sheetCtx.id);
     const v=Math.round(sheetCtx.cost*1000)/1000;
     e.cost=sheetCtx.rest?-v:v; e.type=sheetCtx.type;
+    clearMarks(e.name);
     closeSheet(); render(); toast(`${e.name} priced. Everything downstream recalculated.`); return;
   }
 
@@ -3453,7 +3369,6 @@ fitPhone();
 
 $("clock").textContent = clockLabel(NOW_H).replace(/[ap]m$/,"");
 render();
-setTimeout(sheetAsk, 450);        /* on open, after the app has drawn */
 </script>
 </body>
 </html>

@@ -40,9 +40,11 @@ give back, and the night refills you — non-linearly, so a day that ends near
 empty recovers less than a day that ends comfortable. Overspending accrues debt,
 which has to be paid back before the refill helps you again.
 
-Estimates get corrected by what actually happened: rate an event *easier* or
-*harder* than you guessed and the app infers the real cost, so the forecast
-sharpens as it learns you.
+Nothing is rated. You mark the things that took it out of you, and everything
+else drifts quietly downward — because a cost isn't a property of an event, it's
+a property of an event at a point in your life. The daily standup you never mark
+becomes almost free; the meeting you mark three times gets priced like it. Stop
+marking something and it fades back down on its own.
 
 Spoon never writes to your calendar. It prepares a change and hands it over —
 you save it there, so anyone else on an invite hears it from their own calendar
