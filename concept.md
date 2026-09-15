@@ -1128,6 +1128,30 @@ calendar chip — so this adds magnitude to an existing vocabulary rather than
 introducing one. The cost **stepper** is still numeric: that's an input, the one
 place you're deliberately setting a value rather than reading one.
 
+### The ask shows the number it's actually setting
+
+Costs are arrows everywhere in the app **except here**, and the exception is the
+point. Everywhere else you're reading a cost; here you're *setting* one. Rating
+"much harder" and seeing only the word left you signing an event up for a figure
+you couldn't see:
+
+> **Lunch with Ash**              much harder · **3**
+
+The word is how it felt, the number is what it cost, and the number is the thing
+being corrected. (Under "no numbers" it falls back to arrows — and that branch
+was printing `you said ` with nothing after it, because `fmt()` returns an empty
+string in that mode.)
+
+**Two lines came out.** *"No rush — this is easier once you've had time to feel
+it"* was reassurance about a question that isn't stressful, sitting above the
+question itself. And *"One more after this"* became **1 / 2** — the same fact as
+a position rather than a sentence you have to parse to learn you're halfway.
+
+**"Fine — it'll ask again next time you're in"** became **"Left as it is. It'll
+keep."** "Fine —" reads as a sigh. Declining to rate something is a legitimate
+answer in an app built for people with nothing spare, not a concession the app
+tolerates.
+
 **Tab icons, not placeholder squares:** a sun behind a cloud, a calendar, a
 pencil on a page. Drawn as inline SVG at the same stroke weight as the type
 glyphs, inheriting `currentColor` — so the selected tab lights its icon and its

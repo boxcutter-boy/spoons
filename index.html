@@ -588,6 +588,10 @@
   }
   .sheet.modal.on{transform:translateY(-50%) scale(1); opacity:1}
   .sheet.modal .askrow{margin:2px 0 4px}
+  /* where you are in the queue, as a position rather than a sentence about it */
+  .askpos{text-align:center;margin:12px 0 0;font-size:11px;color:var(--faint);
+          font-variant-numeric:tabular-nums}
+  .askpos i{font-style:normal;opacity:.5;margin:0 2px}
   .sheet h3{margin:0 0 3px;font-family:var(--serif);font-size:18px;font-weight:500;line-height:1.25}
   .sheet .sub{font-size:11px;color:var(--muted);margin:0 0 16px}
   .stepper{display:flex;align-items:center;justify-content:center;gap:20px;margin:6px 0 14px}
@@ -2475,8 +2479,14 @@ function askTouch(el){
   if(!askTouched) return;
   const id=Number(el.dataset.ask), v=Number(el.value);
   askTouched[id]=ASK_MULT[v];
-  const lab=$("ans-"+id);
-  if(lab) lab.innerHTML=`<b>${ASK_WORD[v]}</b>`;
+  /* "much easier" is how it felt; the figure is what it cost, and the cost is
+     the thing being corrected. Showing only the word left you rating a feeling
+     with no idea what you were signing the event up for. */
+  const lab=$("ans-"+id), ev=S.events.find(x=>x.id===id);
+  if(lab){
+    const act = ev ? Math.round(Math.max(.05,Math.min(1,Math.abs(costOf(ev))*ASK_MULT[v]))*1000)/1000 : null;
+    lab.innerHTML=`<b>${ASK_WORD[v]}</b>${act==null?"":` \u00b7 ${noNums()?costArrows(act*(costOf(ev)<0?-1:1)):fmt(act)}`}`;
+  }
   el.closest(".askrow")?.classList.add("touched");
 }
 document.addEventListener("input",e=>{ const el=e.target.closest?.('input[data-ask]'); if(el) askTouch(el) });
@@ -2908,11 +2918,10 @@ function sheetAsk(){
   askTouched={};
   const e=q[0], more=q.length-1;
   openSheet(`
-    <h3>How did yesterday go?</h3>
-    <p class="sub">No rush — this is easier once you've had time to feel it.</p>
+    <h3 style="margin-bottom:14px">How did yesterday go?</h3>
     <div class="askrow">
       <div class="askrow-h"><span class="n">${e.name}</span>
-        <span class="e" id="ans-${e.id}">you said ${fmt(Math.abs(costOf(e)))}</span></div>
+        <span class="e" id="ans-${e.id}">you said ${noNums()?costArrows(costOf(e)):fmt(Math.abs(costOf(e)))}</span></div>
       <div class="askslide">
         <div class="strack"></div>
         <div class="notches">${[1,2,3].map(i=>
@@ -2925,7 +2934,7 @@ function sheetAsk(){
     <button class="btn strong" data-askdone="1">Done</button>
     <div style="height:8px"></div>
     <button class="btn" data-deferall="1" style="border-color:var(--line);color:var(--muted)">Not now</button>
-    ${more?`<p class="hint" style="text-align:center;margin-top:10px">${more===1?"One more":more+" more"} after this.</p>`:""}
+    ${more?`<p class="askpos">${q.length-more} <i>/</i> ${q.length}</p>`:""}
   `, null, true);
   return true;
 }
@@ -3364,7 +3373,7 @@ document.addEventListener("click",ev=>{
     S.deferred=S.deferred||{};
     askQueue().forEach(e=>{ S.deferred[e.id]=(S.deferred[e.id]||0)+1 });
     closeSheet(); render();
-    toast("Fine — it'll ask again next time you're in."); return;
+    toast("Left as it is. It'll keep."); return;
   }
   if(D.askdone){
     const ids=Object.keys(askTouched||{});
