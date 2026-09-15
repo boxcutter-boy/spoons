@@ -52,11 +52,9 @@ rather than silently from us.
 
 ## Type
 
-**EB Garamond** for display, **Benton Sans** for everything working. Benton Sans
-is a licensed Font Bureau face, so it can't be served from this page — it's first
-in the stack and renders anywhere it's installed. The served fallback is **Public
-Sans**, which descends from Libre Franklin → Franklin Gothic → Morris Fuller
-Benton, the same designer as Benton Sans. A cousin, not a lookalike.
+**EB Garamond** for display, **Libre Franklin** for everything working — a revival
+of Franklin Gothic, which Morris Fuller Benton drew in 1903. Both are reading
+faces rather than interface faces, which suits an app that is mostly sentences.
 
 ## Design notes
 

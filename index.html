@@ -15,7 +15,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d1026'/%3E%3Cpath d='M16 7c3 0 5 2 5 4.6 0 2.3-1.6 3.6-3.4 4.1l.6 8.4a2.2 2.2 0 0 1-4.4 0l.6-8.4C12.6 15.2 11 13.9 11 11.6 11 9 13 7 16 7Z' fill='%23e9e8f3'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   /* Dark blue, from Ferri's moodboard: a grainy gradient ground, containers a
      deep navy that sits on it, and the traffic colours pulled toward the same
@@ -24,14 +24,11 @@
   :root{
     --serif:"EB Garamond","Adobe Garamond Pro","Garamond","Hoefler Text",
             "Iowan Old Style","Times New Roman",Georgia,serif;
-    /* Benton Sans first, for anywhere it's installed or licensed. It's a Font
-       Bureau face and can't be served from a public page without a webfont
-       licence, so the fallback does the work in the meantime — Public Sans,
-       which descends from Libre Franklin, which revives Franklin Gothic, which
-       Morris Fuller Benton drew. Benton Sans is his News Gothic from the same
-       family, so the stand-in is a cousin rather than a lookalike. */
-    --sans:"Benton Sans","BentonSans","Public Sans",
-           -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    /* Libre Franklin: a revival of Franklin Gothic, which Morris Fuller Benton
+       drew in 1903. It's a newspaper face by descent, which is why it sits with
+       Garamond — both are made for reading rather than for interfaces, and the
+       app is mostly sentences. */
+    --sans:"Libre Franklin",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
 
     --ink:#e9e8f3; --muted:#a0a3ba; --faint:#6f7492;
     --line:#333b5e; --line-strong:#525c86; --hair:#262c49;

@@ -1316,22 +1316,21 @@ you made keep **your** hue but deepened to the same weight (`deepen(hex, .62)`),
 because a pastel bar with dark type was the last thing on screen still dressed as
 a Google Calendar event; the notch keeps the colour you actually picked.
 
-### Benton Sans for the working type
+### Libre Franklin for the working type
 
-The sans was the system stack, which on a Mac means SF — so every label in the
-app was the OS talking. It's **Benton Sans** now, first in the stack, used
-anywhere the face is installed or licensed.
+The sans was the system stack, which on a Mac means SF — so every label in the app
+was the OS talking. It's **Libre Franklin** now: a revival of Franklin Gothic,
+which Morris Fuller Benton drew in 1903.
 
-It can't be *served*. Benton Sans is a Font Bureau release and putting the webfont
-files on a public GitHub Pages site needs a webfont licence. So the fallback does
-the work in the meantime, and the choice of fallback isn't arbitrary: **Public
-Sans** descends from Libre Franklin, which revives Franklin Gothic, which Morris
-Fuller Benton drew in 1903. Benton Sans is a News Gothic revival — his other
-grotesque, from the same years. The stand-in is a cousin rather than a lookalike,
-so the app reads the way it's meant to for anyone who isn't Ferri.
+It sits with Garamond because both are **reading** faces rather than interface
+faces, and this app is mostly sentences — the blurb, the heads-up copy, the day
+summary. A UI grotesque would have been a better fit for a dashboard, and this
+isn't one. It also holds up at 9px, which the chips and labels need.
 
-If the licensed webfont files turn up, it's an `@font-face` block and nothing
-else changes.
+*(Benton Sans was the first choice and can't be served — a Font Bureau release
+needs a webfont licence. Libre Franklin is the same designer's other 1903
+grotesque, by descent, which is why it was the fallback before it was the
+answer.)*
 
 ### The forecast strip, unboxed
 
