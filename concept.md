@@ -1439,6 +1439,51 @@ spans across the top of each row, which is where you actually see them.
 their ticks. They're the only part of the tasks page with a date on it, and this
 is the screen about dates.
 
+### Conditions, 16 Sept 2026
+
+**A condition can have no end.** You don't know how long an illness is when it
+starts — it could be three days or two weeks — so a fixed length was a number the
+app made up and then planned around. **No end date yet** starts it and leaves it
+running: it covers every day from the start until you close it, the day counter
+says *Day 13* with no total, and the WHEN row goes dashed and reads *still going*.
+Repeats disappears while it's on, because a thing with no end has nothing to
+repeat after.
+
+**The app asks, rather than waiting for you to remember.** An open condition
+shapes every day of the forecast, so the check-in — the one moment you're already
+telling it how you are — carries a **condition** row: *🤒 Sick · day 4* with
+*still going* and *it's over*. It never asks on the day you set it, and never
+twice in a day. *It's over* records the true length from the start date, so the
+history keeps what actually happened rather than an estimate.
+
+This exposed a real bug: `isSpan` was `span > 1`, so an open condition whose
+stored length was 1 stopped being a span at all and vanished from the day sheet
+and the prompt. Open-ended is multi-day by definition, whatever its number says.
+
+**Repeats is a checkbox with four answers.** Unchecked, that's the whole control.
+Checked: *weekly · monthly · every 28 days · custom*. The model had to learn
+months to say that honestly — `every` was a count of days, and months are 28 to
+31 long; a period that arrives on the 3rd arrives on the 3rd, not every 30 days.
+So months walk the calendar, clamping where they must (Jan 31 + 1 month is Feb
+28, and + 2 is Mar 31).
+
+**Custom is everything at once.** Google puts this on a scroll wheel, which is a
+list you have to spin before you can read it. Here the nine numbers you'd
+plausibly pick and the three units are all visible and one tap wide, and the
+sentence underneath reads back what you made — *"It repeats every 3 months."* —
+so you never translate "1 / month" into English yourself.
+
+**The marker is a field, not a picker.** One square beside the name holding a
+faded smiley: tap it and the keyboard comes up, and the emoji key is one tap from
+there. That deleted a fourteen-button grid and a hardcoded list of twelve
+feelings, which the app had no business shipping when the phone already has every
+emoji.
+
+**One selected state, everywhere.** Chosen things were `--surface2` — a
+background color, on a ground from the same family — so a picked chip differed
+from an unpicked one by a border and a font weight. Everything that can be chosen
+now takes the indigo the quick-log chips and the date picker already used.
+
 ### Second pass on the calendar, 16 Sept 2026
 
 **One span row, everywhere.** A multi-day thing reads the same in the day sheet

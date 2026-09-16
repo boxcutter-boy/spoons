@@ -335,7 +335,6 @@
     display:flex;flex-direction:column;
   }
   .hzmenu button{padding:8px 10px;font-size:11.5px;border-radius:4px;color:var(--muted)}
-  .hzmenu button.on{color:var(--ink);font-weight:600;background:var(--hair)}
   .arc{position:relative;width:100%;display:block;padding:10px 10px 4px;background:none;
        border-radius:8px 8px 0 0;overflow:hidden}
   .arc svg{display:block;width:100%;height:96px;overflow:visible}
@@ -428,7 +427,6 @@
   .emojis{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
   .emojis button{width:34px;height:34px;border:1px solid var(--line);border-radius:8px;
                  font-size:16px;display:flex;align-items:center;justify-content:center}
-  .emojis button.on{border-color:var(--ink);background:var(--surface2)}
   .emojis button.none{width:auto;padding:0 10px;font-size:11px;color:var(--muted)}
   .opt .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px}
   .taskfoot{display:flex;justify-content:space-between;align-items:center;margin-top:11px}
@@ -436,6 +434,17 @@
   .lead{font-family:var(--serif);font-size:13px;line-height:1.45;color:var(--muted);margin:-2px 0 10px}
   .tinput{width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:6px;
           padding:11px;font:inherit;font-size:13px;color:var(--ink);margin-bottom:16px}
+  .namerow{display:flex;gap:9px;align-items:stretch}
+  .namerow .tinput{flex:1;min-width:0}
+  /* A field, not a picker: tapping it raises the keyboard, and the emoji key is
+     one tap from there. The app has no business shipping its own list of twelve
+     feelings when the phone already has every emoji. */
+  .markerbtn{flex:none;width:52px;margin-bottom:16px;border:1px solid var(--line);
+             border-radius:6px;background:var(--surface2);text-align:center;
+             font:inherit;font-size:21px;line-height:1;color:var(--ink);padding:0}
+  /* a marker you haven't picked is a suggestion, not a value */
+  .markerbtn::placeholder{opacity:.32;color:var(--ink)}
+  .markerbtn:focus{outline:none;border-color:var(--sel-line)}
   /* The placeholder was the browser's own gray — a warm neutral that belongs to
      no palette and reads dimmer than anything else on the screen. This is the
      app's own muted, and opacity:1 stops Firefox fading it again on top. */
@@ -555,10 +564,23 @@
   .nth{margin-left:7px;font-size:10px;font-variant-numeric:tabular-nums;color:var(--faint);
         border:1px solid var(--line);border-radius:4px;padding:2px 5px;vertical-align:1px;
         white-space:nowrap}
+  /* the same 18px every other block in this sheet leaves under itself, so the
+     label below starts where the others do */
   .daterange{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+             margin-bottom:18px;
              border:1px solid var(--line-strong);border-radius:8px;padding:12px 13px;
              font-size:13px;color:var(--muted)}
   .daterange b{color:var(--ink);font-weight:500}
+  .daterange.half{border-style:dashed}
+  .stillrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+            gap:10px;margin-bottom:16px}
+  .stillrow .sl{font-size:13px;color:var(--ink)}
+  .stillrow .sl b{font-weight:500}
+  .stillrow .sl i{font-style:normal;font-size:11px;color:var(--faint);margin-left:7px}
+  .stillrow .sb{display:flex;gap:6px}
+  .stillrow .sb button{border:1px solid var(--line);border-radius:14px;padding:7px 11px;
+                       font-size:11px;color:var(--muted);white-space:nowrap}
+  .stillrow .sb button:active{border-color:var(--sel-line);background:var(--sel);color:#fff}
   .daterange i{font-style:normal;font-size:11px;color:var(--faint);white-space:nowrap}
   .daterange:active{background:var(--surface2)}
   .pickhead{display:flex;align-items:center;justify-content:center;gap:16px;margin:4px 0 10px}
@@ -599,7 +621,6 @@
   .yeargrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
   .ycell{border:1px solid var(--line);border-radius:8px;padding:16px 0;font-size:13px;
          color:var(--muted);text-align:center}
-  .ycell.on{border-color:var(--line-strong);background:var(--surface2);color:var(--ink)}
   .ycell.now{color:var(--ok)}
   .cal-nav{display:flex;gap:6px}
   .cal-nav button{width:24px;height:24px;border:1px solid var(--line);border-radius:4px;
@@ -671,7 +692,18 @@
   .sheetx{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:8px;
           display:grid;place-items:center;line-height:1;font-size:18px;color:var(--faint)}
   .sheetx:active{background:var(--surface2);color:var(--ink)}
-  .btnrow{display:flex;gap:9px}
+  /* a row of choices where no one option is wider because its word is longer */
+  .seg.even{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .seg.even.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .numgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+  .numgrid button{height:42px;display:grid;place-items:center;border:1px solid var(--line);
+                  border-radius:8px;font-size:14px;color:var(--muted);
+                  font-variant-numeric:tabular-nums}
+  .repsentence{margin:16px 0 18px;text-align:center;font-family:var(--serif);font-size:15px;
+               color:var(--muted)}
+  .repsentence b{color:var(--ink);font-weight:500}
+  .seg.even button{width:auto;text-align:center;padding:10px 6px}
+  .btnrow{display:flex;gap:9px;margin-top:6px}
   .btnrow .btn{flex:1;min-width:0}
   .inlink{display:inline;font:inherit;color:var(--ink);text-decoration:underline;
           text-underline-offset:2px;text-decoration-color:var(--line-strong)}
@@ -746,7 +778,19 @@
   /* Filled, so a logged chip is an object among outlines rather than two grays
      to compare. The weight does NOT change with state — bolding the label made
      the chip wider on selection and shunted the whole row around it. */
-  .chip.on{border-color:var(--sel-line);background:var(--sel);color:#fff}
+  /* ONE selected state, everywhere something is chosen. The old one was
+     var(--surface2) — a background color, on a ground from the same family, so a
+     picked chip and an unpicked one differed by a border. This is the indigo the
+     quick-log chips and the date picker already used. */
+  .chip.on,
+  .seg button.on,
+  .numgrid button.on,
+  .ycell.on,
+  .emojis button.on,
+  .tiredgrid button.on,
+  .hzmenu button.on{
+    border-color:var(--sel-line);background:var(--sel);color:#fff;font-weight:600;
+  }
 
   /* sheets */
   .scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;
@@ -786,7 +830,6 @@
   .seg button{border:1px solid var(--line);border-radius:14px;padding:7px 11px;font-size:11px;color:var(--muted)}
   .seg button.seg-ico{display:inline-flex;align-items:center;gap:6px}
   .seg button.addchip{color:var(--muted)}
-  .seg button.on{border-color:var(--ink);color:var(--ink);background:var(--surface2);font-weight:600}
   .opt{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--hair);width:100%}
   .opt .n{flex:1;font-size:12.5px}
   .opt .d{font-size:11px;color:var(--muted)}
@@ -814,7 +857,6 @@
     border-radius:3px;margin-right:10px;font-size:10px;line-height:14px;text-align:center;
     vertical-align:-2px;
   }
-  .tiredgrid button.on{border-color:var(--ink);background:var(--surface2)}
   /* one answer, in the display face, because it's the only thing on the screen */
   /* the question and where you are in it, on one baseline — the alignment comes
      from the flex row rather than from guessing at font metrics */
@@ -1048,9 +1090,6 @@ function calRail(e){ return e.color || CALENDARS[calOf(e)] }
 function calColorRaw(e){ return e.color || CALENDARS[calOf(e)] }
 /* Google's palette, for conditions you create yourself */
 const PALETTE = ["#F0608C","#F394A8","#F7C264","#45C6A6","#5FBDEC","#BC7BD6","#8a92b7"];
-/* Conditions carry an emoji you choose — the thing that tells them apart from
-   calendar events at a glance, without inventing another border style. */
-const EMOJI = ["🩸","🌙","🤒","🛏️","✈️","🏠","🧠","⛈️","🌱","🎉","💼","⚓"];
 /* Trend arrows: down for a drain, up for a restore, nothing for neutral or
    unpriced. Conditions carry a declared direction instead of a cost. */
 const TREND = { up:"\u2197", down:"\u2198" };   /* ↗ ↘ — the characters themselves */
@@ -1504,7 +1543,9 @@ function clockLabel(h){
 }
 
 /* ---------- per-day computation ---------- */
-function isSpan(e){ return (e.span||1)>1 }
+/* Open-ended counts as multi-day whatever its stored length says: it has a
+   start and no end, which is the definition of a span even on day one. */
+function isSpan(e){ return !!e.open || (e.span||1)>1 }
 /* Two kinds of multi-day bar, and they're not the same thing:
    - a CALENDAR span comes from your calendar. Spoon never writes there, so it
      can't offer to edit one — only to annotate it (direction, ceiling) and hand
@@ -1522,12 +1563,78 @@ function isCalSpan(e){ return isSpan(e) && e.src!=="spoon" }
    were rejected (scheduling laundry is itself cognitive load); a recurring
    condition is the opposite — set once, and the forecast knows forever with no
    logging at all. */
+/* A repeat is {n, unit}. Days and weeks are a fixed number of days apart, so
+   they're modulo arithmetic; MONTHS are not — they're 28 to 31 days long, and a
+   period that arrives on the 3rd arrives on the 3rd, not every 30 days. So the
+   month case walks the calendar instead. `every` is the old day-count field and
+   still reads, so nothing saved before this stops working. */
+function repOf(e){
+  if(e.rep && e.rep.n) return e.rep;
+  if(e.every) return {n:e.every, unit:"days"};
+  return null;
+}
+function addMonths(iso,n){
+  const [y,m,d]=iso.split("-").map(Number);
+  const t=new Date(y, m-1+n, 1);
+  /* the 31st of a 30-day month lands on the 30th, not the 1st of the next */
+  const last=new Date(t.getFullYear(), t.getMonth()+1, 0).getDate();
+  t.setDate(Math.min(d,last));
+  return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
+}
+function monthsBetween(a,b){
+  const x=parse(a), y=parse(b);
+  return (y.getFullYear()-x.getFullYear())*12 + (y.getMonth()-x.getMonth());
+}
 function coversDate(e,date){
-  const step=e.every||0, off=daysBetween(e.date,date);
-  if(off<0 && !step) return false;
-  if(!step) return off>=0 && off<(e.span||1);
-  const m=((off%step)+step)%step;          /* where in the cycle this date falls */
-  return m>=0 && m<(e.span||1);
+  const rep=repOf(e), span=e.span||1, off=daysBetween(e.date,date);
+  /* Open-ended: it started, and it hasn't been ended. An illness doesn't know
+     how long it is either, and guessing a length would put a made-up number in
+     the forecast — better to say "still true" until you say otherwise. It can't
+     repeat, because a thing with no end has nothing to repeat after. */
+  if(e.open) return off>=0;
+  if(!rep) return off>=0 && off<span;
+  if(rep.unit==="months"){
+    const k=monthsBetween(e.date,date);
+    /* k and k-1: a span can start last month and reach into this one */
+    for(const cand of [k,k-1]){
+      if(cand%rep.n!==0) continue;
+      const d=daysBetween(addMonths(e.date,cand),date);
+      if(d>=0 && d<span) return true;
+    }
+    return false;
+  }
+  const step = rep.unit==="weeks" ? rep.n*7 : rep.n;
+  const m=((off%step)+step)%step;
+  return m>=0 && m<span;
+}
+/* every start of `e` that could touch a window of n days beginning at `first` */
+function spanStarts(e,first,n){
+  const rep=repOf(e);
+  if(e.open || !rep) return [e.date];
+  const out=[];
+  if(rep.unit==="months"){
+    const k=Math.floor(monthsBetween(e.date,first)/rep.n)-1;
+    const reps=Math.ceil(n/28/rep.n)+3;
+    for(let i=0;i<=reps;i++) out.push(addMonths(e.date,(k+i)*rep.n));
+  } else {
+    const step = rep.unit==="weeks" ? rep.n*7 : rep.n;
+    const k=Math.floor(daysBetween(e.date,first)/step);
+    for(let i=-1;i<=Math.ceil(n/step)+1;i++) out.push(addDays(e.date,(k+i)*step));
+  }
+  return out;
+}
+/* "weekly" / "monthly" / "every 28 days" / "every 3 weeks" */
+const REP_PRESETS = [
+  ["weekly",        {n:1, unit:"weeks"}],
+  ["monthly",       {n:1, unit:"months"}],
+  ["every 28 days", {n:28, unit:"days"}]
+];
+function repLabel(rep){
+  if(!rep) return "doesn't repeat";
+  const hit=REP_PRESETS.find(([,r])=>r.n===rep.n && r.unit===rep.unit);
+  if(hit) return hit[0];
+  const one={days:"day",weeks:"week",months:"month"}[rep.unit];
+  return rep.n===1 ? `every ${one}` : `every ${rep.n} ${rep.unit}`;
 }
 function capOn(date){
   let cap=1;
@@ -2222,7 +2329,7 @@ function blurb(headed){
   const capNow=capOn(TODAY);
   if(capNow<1){
     const n=capNameOn(TODAY);
-    const rec=S.events.find(e=>isSpan(e)&&e.cap&&e.every&&coversDate(e,TODAY));
+    const rec=S.events.find(e=>isSpan(e)&&e.cap&&repOf(e)&&coversDate(e,TODAY));
     return `${n} — you can't get above ${fmt(capNow)} while it lasts.${rec?" It comes round again, so this is a ceiling you can plan for.":" Plan for that ceiling, not your usual one."}`;
   }
   const f=project(7), over=f.slice(1).filter(d=>zoneOf(d.end).k==="over"&&d.load>0);
@@ -2373,14 +2480,10 @@ function spansIn(dates){
   const out=[];
   for(const e of S.events){
     if(!isSpan(e)) continue;
-    const len=e.span||1, step=e.every||0;
+    /* an open one reaches the end of any window it has started in */
+    const len=e.open ? 9999 : (e.span||1);
     /* every start that could touch the window */
-    const starts=[];
-    if(!step) starts.push(e.date);
-    else {
-      const k=Math.floor(daysBetween(e.date,first)/step);
-      for(let i=-1;i<=Math.ceil(n/step)+1;i++) starts.push(addDays(e.date,(k+i)*step));
-    }
+    const starts=spanStarts(e,first,n);
     for(const st of starts){
       const s=daysBetween(first,st);
       const from=Math.max(0,s), to=Math.min(n-1, s+len-1);
@@ -2482,7 +2585,7 @@ function renderForecast(){
             const labeled = s.group==="mine" || wide;
             return `<button class="spanbar ${s.group==="mine"?"mine":"cal"} ${labeled?"":"slim"}" data-editcond="${s.e.id}" style="left:calc(${left}% + 6px);width:calc(${w}% - 12px);top:${topOf(s)}px;background:${calColor(s.e)};--rail:${calRail(s.e)};--ct:${calInk(s.e)}">${
             labeled
-              ? `${s.e.emoji?`<span class="emo">${s.e.emoji}</span>`:""}${s.open?"‹ ":""}${s.e.name}${s.e.cap?` · max ${fmt(s.e.cap)}`:""}${s.e.every?`<span class="arrow rep">${REPEAT}</span>`:""}${trendIcon(s.e)}`
+              ? `${s.e.emoji?`<span class="emo">${s.e.emoji}</span>`:""}${s.open?"‹ ":""}${s.e.name}${s.e.cap?` · max ${fmt(s.e.cap)}`:""}${repOf(s.e)?`<span class="arrow rep">${REPEAT}</span>`:""}${trendIcon(s.e)}`
               : ""
           }</button>`;
           }).join("")}</div>`;})()}
@@ -2927,6 +3030,7 @@ function sheetCheckin(){
   const notches=Array.from({length:divs-1},(_,i)=>
     `<i style="left:calc(17px + (100% - 34px) * ${((i+1)/divs).toFixed(4)})"></i>`).join("");
   openSheet(`
+    <button class="sheetx" data-closesheet="1" aria-label="Close">×</button>
     <h3>How are you doing?</h3>
     <p class="sub">${gap>2?`It's been a minute. `:""}Drag to wherever you are now.</p>
 
@@ -2942,8 +3046,18 @@ function sheetCheckin(){
     </div>
     <div class="ticks"><span>empty</span><span>low</span><span>okay</span><span>good</span></div>
 
-    <div class="divider"><hr><span>optional</span><hr></div>
-    <button class="btn" data-tstart="1" style="margin-bottom:10px">What kind of tired are you?</button>
+    ${openToAsk().map(e=>`
+      <div class="divider"><hr><span>condition</span><hr></div>
+      <div class="stillrow">
+        <span class="sl">${e.emoji?e.emoji+" ":""}<b>${e.name}</b>
+          <i>day ${daysBetween(e.date,TODAY)+1}</i></span>
+        <span class="sb">
+          <button data-stillon="${e.id}">still going</button>
+          <button data-endopen="${e.id}">it's over</button>
+        </span>
+      </div>`).join("")}
+
+    <div style="height:4px"></div>
     <button class="row" data-rough="1">
       <span class="box">${S.roughNight?"✓":""}</span>
       <span style="font-size:12.5px">Bad sleep</span>
@@ -3381,6 +3495,12 @@ function sheetRecovery(openKey){
 /* Create and edit conditions. A condition is just a multi-day event with no
    cost — optionally a ceiling, optionally repeating. */
 function conditions(){ return S.events.filter(isCondition) }
+/* An open condition shapes every day of the forecast, so it has to be easy to
+   close — and easy means the app asks rather than waiting for you to remember.
+   Not on the day you set it (you've just told it), and not twice in a day. */
+function openToAsk(){
+  return conditions().filter(e=>e.open && e.date!==TODAY && e.checkedOn!==TODAY);
+}
 
 /* month first — Ferri's own convention */
 /* A multi-day thing, and where you are inside it. Used by the day sheet and the
@@ -3389,7 +3509,7 @@ function conditions(){ return S.events.filter(isCondition) }
 function spanRow(e, onDate){
   const nth=daysBetween(e.date,onDate)+1;
   const where = isCondition(e)
-    ? `Condition${e.cap&&!noNums()?` \u00b7 max ${fmt(e.cap)}`:""}`
+    ? `Condition${e.open?" \u00b7 no end date yet":""}${e.cap&&!noNums()?` \u00b7 max ${fmt(e.cap)}`:""}`
     : calOf(e);
   /* the name is the way in — a row with a pencil bolted to the end of it was two
      targets for one thing */
@@ -3397,7 +3517,7 @@ function spanRow(e, onDate){
     <button class="spanname" data-editcond="${e.id}">
       <span class="dot" style="background:${calColor(e)}"></span>${e.emoji?e.emoji+" ":""}${e.name} ${trendIcon(e)}
     </button>
-    <span class="nth">Day ${nth} of ${e.span}</span>
+    <span class="nth">Day ${nth}${e.open?"":` of ${e.span}`}</span>
     <div class="hint">${where}</div>
   </div>`;
 }
@@ -3428,6 +3548,29 @@ function addDays(iso,n){
    a two-field date picker makes you scroll through a list to describe something
    you could have pointed at. The draft lives in the same sheetCtx as the editor
    behind it, so nothing typed in there is lost while you're in here. */
+/* Google puts this on a scroll wheel, which is a list you have to spin to read.
+   Everything here is visible at once and one tap wide: the numbers you'd
+   actually pick, three units, and the sentence it makes underneath so you can
+   check it without translating. */
+const REP_NUMS=[1,2,3,4,5,6,8,10,12];
+function sheetRepeat(d){
+  const rep=d.rep||{n:1,unit:"weeks"};
+  openSheet(`
+    <button class="sheetx" data-closesheet="1" aria-label="Close">×</button>
+    <h3 style="margin-bottom:16px">Custom repeat</h3>
+    <p class="label">Every</p>
+    <div class="numgrid">
+      ${REP_NUMS.map(n=>`<button data-crepn="${n}" class="${rep.n===n?"on":""}">${n}</button>`).join("")}
+    </div>
+    <div style="height:12px"></div>
+    <div class="seg even three">
+      ${["days","weeks","months"].map(u=>`<button data-crepu="${u}"
+         class="${rep.unit===u?"on":""}">${rep.n===1?u.slice(0,-1):u}</button>`).join("")}
+    </div>
+    <p class="repsentence">It repeats <b>${repLabel(rep)}</b>.</p>
+    <button class="btn strong" data-crepdone="1">Done</button>`, d, true);
+}
+
 function sheetDatePick(d){
   const [y,m]=(d.pickMonth||d.date.slice(0,7)).split("-").map(Number);
   const first=new Date(y,m-1,1), pad=first.getDay(), len=new Date(y,m,0).getDate();
@@ -3469,28 +3612,27 @@ function sheetCondition(id){
     cond:true, exId: ex?ex.id:null,
     name: ex?ex.name:"", color: ex?calColor(ex):"#BC7BD6",
     date: ex?ex.date:TODAY, span: ex?(ex.span||1):3,
-    cap: ex?ex.cap:null, every: ex?(ex.every||0):0,
+    cap: ex?ex.cap:null, rep: ex?repOf(ex):null, open: ex?!!ex.open:false,
     dir: ex?(ex.dir||null):null, emoji: ex?(ex.emoji||null):null
   };
-  const EVERY=[[0,"doesn't"],[7,"weekly"],[28,"every 28 days"]];
   const fromCal = !!(ex && isCalSpan(ex));
+  /* Always a window, never a drawer. It's a form you fill in, and it opens from
+     the day sheet — which is itself already at the bottom of the screen. */
   openSheet(`
     <button class="sheetx" data-closesheet="1" aria-label="Close">×</button>
     <h3>${fromCal?ex.name:(ex?"Edit condition":"Add a condition")}</h3>
     <p class="sub">${fromCal
       ? `${calOf(ex)}  ·  ${dateSpan(ex.date, addDays(ex.date, (ex.span||1)-1))}`
-      : `A stretch of days that changes what you're capable of — a period, a
-         flare, seeing your parents. It needn't be in any calendar, and it has
-         no cost of its own.`}</p>
+      : `A stretch of days that changes what you're capable of — a period, an
+         illness, seeing your parents.`}</p>
 
     ${fromCal ? "" : `
-    <input class="tinput" id="condName" type="text" placeholder="What is it?"
-           value="${(d.name||"").replace(/"/g,"&quot;")}">
-
-    <p class="label">Marker</p>
-    <div class="emojis">
-      ${EMOJI.map(x=>`<button data-cemoji="${x}" class="${d.emoji===x?"on":""}">${x}</button>`).join("")}
-      <button data-cemoji="" class="none ${d.emoji?"":"on"}">none</button>
+    <div class="namerow">
+      <input class="tinput" id="condName" type="text" placeholder="What is it?"
+             value="${(d.name||"").replace(/"/g,"&quot;")}">
+      <input class="markerbtn" id="condEmoji" type="text" maxlength="2"
+             value="${d.emoji||""}" placeholder="🙂" autocomplete="off"
+             aria-label="Marker — type an emoji">
     </div>
 
     <p class="label">Color</p>
@@ -3500,9 +3642,15 @@ function sheetCondition(id){
     </div>
 
     <p class="label">When</p>
-    <button class="daterange" data-cdates="1">
-      <span>from <b>${shortDate(d.date)}</b> to <b>${shortDate(addDays(d.date,d.span-1))}</b></span>
-      <i>${d.span} day${d.span===1?"":"s"}</i>
+    <button class="daterange${d.open?" half":""}" data-cdates="1">
+      ${d.open
+        ? `<span>from <b>${shortDate(d.date)}</b></span><i>still going</i>`
+        : `<span>from <b>${shortDate(d.date)}</b> to <b>${shortDate(addDays(d.date,d.span-1))}</b></span>
+           <i>${d.span} day${d.span===1?"":"s"}</i>`}
+    </button>
+    <button class="row" data-copen="1" style="margin-bottom:18px">
+      <span class="box">${d.open?"✓":""}</span>
+      <span style="font-size:12.5px">No end date yet</span>
     </button>`}
 
     <p class="label">Restorative or depleting?</p>
@@ -3520,20 +3668,30 @@ function sheetCondition(id){
         <button data-ccapstep="-1">−</button>
         <div class="val">${fmt(d.cap)}<small> / ${fmtMax()||"10"}</small></div>
         <button data-ccapstep="1">+</button>
-      </div>`:""}`:`<div style="height:18px"></div>`}
+      </div>`:""}`:""}
 
-    ${fromCal?"":`<p class="label">Repeats</p>
-    <div class="seg">
-      ${EVERY.map(([v,l])=>`<button data-cevery="${v}" class="${(d.every||0)===v?"on":""}">${l}</button>`).join("")}
-    </div>`}
+    ${fromCal||d.open?"":`
+    <button class="row" data-creps="1" style="margin-bottom:${d.rep?"10px":"18px"}">
+      <span class="box">${d.rep?"✓":""}</span>
+      <span style="font-size:12.5px">Repeats</span>
+    </button>
+    ${d.rep?`<div class="seg">
+      ${REP_PRESETS.map(([l,r])=>`<button data-crep="${r.n}|${r.unit}"
+         class="${d.rep.n===r.n&&d.rep.unit===r.unit?"on":""}">${l}</button>`).join("")}
+      <button data-crepcustom="1" class="${REP_PRESETS.some(([,r])=>r.n===d.rep.n&&r.unit===d.rep.unit)?"":"on"}">${
+        REP_PRESETS.some(([,r])=>r.n===d.rep.n&&r.unit===d.rep.unit) ? "custom" : repLabel(d.rep)}</button>
+    </div>
+`:""}`}
 
+    ${(ex&&ex.open)?`<button class="btn" data-cendnow="${ex.id}" style="margin-bottom:9px">
+      End it today — ${dateSpan(ex.date,TODAY)}</button>`:""}
     <div class="btnrow">
       ${fromCal
         ? `<button class="btn" data-opencal="${ex.id}" style="border-color:var(--line);color:var(--muted)">Open in Google Calendar</button>`
         : (ex?`<button class="btn" data-cdelete="${ex.id}" style="border-color:var(--line);color:var(--over)">Delete</button>`:"")}
       <button class="btn strong" data-csave="1">${ex?"Save":"Add it"}</button>
     </div>
-  `, d);
+  `, d, true);
 }
 
 function condBlock(){
@@ -3868,7 +4026,7 @@ function hideToast(){ clearTimeout(toastT); $("toast").classList.remove("on") }
 document.addEventListener("click",ev=>{
   const t0=ev.target.closest("[data-hmenu],[data-horizon]");
   if(S.hmenu && !t0){ S.hmenu=false; render() }        /* click away closes it */
-  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-calyear],[data-ymon],[data-yyear],[data-dsopen],[data-today],[data-cals],[data-calshow],[data-calcount],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-budget],[data-hideheads],[data-noplan],[data-undo],[data-dobook],[data-tstart],[data-hpick],[data-hgo],[data-hguess],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hpin],[data-hdone],[data-unpin],[data-pindid],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cdates],[data-cmonth],[data-cpick],[data-cdone],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
+  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-calyear],[data-ymon],[data-yyear],[data-dsopen],[data-today],[data-cals],[data-calshow],[data-calcount],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-budget],[data-hideheads],[data-noplan],[data-undo],[data-dobook],[data-tstart],[data-hpick],[data-hgo],[data-hguess],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hpin],[data-hdone],[data-unpin],[data-pindid],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cdates],[data-cmonth],[data-cpick],[data-cdone],[data-copen],[data-cendnow],[data-stillon],[data-endopen],[data-creps],[data-crep],[data-crepcustom],[data-crepn],[data-crepu],[data-crepdone],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
   if(!t){ return }
   const D=t.dataset;   /* every clickable in the app routes through here */
 
@@ -3955,8 +4113,41 @@ document.addEventListener("click",ev=>{
   }
   if(D.reset){ S=fresh(); render(); toast("Back to the seeded week."); return }
   /* ---- conditions ---- */
+  if(D.stillon){
+    const e=S.events.find(x=>x.id===Number(D.stillon));
+    if(e) e.checkedOn=TODAY;
+    sheetCheckin(); render(); return;
+  }
+  if(D.endopen){
+    const e=S.events.find(x=>x.id===Number(D.endopen));
+    if(e){ e.open=false; e.span=Math.max(1, daysBetween(e.date,TODAY)+1); projCache=null }
+    sheetCheckin(); render();
+    toast(`${e?e.name:"It"} ran ${e?e.span:0} day${e&&e.span===1?"":"s"}.`); return;
+  }
+  if(D.cendnow){
+    const e=S.events.find(x=>x.id===Number(D.cendnow));
+    if(e){ e.open=false; e.span=Math.max(1, daysBetween(e.date,TODAY)+1); projCache=null }
+    closeSheet(); render();
+    toast(`${e?e.name:"It"} ran ${e?e.span:0} day${e&&e.span===1?"":"s"}.`); return;
+  }
+  if(D.crepcustom&&sheetCtx&&sheetCtx.cond){
+    sheetCtx.name=($("condName")||{}).value ?? sheetCtx.name;
+    sheetCtx.emoji=(($("condEmoji")||{}).value || "").trim() || null;
+    if(!sheetCtx.rep) sheetCtx.rep={n:1,unit:"weeks"};
+    sheetRepeat(sheetCtx); return;
+  }
+  if(D.crepn&&sheetCtx&&sheetCtx.cond){
+    sheetCtx.rep=Object.assign({},sheetCtx.rep||{unit:"weeks"},{n:Number(D.crepn)});
+    sheetRepeat(sheetCtx); return;
+  }
+  if(D.crepu&&sheetCtx&&sheetCtx.cond){
+    sheetCtx.rep=Object.assign({},sheetCtx.rep||{n:1},{unit:D.crepu});
+    sheetRepeat(sheetCtx); return;
+  }
+  if(D.crepdone&&sheetCtx&&sheetCtx.cond){ sheetCondition(sheetCtx.exId); return }
   if(D.cdates&&sheetCtx&&sheetCtx.cond){
     sheetCtx.name=($("condName")||{}).value ?? sheetCtx.name;
+    sheetCtx.emoji=(($("condEmoji")||{}).value || "").trim() || null;
     sheetCtx.pickMonth=sheetCtx.date.slice(0,7); sheetCtx.anchor=null;
     sheetDatePick(sheetCtx); return;
   }
@@ -3981,18 +4172,23 @@ document.addEventListener("click",ev=>{
   }
   if(D.newcond){ sheetCtx=null; sheetCondition(null); return }
   if(D.editcond){ sheetCtx=null; sheetCondition(D.editcond); return }
-  if(sheetCtx&&sheetCtx.cond&&(D.ccolor||D.cemoji!==undefined||D.cspan||D.ccap||D.ccapstep||D.cevery!==undefined||D.cdir!==undefined)){
+  if(sheetCtx&&sheetCtx.cond&&(D.ccolor||D.cemoji!==undefined||D.cspan||D.ccap||D.ccapstep||D.copen!==undefined||D.creps!==undefined||D.crep||D.cdir!==undefined)){
     /* keep what's been typed before the sheet redraws */
     sheetCtx.name=($("condName")||{}).value ?? sheetCtx.name;
+    sheetCtx.emoji=(($("condEmoji")||{}).value || "").trim() || null;
     if(D.ccolor) sheetCtx.color=D.ccolor;
-    if(D.cemoji!==undefined) sheetCtx.emoji=D.cemoji||null;
     if(D.cspan)  sheetCtx.span=Math.max(2,Math.min(60,sheetCtx.span+Number(D.cspan)));
     if(D.ccap)   sheetCtx.cap=sheetCtx.cap?null:.6;
     if(D.ccapstep){
       const s=SCALES[S.scale], step=(s.step||1)/(s.max||10);
       sheetCtx.cap=Math.max(step,Math.min(1,(sheetCtx.cap||.6)+Number(D.ccapstep)*step));
     }
-    if(D.cevery!==undefined) sheetCtx.every=Number(D.cevery);
+    if(D.copen!==undefined){
+      sheetCtx.open=!sheetCtx.open;
+      if(sheetCtx.open) sheetCtx.rep=null;   /* nothing to repeat after */
+    }
+    if(D.creps!==undefined) sheetCtx.rep = sheetCtx.rep ? null : {n:1,unit:"weeks"};
+    if(D.crep){ const [n,unit]=D.crep.split("|"); sheetCtx.rep={n:Number(n),unit} }
     if(D.cdir!==undefined){
       sheetCtx.dir=D.cdir||null;
       if(sheetCtx.dir!=="down") sheetCtx.cap=null;   /* only a limit can cap */
@@ -4010,7 +4206,7 @@ document.addEventListener("click",ev=>{
     if(!name){ toast("Give it a name first."); return }
     const date=sheetCtx.date;
     const patch={name, date, span:sheetCtx.span, cap:sheetCtx.cap||null,
-                 every:sheetCtx.every||null, color:sheetCtx.color,
+                 rep:sheetCtx.rep||null, every:null, open:!!sheetCtx.open, color:sheetCtx.color,
                  dir:sheetCtx.dir||null, emoji:sheetCtx.emoji||null,
                  time:null, cost:null, type:null, src:"spoon"};
     if(sheetCtx.exId!=null) Object.assign(S.events.find(e=>e.id===sheetCtx.exId), patch);
