@@ -35,7 +35,7 @@ cover: max capacity, the unit anchors (a shower = 1), and chronotype (see 11).
 
 **8. No usable history?** — **The app says: use it for two weeks and come back.**
 
-**9. Starter cost library?** — **Yes, ship one.** Also the main defence against
+**9. Starter cost library?** — **Yes, ship one.** Also the main defense against
 the labelling burden in 16.
 
 ## 3. The model
@@ -110,7 +110,7 @@ ages out. It gets offered a breakdown, once, gently.
 **24. Categories** — **deadline / ASAP / whenever**, where *deadline* means a
 genuine hard date only: taxes, filing paperwork. Not self-imposed urgency.
 
-Because real deadlines are rare, the useful behaviour is capacity-aware rather
+Because real deadlines are rare, the useful behavior is capacity-aware rather
 than punitive: not *"overdue"* but ***"taxes are due in 9 days, and you have
 three days before then you could afford it on."*** Categories order things
 within what already fits; they never nag and nothing goes red.
@@ -152,7 +152,7 @@ mute. Cap it at one or two a day regardless.
 ## 8. Accessibility
 
 **31–33.** — **All parked while this is single-user.** Recorded as the work
-that has to happen first if it ever reaches anyone else: colour is currently the
+that has to happen first if it ever reaches anyone else: color is currently the
 only channel carrying affordability; dark-only causes halation for some readers;
 and reduced motion / dynamic type / screen reader are not optional for an app
 aimed at disabled people.

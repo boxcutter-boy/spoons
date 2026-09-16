@@ -18,7 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   /* Dark blue, from Ferri's moodboard: a grainy gradient ground, containers a
-     deep navy that sits on it, and the traffic colours pulled toward the same
+     deep navy that sits on it, and the traffic color pulled toward the same
      family so they read as part of the picture rather than stickers on it.
      Garamond for display, system sans for everything working. */
   :root{
@@ -41,21 +41,21 @@
     /* a translucent ground for labels that sit on the gradient itself */
     --chip:rgba(9,11,26,.82);
     /* the filled state of a chip — mid indigo, from the ground's own family
-       rather than a grey */
+       rather than a gray */
     --sel:#4b54b0; --sel-line:#616ac9;
-    /* The stroke that separates an event from the day colour behind it. Pitched
+    /* The stroke that separates an event from the day color behind it. Pitched
        at the value of the ground near the top of the screen rather than the
        darkest navy — a near-black outline read as a cut-out, this reads as the
        background showing through. */
     --chipstroke:#2e3163;
     /* From Ferri's palette: the green is a teal, the red a magenta, the amber a
        gold. Deeper and more saturated than the old muted set — on a dark ground
-       a desaturated hue just reads as grey with a tint, and these have to carry
+       a desaturated hue just reads as gray with a tint, and these have to carry
        meaning at chip size. */
     --ok:#23a8a2; --tight:#eda029; --over:#f0537c; --unknown:#5b6186;
     --unknown-bg:#1b2140;
     /* the saturated end of each zone — a month cell is tall enough to hold a
-       gradient, so the colour arrives at the bottom of the day rather than
+       gradient, so the color arrives at the bottom of the day rather than
        washing the whole box flat */
     --ok-deep:#009ea3; --tight-deep:#d99200; --over-deep:#c6174f;
   }
@@ -201,8 +201,8 @@
   .colbg i:first-child{box-shadow:none}
   .stripcols .stripgrid,.stripcols .spans{position:relative;z-index:1}
   .stripcols .stripgrid button{background:none;background-image:none}
-  /* The zone colour was ramping through the whole cell, which made a week of
-     days read as blocks of saturated colour with the events floating in them.
+  /* The zone color was ramping through the whole cell, which made a week of
+     days read as blocks of saturated color with the events floating in them.
      It only has to say "this is how the day ends" — so it sits in the bottom
      third and lets the chips have the rest. */
   .z-ok{background-image:linear-gradient(180deg,rgba(0,158,163,0) 68%,var(--ok-deep) 100%)}
@@ -212,7 +212,7 @@
   /* On the forecast strip the zone gets a rule across the TOP of the day and
      nothing else. A wash behind a column is a lot of screen spent on one word,
      and the column is where the events live — they should sit on the app's own
-     ground, not on a coloured panel. The day letters are already tinted the same
+     ground, not on a colored panel. The day letters are already tinted the same
      way, so the bar and the label say it together.
      (The month grid keeps its wash for now: there, a cell IS the day, and there
      are no chips to compete with in most of them.) */
@@ -253,7 +253,7 @@
   .arcbox.plain .stripgrid.wide .cev .arrow{display:block;color:var(--c);opacity:1;font-size:10px}
   .arcbox.plain .cev.inv b{font-style:italic;opacity:.8}
   /* seven columns have no room for names, so there they stay bars — but flat
-     ones in the state colour rather than chips with strokes */
+     ones in the state color rather than chips with strokes */
   .arcbox.plain .stripgrid:not(.wide) .cev{height:4px;padding:0;border-radius:2px;
         background:var(--c);box-shadow:none;overflow:hidden}
   .arcbox.plain .spanbar{box-shadow:inset 3px 0 0 var(--rail)}
@@ -262,10 +262,10 @@
   /* The chips are light enough now that their labels have to be dark — and each
      one carries a navy stroke, so a pale event still reads as a separate object
      against a saturated day rather than melting into it. */
-  /* Dark fill, light type, and a notch of the calendar's own colour down the
+  /* Dark fill, light type, and a notch of the calendar's own color down the
      left edge. The stroke is light rather than navy now — a navy outline round a
      navy chip is a chip with no edge. */
-  .cev{height:7px;border-radius:2px;overflow:hidden;color:var(--ct,var(--ink));background:var(--c);
+  .cev{height:7px;border-radius:2px;overflow:hidden;color:var(--ct,var(--fill));background:var(--c);
        box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16);
        display:flex;align-items:center;gap:3px}
   .cev b,.cev .arrow{display:none}
@@ -281,7 +281,7 @@
   .cev.inv{background:transparent;color:#fff;
            box-shadow:inset 3px 0 0 var(--rail), inset 0 0 0 1.5px var(--c)}
   /* "+1" sits wherever the chip stack happens to end, which on a gradient cell
-     could be navy or full-strength colour — so it's light rather than dark, the
+     could be navy or full-strength color — so it's light rather than dark, the
      one value that holds at both ends. */
   .cev.more{background:none;box-shadow:none;color:rgba(255,255,255,.92);
             font-size:8.5px;height:auto;text-align:center;
@@ -295,11 +295,11 @@
   .spans{position:relative}
   .spanbar{
     position:absolute;top:4px;height:14px;border-radius:3px;
-    font-size:9px;font-weight:600;color:var(--ct,var(--ink));padding:0 6px 0 8px;
+    font-size:9px;font-weight:600;color:var(--ct,var(--fill));padding:0 6px 0 8px;
     display:flex;align-items:center;gap:3px;overflow:hidden;white-space:nowrap;
     box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16);
   }
-  /* a condition is yours and keeps the colour you gave it, so it keeps dark type */
+  /* a condition is yours and keeps the color you gave it, so it keeps dark type */
 
   /* conditions are pills, calendar spans stay rectangular like the chips —
      shape carries the difference even before you notice the emoji */
@@ -349,7 +349,7 @@
   .slider-wrap{margin:6px 0 4px;position:relative}
   /* The track is drawn here rather than by the input, so the notches can sit on
      top of it while the input — and therefore the thumb — paints above both.
-     With the native track painting the colour, the only way to get notches onto
+     With the native track painting the color, the only way to get notches onto
      it was a layer above the whole control, and the thumb then dragged *under*
      its own tick marks. */
   .strack{position:absolute;left:0;right:0;top:12px;height:10px;border-radius:5px;
@@ -380,7 +380,7 @@
   .readout .w{font-family:var(--serif);font-size:26px;font-weight:500;line-height:1.1}
   .readout .v{font-size:13px;color:var(--muted)}
 
-  /* type diagnostic — read-only, greyscale so it never competes with the
+  /* type diagnostic — read-only, grayscale so it never competes with the
      red/amber/green affordability signal */
   .mix{margin:0 0 4px}
   .mixrow{display:flex;align-items:center;gap:9px;margin-bottom:5px}
@@ -436,7 +436,7 @@
   .lead{font-family:var(--serif);font-size:13px;line-height:1.45;color:var(--muted);margin:-2px 0 10px}
   .tinput{width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:6px;
           padding:11px;font:inherit;font-size:13px;color:var(--ink);margin-bottom:16px}
-  /* The placeholder was the browser's own grey — a warm neutral that belongs to
+  /* The placeholder was the browser's own gray — a warm neutral that belongs to
      no palette and reads dimmer than anything else on the screen. This is the
      app's own muted, and opacity:1 stops Firefox fading it again on top. */
   .tinput::placeholder{color:var(--muted);opacity:1}
@@ -487,6 +487,121 @@
   .landed .set button{border:1px solid var(--line);border-radius:12px;padding:4px 8px;font-size:10px;color:var(--muted)}
 
   /* calendar */
+  /* THE CALENDAR IS A SCREEN, NOT A PAGE. The month fills what's there, the day
+     sits in a sheet over the bottom of it, and nothing scrolls except the two of
+     them independently. Months change by swiping, which is why there are no
+     arrows any more. */
+  /* NB: the display goes on the .on state only. `.view{display:none}` is a class
+     and this is an id, so setting display here unconditionally beat it and the
+     calendar stayed on screen underneath every other tab. */
+  #v-calendar{padding:0;overflow:hidden;flex-direction:column}
+  #v-calendar.on{display:flex}
+  .calhead{flex:none;display:flex;align-items:center;justify-content:space-between;
+           gap:10px;padding:16px 16px 9px}
+  .calttl{display:flex;align-items:baseline;gap:5px;font-family:var(--serif);
+          font-size:21px;line-height:1.1;color:var(--ink)}
+  .calttl .caret{font-size:10px;color:var(--faint);transform:translateY(-2px)}
+  .segs{display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;flex:none}
+  .segs button{width:38px;height:28px;display:grid;place-items:center;color:var(--faint)}
+  .segs button.on{background:var(--surface2);color:var(--ink)}
+  .segs svg{width:15px;height:15px}
+  .calbody{flex:1;min-height:0;overflow-y:auto;padding:0 0 16px;touch-action:pan-y}
+  /* The day names have to share the grid's geometry exactly, so they take no side
+     padding and match its 1px left border — otherwise their seven tracks are
+     each ~2px wider than the seven below them and the letters drift right across
+     the week. */
+  .calbody .dow{padding:0 0 0 1px}
+  .calbody .legend{padding:0 16px}
+  /* the day, over the bottom of the month */
+  .daysheet{position:absolute;left:0;right:0;bottom:0;z-index:4;
+            background:var(--surface);border-top:1px solid var(--line-strong);
+            border-radius:16px 16px 0 0;box-shadow:0 -14px 34px rgba(0,0,0,.44);
+            max-height:60%;display:flex;flex-direction:column;
+            transition:transform .26s cubic-bezier(.32,.72,0,1)}
+  .daysheet.shut{transform:translateY(103%)}
+  .daysheet.drag{transition:none}
+  @media (prefers-reduced-motion:reduce){ .daysheet{transition:none} }
+  .grab{flex:none;padding:10px 0 8px;display:grid;place-items:center;touch-action:none}
+  .grab i{display:block;width:44px;height:4px;border-radius:2px;background:var(--line-strong)}
+  .dshead{flex:none;display:flex;justify-content:space-between;align-items:baseline;
+          padding:0 16px 9px;gap:10px}
+  .dsbody{flex:1;overflow-y:auto;padding:0 16px 18px}
+  .dsbody .agenda{border-top:none;padding-top:0}
+  /* The month's own controls, along the bottom where your thumb is. The sheet
+     comes up over them, which is right: while you're reading a day, the month's
+     controls aren't what you want. */
+  .calbar{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;
+          justify-content:space-between;gap:10px;padding:10px 14px 14px;
+          pointer-events:none}
+  .calbar .calbtn{pointer-events:auto}
+  .calbtn{display:flex;align-items:center;gap:7px;height:34px;padding:0 13px;
+          border-radius:17px;border:1px solid var(--line-strong);background:var(--surface);
+          color:var(--ink);font-size:12px;line-height:1;
+          box-shadow:0 6px 16px rgba(0,0,0,.4)}
+  .calbtn:active{background:var(--surface2)}
+  .calbtn svg{width:14px;height:14px;flex:none;opacity:.75}
+  .calbtn.some{border-color:var(--tight);color:var(--tight)}
+  .calbtn.some svg{opacity:1}
+  /* a span, and where you are inside it */
+  .spanrow{display:flex;align-items:flex-start;gap:10px;padding:9px 0 10px;
+           border-bottom:1px solid var(--hair)}
+  .spanrow .sn{flex:1;min-width:0;font-size:13px;line-height:1.45;color:var(--ink)}
+  .spanrow .dot{display:inline-block;width:9px;height:9px;border-radius:50%;
+                margin-right:6px;vertical-align:0}
+  .spanrow .hint{font-size:11px}
+  .spanedit{flex:none;width:30px;height:30px;display:grid;place-items:center;border-radius:7px;
+            border:1px solid var(--line);color:var(--muted)}
+  .spanedit:active{background:var(--surface2);color:var(--ink)}
+  .spanedit svg{width:14px;height:14px}
+  .nth{margin-left:7px;font-size:10px;font-variant-numeric:tabular-nums;color:var(--faint);
+        border:1px solid var(--line);border-radius:4px;padding:2px 5px;vertical-align:1px;
+        white-space:nowrap}
+  .daterange{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+             border:1px solid var(--line-strong);border-radius:8px;padding:12px 13px;
+             font-size:13px;color:var(--muted)}
+  .daterange b{color:var(--ink);font-weight:500}
+  .daterange i{font-style:normal;font-size:11px;color:var(--faint);white-space:nowrap}
+  .daterange:active{background:var(--surface2)}
+  .pickhead{display:flex;align-items:center;justify-content:center;gap:16px;margin:4px 0 10px}
+  .pickhead b{font-family:var(--serif);font-size:17px;font-weight:400;min-width:130px;
+              text-align:center}
+  .pickhead button{width:28px;height:28px;border:1px solid var(--line);border-radius:5px;
+                   color:var(--muted);display:grid;place-items:center;line-height:1}
+  .pdow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));margin-bottom:3px}
+  .pdow span{font-size:9px;color:var(--faint);text-align:center;text-transform:uppercase;
+             letter-spacing:.08em}
+  .pgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+  .pcell{height:38px;display:grid;place-items:center;font-size:13px;color:var(--ink);
+         border-radius:7px;font-variant-numeric:tabular-nums}
+  .pcell.adj{color:var(--faint)}
+  /* One fill for the whole run, ends included. The middle used to be --surface2,
+     which is a background color — on a sheet made of that same family it read as
+     nothing at all. */
+  .pcell.in,.pcell.cap{background:var(--sel);border:1px solid var(--sel-line);
+                       color:#fff;font-weight:600}
+  .calrows{display:flex;flex-direction:column;gap:8px}
+  .calrow{display:flex;align-items:center;gap:10px;border:1px solid var(--line-strong);
+          border-radius:8px;padding:9px 10px 9px 13px}
+  .calrow.off{opacity:.5}
+  .calrow .pick{flex:1;min-width:0;display:flex;align-items:center;gap:9px;font-size:13px}
+  /* .dot elsewhere is an inline marker inside a line of text; in a flex row it
+     has no intrinsic size, so it has to be given one here */
+  .calrow .dot{flex:none;width:9px;height:9px;border-radius:50%;display:block}
+  .calrow .bx{flex:none;width:15px;height:15px;border:1px solid var(--line-strong);
+              border-radius:3px;font-size:10px;line-height:14px;text-align:center}
+  .calrow .cnt{flex:none;font-size:10px;letter-spacing:.03em;padding:5px 8px;border-radius:5px;
+               border:1px solid var(--line);color:var(--faint);white-space:nowrap}
+  .calrow .cnt.on{border-color:var(--ok);color:var(--ok)}
+  /* a year is twelve taps, not twelve swipes */
+  .yearhead{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:18px}
+  .yearhead button{width:28px;height:28px;border:1px solid var(--line);border-radius:5px;
+                   color:var(--muted);display:grid;place-items:center;line-height:1}
+  .yearhead b{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink)}
+  .yeargrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .ycell{border:1px solid var(--line);border-radius:8px;padding:16px 0;font-size:13px;
+         color:var(--muted);text-align:center}
+  .ycell.on{border-color:var(--line-strong);background:var(--surface2);color:var(--ink)}
+  .ycell.now{color:var(--ok)}
   .cal-nav{display:flex;gap:6px}
   .cal-nav button{width:24px;height:24px;border:1px solid var(--line);border-radius:4px;
                   display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted)}
@@ -494,12 +609,16 @@
      the events inside them. Small rounded boxes with the date jammed in a corner
      read as a row of buttons, and left no room to show what's actually in a day
      — which is the thing you open a calendar to see. */
-  .dow{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:2px}
+  .dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));margin-bottom:2px}
   .dow span{font-size:9px;color:var(--faint);text-align:center;text-transform:uppercase;
             letter-spacing:.06em}
-  .grid{display:grid;grid-template-columns:repeat(7,1fr);
+  /* minmax(0,1fr), not 1fr. A 1fr track is minmax(AUTO,1fr), so it refuses to go
+     narrower than its content's min-content width — and the moment the chips got
+     names on them with white-space:nowrap, seven columns of "Replenish mana"
+     shoved the last two off the side of the screen. */
+  .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
         border-top:1px solid var(--grid);border-left:1px solid var(--grid)}
-  .cell{min-height:74px;display:flex;flex-direction:column;gap:2px;padding:3px 3px 5px;
+  .cell{min-height:104px;min-width:0;display:flex;flex-direction:column;gap:2px;padding:3px 3px 5px;
         font-size:10.5px;align-items:stretch;text-align:left;
         border-right:1px solid var(--grid);border-bottom:1px solid var(--grid)}
   .cell .d{flex:none;width:19px;height:19px;line-height:19px;border-radius:50%;
@@ -519,24 +638,41 @@
   .cell.ok{background-image:linear-gradient(180deg,var(--ok-deep) 3px,transparent 3px)}
   .cell.tight{background-image:linear-gradient(180deg,var(--tight-deep) 3px,transparent 3px)}
   .cell.over{background-image:linear-gradient(180deg,var(--over-deep) 3px,transparent 3px)}
-  .cell.unknown{background-image:linear-gradient(180deg,var(--line-strong) 3px,transparent 3px);
-                color:var(--faint)}
+  /* "no estimate" is said by the gray rule at the top of the cell and nothing
+     else. Dimming the date as well made half the month look like it wasn't
+     there — a day the app can't price is still a day. */
+  .cell.unknown{background-image:linear-gradient(180deg,var(--line-strong) 3px,transparent 3px)}
   /* today is filled, the selected day is ringed — Google's own shorthand, and it
      frees the cell edge to stay part of the grid */
   .cell.today .d{background:var(--ink);color:var(--fill);font-weight:600}
   /* selecting a day brightens the grid around it, rather than ringing the
      number — the cell is what you picked, so the cell is what lights up */
   .cell.sel{box-shadow:inset 0 0 0 2px #eef0ff}
-  .cell .cevs{display:flex;flex-direction:column;gap:3px;min-width:0}
-  /* three pixels tall is no room for a notch, so these carry state only */
-  .cell .cevs i{height:3px;border-radius:1px;display:block;background:var(--c);
-                box-shadow:0 0 0 1px rgba(233,232,243,.14)}
-  .cell .cevs i.inv{background:transparent;box-shadow:inset 0 0 0 1px var(--c)}
-  /* an unpriced event keeps its slot but not its colour — that's what used to be
-     said by a dashed outline round the whole day, and this says which one */
-  .cell .cevs i.un{background:#8a92b7}
+  /* A month you can READ. The bars said how much a day costs, which the zone rule
+     at the top of the cell was already saying; what they couldn't say is WHAT is
+     on the day — and that's the question you open a month to answer. So each one
+     is a chip with its name in it, clipped at the cell edge. Cut off is fine:
+     four characters of "Dentist" is enough to know it's the dentist. */
+  .cell .cevs{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .cell .cevs i{display:block;min-width:0;background:var(--c);color:var(--fill);
+                font-family:var(--sans);font-size:8.5px;font-style:normal;font-weight:500;
+                line-height:12px;height:12px;padding:0 2px 0 4px;border-radius:2px;
+                box-shadow:inset 3px 0 0 var(--rail);
+                white-space:nowrap;overflow:hidden;text-overflow:clip}
+  /* an invitation you haven't answered is an outline, not a fill */
+  .cell .cevs i.inv{background:transparent;color:var(--ink);
+                    box-shadow:inset 0 0 0 1px var(--c), inset 3px 0 0 var(--rail)}
+  /* an unpriced event keeps its slot but not its color */
+  .cell .cevs i.un{background:#9aa3c6;color:var(--fill)}
+  .cell.past .cevs i{opacity:.45}
   .strip button.sel .dl{color:var(--ink)}
   .stripgrid button.partial .dd{opacity:.7}
+  /* a heading that can send its block away */
+  .labrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 7px}
+  .labrow .label{margin:0}
+  .xout{flex:none;width:24px;height:24px;display:grid;place-items:center;line-height:1;
+        font-size:15px;color:var(--faint);border-radius:5px;margin-right:-4px}
+  .xout:active{background:var(--surface2);color:var(--ink)}
   .legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
   .legend span{font-size:9.5px;color:var(--muted);display:flex;align-items:center;gap:4px}
   .legend i{width:10px;height:10px;border-radius:2px;display:block;border:1px solid transparent;flex:none}
@@ -563,8 +699,8 @@
   .tl{position:relative;margin:14px 0 14px}
   .rail{position:absolute;left:36px;top:0;bottom:0;width:9px;border-radius:5px;background:var(--unknown)}
   .tl .tick{position:absolute;left:0;width:32px;text-align:right;font-size:9px;color:var(--faint)}
-  /* the rail runs 36→45, so its centre is 40.5 — a node is 17 wide and has to be
-     hung from that centre, not from the rail's left edge */
+  /* the rail runs 36→45, so its center is 40.5 — a node is 17 wide and has to be
+     hung from that center, not from the rail's left edge */
   .node{position:absolute;left:40.5px;width:17px;height:17px;margin-left:-8.5px;border-radius:50%;
         background:var(--surface2);border:1.5px solid var(--line-strong)}
   .evt{position:absolute;left:58px;right:0;border:1px solid var(--line);border-radius:6px;z-index:1;
@@ -577,8 +713,8 @@
   .evt.rest .n{font-style:italic;color:var(--muted)}
   .cross{position:absolute;left:30px;right:0;border-top:1px solid var(--over);opacity:.75}
   .cross span{position:absolute;right:0;top:3px;font-size:9px;color:var(--over);background:var(--chip);padding:0 3px}
-  /* "now" is deliberately neutral — the traffic colours mean affordability here,
-     so borrowing one for the clock would read as a judgement */
+  /* "now" is deliberately neutral — the traffic color mean affordability here,
+     so borrowing one for the clock would read as a judgment */
   .nowline{position:absolute;left:30px;right:0;border-top:1px solid var(--ink);opacity:.85;z-index:2}
   .nowline i{position:absolute;left:-4px;top:-3.5px;width:7px;height:7px;border-radius:50%;
              background:var(--ink);display:block}
@@ -600,7 +736,7 @@
   .chips{display:flex;flex-wrap:wrap;gap:6px;row-gap:8px;margin-top:8px}
   .chip{border:1px solid var(--line);border-radius:14px;padding:6px 11px;font-size:11px;
         font-weight:500;color:var(--muted);text-align:center}
-  /* Filled, so a logged chip is an object among outlines rather than two greys
+  /* Filled, so a logged chip is an object among outlines rather than two grays
      to compare. The weight does NOT change with state — bolding the label made
      the chip wider on selection and shunted the whole row around it. */
   .chip.on{border-color:var(--sel-line);background:var(--sel);color:#fff}
@@ -656,6 +792,8 @@
     opacity:0;transform:translateY(6px);transition:.2s;pointer-events:none;
   }
   .toast.on{opacity:1;transform:none}
+  .toast .tundo{pointer-events:auto;color:var(--ink);font-size:11.5px;margin-left:5px;
+                text-decoration:underline;text-underline-offset:2px}
   .tiredcta{margin:4px 0 22px;border-color:var(--line);color:var(--muted);font-size:12px}
   .tiredgrid{display:flex;flex-direction:column;gap:8px}
   .tiredgrid button{
@@ -694,6 +832,23 @@
   .chartcard .recitem{padding:7px 0;font-size:12px}
   .recitem{font-size:12.5px;line-height:1.5;padding:9px 0;border-bottom:1px solid var(--hair)}
   .recitem:last-child{border-bottom:none}
+  /* Pinned things. One card each rather than rows in a list: each of these is a
+     separate thing you might go and do, and a shared box reads as one list to
+     get through. The × removes it, the button says you did it. */
+  .pins{display:flex;flex-direction:column;gap:10px}
+  .pincard{position:relative;border:1px solid var(--line);border-radius:8px;
+           padding:13px 14px 12px;background:var(--surface);
+           box-shadow:0 6px 18px rgba(0,0,0,.26)}
+  .pintext{margin:0 26px 0 0;font-family:var(--serif);font-size:16px;line-height:1.3;
+           color:var(--ink)}
+  .pinx{position:absolute;top:6px;right:8px;width:26px;height:26px;font-size:15px;
+        line-height:26px;text-align:center;color:var(--faint);border-radius:6px}
+  .pinx:active{background:var(--surface2);color:var(--ink)}
+  .pinfoot{display:flex;justify-content:flex-end;align-items:center;margin-top:11px}
+  .pindo{border:1px solid var(--line-strong);border-radius:6px;padding:7px 12px;
+         font-size:12px;color:var(--ink)}
+  .pindo:active{background:var(--surface2)}
+  .pindone{font-size:11px;color:var(--faint);font-style:italic}
   .recalt{display:flex;flex-wrap:wrap;gap:14px;margin-top:11px}
   .recalt button{font-size:10.5px;color:var(--muted);border-bottom:1px solid var(--line)}
   .treecat{margin-bottom:18px}
@@ -717,7 +872,7 @@
      a time inside it, so it stacks above the timeline as the bar it is */
   .condline{display:flex;flex-direction:column;gap:3px;margin:0 0 12px}
   .condline span{display:flex;align-items:center;gap:5px;height:17px;padding:0 8px 0 10px;
-                 border-radius:3px;font-size:9.5px;font-weight:600;color:var(--ct,var(--ink));
+                 border-radius:3px;font-size:9.5px;font-weight:600;color:var(--ct,var(--fill));
                  background:var(--c);
                  box-shadow:inset 3px 0 0 var(--rail), 0 0 0 1px rgba(233,232,243,.16)}
 
@@ -732,7 +887,7 @@
 
   /* An alert, not a panel — sized so you can't scroll past it without noticing,
      and holding only what it takes to decide whether to open it. The amber is
-     the "you'll pay for it" zone colour: the app isn't sure yet, it's flagging. */
+     the "you'll pay for it" zone color: the app isn't sure yet, it's flagging. */
   .note{
     display:flex;align-items:center;gap:12px;width:100%;text-align:left;
     border:1px solid var(--tight);border-radius:12px;padding:16px 15px;
@@ -762,6 +917,7 @@
     <section class="view" id="v-calendar"></section>
     <section class="view" id="v-day"></section>
 
+    <section class="view" id="v-reset"></section>
     <section class="view" id="v-tasks"></section>
     <section class="view" id="v-log"></section>
   </div>
@@ -769,7 +925,7 @@
   <nav class="tabs">
     <button data-tab="forecast" class="on"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><defs><mask id="sunBehind" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M9.6 20.4h7.7a3.3 3.3 0 0 0 .35-6.55 4.7 4.7 0 0 0-8.97-1.04 3.4 3.4 0 0 0 .92 7.59Z" fill="#000" stroke="#000" stroke-width="3.2" stroke-linejoin="round"/></mask></defs><g mask="url(#sunBehind)"><circle cx="8.4" cy="8.4" r="2.95"/><path d="M8.40 4.15L8.40 2.65M11.41 5.39L12.47 4.33M12.65 8.40L14.15 8.40M11.41 11.41L12.47 12.47M8.40 12.65L8.40 14.15M5.39 11.41L4.33 12.47M4.15 8.40L2.65 8.40M5.39 5.39L4.33 4.33"/></g><path d="M9.6 20.4h7.7a3.3 3.3 0 0 0 .35-6.55 4.7 4.7 0 0 0-8.97-1.04 3.4 3.4 0 0 0 .92 7.59Z"/></svg></span>Forecast</button>
     <button data-tab="calendar"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.3" y="5" width="17.4" height="15.6" rx="2.3"/><path d="M3.3 9.7h17.4M8.2 3.2v3.5M15.8 3.2v3.5"/></svg></span>Calendar</button>
-    <button data-tab="tasks"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 6.1 4.6 7.5 7.4 4.6"/><path d="M10.3 6.1h10.5"/><path d="M3.2 12.6 4.6 14 7.4 11.1"/><path d="M10.3 12.6h10.5"/><path d="M3.6 19.1h3.8M10.3 19.1h10.5"/></svg></span>Tasks</button>
+    <button data-tab="reset"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6v-6.3"/><path d="M12 14.3c0-3.9 2.9-7 6.5-7 0 3.9-2.9 7-6.5 7Z"/><path d="M12 16.8c-3.1 0-5.6-2.7-5.6-6 3.1 0 5.6 2.7 5.6 6Z"/></svg></span>Reset</button>
     <button data-tab="log"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.6 3.6H6.5A1.9 1.9 0 0 0 4.6 5.5v13.1a1.9 1.9 0 0 0 1.9 1.9h7.2"/><path d="M8.3 8.4h5.9M8.3 12h3.4"/><path d="M19.9 9.3 14 15.2l-2.7.8.8-2.7 5.9-5.9a1.34 1.34 0 0 1 1.9 1.9Z"/></svg></span>Log</button>
   </nav>
 
@@ -800,10 +956,10 @@ const ICONS = {
   executive: '<path d="M4.6 6.4h10.8M4.6 10h10.8M4.6 13.6h6.8"/>',
   physical:  '<path d="M3.2 10h3l2.1-4.2 3 8.4 2.1-4.2h3.4"/>'
 };
-/* Chips take the colour of the calendar the event came from — Google's own
+/* Chips take the color of the calendar the event came from — Google's own
    palette, so the week looks like the calendar it mirrors. Affordability lives
    on the cell BACKGROUND instead, which keeps the two from competing.
-   EventKit exposes the CALENDAR's colour, not per-event colours (see §10). */
+   EventKit exposes the CALENDAR's color, not per-event color (see §10). */
 /* Google's own hue *names* — Peacock, Sage, Grape, Flamingo — pulled toward the
    app's palette so the chips belong to the screen they sit on. The seven stay as
    distinguishable from each other as Google's are; they're just tuned warmer or
@@ -824,12 +980,23 @@ const CAL_OF = {
   "Physio":"Health","Dentist":"Health","Pick up prescription":"Health","Long bath":"Health"
 };
 function calOf(e){ return e.cal || CAL_OF[e.name] || "Personal" }
+/* Hiding a calendar hides it from the DRAWING and nothing else. Your work
+   calendar drains you whether or not you're looking at it, so a hidden one still
+   prices the day, still color its zone, still counts in the total. Anything
+   else would be a way to lie to yourself, which is the one thing this app is
+   built not to help with. */
+function calShown(e){ return (S.hiddenCals||[]).indexOf(calOf(e))<0 }
+/* Some calendars aren't commitments. A birthdays calendar, a holiday feed, the
+   bin collection — you keep them for the reminder, not the time, and pricing
+   them makes every week look busier than it is. A calendar turned off here
+   costs nothing and gives nothing: its events go neutral. */
+function calCounts(e){ return (S.freeCals||[]).indexOf(calOf(e))<0 }
 /* Two channels on one chip, because two different things are worth knowing and
-   only one of them is worth a whole colour.
+   only one of them is worth a whole color.
 
    The FILL says what the event does to you — the only thing this app has an
    opinion about. Dark and saturated rather than the pale Google-calendar wash
-   it started as: these sit on a coloured day cell, and a deep chip with light
+   it started as: these sit on a colored day cell, and a deep chip with light
    type holds its edge against a gradient where a pastel one dissolved into it.
 
    The NOTCH down the left edge says which calendar it came from. That's real
@@ -837,21 +1004,23 @@ function calOf(e){ return e.cal || CAL_OF[e.name] || "Personal" }
    whole chip — four hues across a week was a rainbow you had to look past. */
 /* Stoplight, plus blue for the things that don't touch you either way. Labels
    are white on all four. */
+/* Lifted a stop, 16 Sept 2026, so the label can be dark. White text wanted the
+   fills deep, which on a navy ground made every chip read as a hole cut in the
+   day; dark text wants them bright, which makes each one an object sitting on
+   it. Same four hues as before — Ferri's teal, gold and magenta, plus the blue
+   that means neither — just at the value they need to carry ink. */
 const CHIP = {
-  give:  "#0f8a5f",   /* emerald   — gives back   */
-  flat:  "#4a72c8",   /* periwinkle — neither     */
-  thin:  "#b5822c",   /* gold      — getting thin */
-  drain: "#c9334f"    /* crimson   — draining     */
+  give:  "#3fd3b4",   /* teal   — gives back   */
+  flat:  "#94abf7",   /* blue   — neither      */
+  thin:  "#f5b544",   /* gold   — getting thin */
+  drain: "#ff7d97"    /* rose   — draining     */
 };
-function calInk(){ return "#ffffff" }
+/* Not pure black: the ground's own near-black, so a label reads as the day
+   showing through the chip rather than as ink printed on it. */
+function calInk(){ return "#0d1026" }
 /* A condition you made keeps YOUR hue, but deepened to the same weight as the
    rest — a pastel bar with dark type was the last thing on screen still dressed
    as a Google Calendar event. */
-function deepen(hex,k){
-  const n=parseInt(hex.slice(1),16);
-  const r=Math.round((n>>16)*k), g=Math.round(((n>>8)&255)*k), b=Math.round((n&255)*k);
-  return "#"+[r,g,b].map(v=>Math.max(0,Math.min(255,v)).toString(16).padStart(2,"0")).join("");
-}
 function chipState(e){
   /* a multi-day span carries no per-day price, only a direction */
   if(isSpan(e)) return e.dir==="up" ? "give" : e.dir==="down" ? "thin" : "flat";
@@ -862,9 +1031,9 @@ function chipState(e){
   return c<COST_BANDS[1] ? "thin" : "drain";
 }
 function calColor(e){
-  /* Only a condition YOU made keeps the colour you gave it. A multi-day thing
+  /* Only a condition YOU made keeps the color you gave it. A multi-day thing
      off the calendar is still an event, and gets read the same way as the rest. */
-  if(e.src==="spoon" && e.color) return deepen(e.color,.62);
+  if(e.src==="spoon" && e.color) return e.color;
   return CHIP[chipState(e)];
 }
 /* the notch: which calendar, at three pixels */
@@ -1048,7 +1217,8 @@ const OVERWHELMED = {
    most useless advice is advice you can't act on in the state you're in. A tree
    that offers "get a massage" to someone who can't get off the floor hasn't met
    them.
-     needs — "down" can't get up · "in" upright, at home · "out" can leave
+     needs — "any" doesn't matter where you are · "down" can't get up ·
+             "in" upright, at home · "out" can leave
      takes — "mins" · "hour" · "evening" · "day"
    Both nest: if you can go out you can also do the lying-down ones, and an
    evening contains an hour. */
@@ -1056,44 +1226,49 @@ const I = (n,needs,takes)=>({n,needs,takes});
 const RECOVERY_TREE = {
   physical: {label:"Physical", short:"Physically worn out", branches:[
     {dir:"much", label:"On your feet all day", items:[
-      I("Lie down","down","mins"), I("Relax","down","hour"),
-      I("Take a bath","in","hour"), I("Get a massage","out","hour")]},
+      I("Sit down or lie down for a few minutes, breathe deeply and close your eyes. Check in with yourself. With every breath out, soften a different part of your body.","down","mins"), I("Get into a comfortable position, breathe deeply and close your eyes. With every breath out, soften a different part of your body. Stretch out your neck, gently rub your hands together.","down","hour"),
+      I("Take a shower or bath, drink some tea, use a heating pad.","in","evening"), I("Get a massage","out","hour")]},
     {dir:"little", label:"Sat still all day", items:[
-      I("Take a walk","out","mins"), I("Exercise","out","hour")]}]},
+      I("Shake it out","in","mins"),
+      I("Take a walk","out","mins"), I("Exercise","any","hour")]}]},
   sensory: {label:"Sensory", short:"Overstimulated", branches:[
     {dir:"much", label:"Crowds, noise, bright lights, chatter", items:[
-      I("Dark room and lie down","down","mins"), I("Deep breathing","down","mins"),
-      I("Calm music","down","mins"), I("No phone or screens","down","hour")]}]},
+      I("Sit in a dark room for a bit and let yourself zone out.","down","mins"), I("Deep breathing","any","mins"),
+      I("Calm music","any","mins"), I("No phone or screens","in","hour")]}]},
   executive: {label:"Mentally taxing", short:"Brain's fried", branches:[
     {dir:"much", label:"Thinking hard all day", items:[
       I("Meditate","down","mins"), I("Turn off your phone for a bit","down","hour"),
       I("No screens","down","evening")]}]},
   social: {label:"Social", short:"Social battery", branches:[
-    {dir:"much", label:"Talking to people a lot", items:[
-      I("Be honest with yourself about your battery level","down","mins"),
+    {dir:"much", label:"Socializing a lot", items:[
+      I("Be honest with yourself about your battery level, give yourself permission to do absolutely nothing for a bit.","down","mins"),
       I("Look ahead at what you've committed to — you can cancel, real friends will understand","in","mins"),
       I("Alone time","in","evening"),
       I("Take yourself out on a solo date","out","evening")]},
-    {dir:"little", label:"Lonely, not enough that meant anything", items:[
+    {dir:"little", label:"Lonely", items:[
       I("Reach out to friends and family","down","mins"),
       I("Make plans with friends","in","mins"),
       I("Spend time with close friends","out","evening")]}]},
   emotional: {label:"Emotionally taxing", short:"Emotionally wrung out", branches:[
     {dir:"much", label:"A lot to feel", items:[
-      I("Talk to a friend, vent","in","hour"), I("Journal — get them out","in","hour"),
-      I("Alone time","in","evening"), I("Avoid social situations for a bit","in","evening")]}]},
+      I("Talk to a friend, vent","in","hour"), I("Journal — get your thoughts out of your head and onto the page.","in","hour"),
+      I("Budget in some alone time.","in","evening"), I("Avoid social situations for a bit.","in","evening")]}]},
   spiritual: {label:"Directionless", short:"Directionless", branches:[
     {dir:"any", label:"Lacking meaning or purpose", items:[
       I("Meditation","down","mins"),
       I("Listen to music or look at art that inspires you","down","hour"),
-      I("A spiritual practice of some kind","in","hour"),
-      I("Engage with your community","out","evening"),
+      I("Engage in a spiritual practice of some kind. If you don't have a spiritual practice, spend some time in nature, or engage with art that inspires you.","any","hour"),
+      I("Engage with your community. Go to a concert or a local art show. Try something new.","out","evening"),
       I("Volunteer locally","out","day")]}]}
 };
 /* the tree's items used to be plain strings; everything that prints one goes
    through here so both shapes still read */
 function itemName(i){ return typeof i==="string" ? i : i.n }
-const NEEDS_RANK = {down:0, in:1, out:2};
+/* "any" sits below the scale rather than on it: breathing doesn't care whether
+   you're on the floor or on a train, so it passes every capacity answer. The
+   other three are a ladder — if you can go out you can also do the at-home and
+   lying-down ones — which is why this is a rank and not a set. */
+const NEEDS_RANK = {any:-1, down:0, in:1, out:2};
 const TAKES_RANK = {mins:0, hour:1, evening:2, day:3};
 
 /* The quick row exists so the thing you want is already there. Both lists are
@@ -1148,6 +1323,14 @@ function fresh(){
     tab:"forecast",
     selDate:"2026-09-17",
     dayBack:"calendar", /* where the day screen's back button returns to */
+    calYear:false,      /* the month picker is open over the month */
+    /* The month opens whole. You came here to see a month; the day arrives when
+       you tap one, and the (!) brings it back after you've dismissed it. */
+    calShut:true,
+    calDismissed:false, /* you put the day away, so the (!) is standing in for it */
+    hidHeads:null,      /* the day you last sent the heads-up away */
+    hiddenCals:[],      /* calendars you've hidden from the drawing */
+    freeCals:[],        /* calendars that are markers, not commitments */
     month:"2026-09",
     events: SEED_EVENTS.map((e,i)=>({id:i,date:e[0],time:e[1],name:e[2],cost:e[3],type:e[4],span:e[5]||1,cap:e[6]||null,every:e[7]||null,color:e[8]||null,dir:e[9]||null,src:e[10]||"cal",emoji:e[11]||null,
         inv:SEED_INVITED.includes(e[2])}))
@@ -1162,6 +1345,8 @@ function fresh(){
     nextPlanId: SEED_PLANNED.length,
     helped: {},                     /* what you've said worked, by name */
     passed:  {},                    /* what you've passed over */
+    pinned:  [],                    /* what you've kept on the home screen */
+    didIt:   {},                    /* pinned thing -> the day you last did it */
     plannedFor: [],                 /* days already offered something restorative */
     deferred: {}
   };
@@ -1258,7 +1443,7 @@ function fmtMax(){ const s=SCALES[S.scale]; return s.max==null?"":String(s.max);
 /* Magnitude without digits. The figures were the overwhelming part, and they get
    read far more often than they're needed: on an agenda the question is "is this
    the heavy one", never "is this a 2 or a 3". Three bands, because light /
-   medium / heavy is the whole judgement anyone makes from a cost — a fourth
+   medium / heavy is the whole judgment anyone makes from a cost — a fourth
    arrow would be a digit wearing a costume.
 
    What DOESN'T become arrows is how much you have. That's the number worth
@@ -1301,7 +1486,7 @@ function dow(d){ return DOW[parse(d).getDay()] }
 function dowL(d){ return DOWL[parse(d).getDay()] }
 function dayNum(d){ return parse(d).getDate() }
 function longDate(d){ const dt=parse(d); return DOW[dt.getDay()]+" "+dt.getDate()+" "+MON[dt.getMonth()].slice(0,4).replace("Sept","Sept") }
-function niceDate(d){ const dt=parse(d); return DOW[dt.getDay()]+" "+dt.getDate()+" "+MON[dt.getMonth()] }
+function niceDate(d){ const dt=parse(d); return DOW[dt.getDay()]+" "+MON[dt.getMonth()]+" "+dt.getDate() }
 function daysBetween(a,b){ return Math.round((parse(b)-parse(a))/864e5) }
 function hm(t){ const [h,m]=t.split(":").map(Number); return h+m/60 }
 function halfHour(h){ return Math.round(h*2)/2 }
@@ -1589,6 +1774,7 @@ function drainText(e,note){
 /* The stated price, adjusted for how this thing has actually been landing. */
 function costOf(e){
   if(e.cost==null) return null;
+  if(!calCounts(e)) return 0;
   return e.cost<0 ? e.cost : e.cost*drainFactor(e.name);
 }
 /* An invitation you haven't answered might not happen. Counting it at full
@@ -1835,20 +2021,64 @@ function sheetLook(days){
     <button class="btn" data-closesheet="1" style="border-color:var(--line);color:var(--muted)">Close</button>
   `, null, true);
 }
+/* Both of the forecast's notices are the app telling you something you may
+   already know. A screen you can't quieten is a screen that nags, so each one
+   can be sent away from its own heading. */
+function labelX(text, attr){
+  return `<div class="labrow"><p class="label">${text}</p>
+    <button class="xout" ${attr} aria-label="Hide this">\u00d7</button></div>`;
+}
+
 function planBlock(days){
   const roomy=roomyDay(days);
   if(!roomy || (S.plannedFor||[]).indexOf(roomy.date)>=0) return "";
-  return `<p class="label">Room on ${dowL(roomy.date)}</p>
+  return `${labelX(`Room on ${dowL(roomy.date)}`, `data-noplan="${roomy.date}"`)}
     <div class="card">
       <div style="font-size:13px;line-height:1.45">${dowL(roomy.date)} has room, and nothing in it yet.</div>
       <p class="hint" style="margin:6px 0 12px">Worth putting something good in while it's still free.</p>
-      <div class="seg" style="margin-bottom:4px">
-        ${plannedList().map(x=>`<button data-book="${x.id}|${roomy.date}">${x.n}</button>`).join("")}
-        <button data-editplanned="1" class="addchip">+ add</button>
-      </div>
-      <button class="hint" data-noplan="${roomy.date}" style="display:block;margin-top:10px">not this week</button>
+      <button class="btn strong" data-budget="${roomy.date}">Budget in restorative time</button>
     </div>
     <div style="height:18px"></div>`;
+}
+
+/* Nine chips used to sit open on the forecast, which turned a screen about where
+   you stand into a menu you had to read. The offer is one sentence and one
+   button; the menu is behind it, where a menu belongs. */
+/* Show and hide. The copy has to be explicit that this is about the drawing,
+   because a filter in a calendar usually means "pretend this isn't happening"
+   and here it can't. */
+function sheetCals(){
+  const hidden=S.hiddenCals||[], free=S.freeCals||[];
+  openSheet(`
+    <h3>Calendars</h3>
+    <p class="sub">Which ones you see, and which ones cost you anything.</p>
+    <div class="calrows">
+      ${Object.entries(CALENDARS).map(([name,color])=>{
+        const shown=hidden.indexOf(name)<0, counts=free.indexOf(name)<0;
+        return `<div class="calrow${shown?"":" off"}">
+          <button class="pick" data-calshow="${encodeURIComponent(name)}">
+            <span class="bx">${shown?"\u2713":""}</span>
+            <span class="dot" style="background:${color}"></span>${name}</button>
+          <button class="cnt${counts?" on":""}" data-calcount="${encodeURIComponent(name)}">
+            ${counts?"counts":"doesn't count"}</button>
+        </div>`;
+      }).join("")}
+    </div>
+    <div style="height:18px"></div>
+    <button class="btn" data-closesheet="1">Done</button>`);
+}
+
+function sheetBudget(date){
+  const list=plannedList();
+  openSheet(`
+    <h3>Budget in restorative time</h3>
+    <p class="sub">${dowL(date)} ${dayNum(date)} has room in it. Pick the one you'd
+      actually do — it goes in as a real event, with a real price.</p>
+    <div class="seg" style="margin-bottom:16px">
+      ${list.map(x=>`<button data-book="${x.id}|${date}">${x.n}</button>`).join("")}
+      <button data-editplanned="1" class="addchip">+ add</button>
+    </div>
+    <button class="btn" data-closesheet="1" style="border-color:var(--line);color:var(--muted)">Not now</button>`);
 }
 
 /* The one action the forecast offers, at EVERY charge. Burnout mode used to
@@ -1863,8 +2093,55 @@ function planBlock(days){
 function checkinPill(low){
   return `<div class="pillrow">
     <button class="pill" data-checkin="1">Check in</button>
-    ${low?"":`<button class="pill quiet" data-tstart="1">I'm overwhelmed</button>`}
+    ${low?"":`<button class="pill quiet" data-tab="reset">Reset</button>`}
   </div>`;
+}
+
+/* PINNED. The quiz is four questions; this is none of them. Once you know a
+   thing works, being asked again is the tax — so a pinned answer sits on the
+   home screen and in burnout mode, where you can just do it.
+
+   Three at most. Not an arbitrary limit: a list is a decision, and the whole
+   point of this screen is to not make you take one. A fourth pin pushes the
+   oldest off and says which, rather than refusing you at the worst moment. */
+const PIN_MAX = 3;
+function pins(){ return S.pinned||[] }
+/* an answer can be three sentences long; a toast is one line */
+function short(n){
+  if(n.length<=42) return n;
+  const c=n.slice(0,41), sp=c.lastIndexOf(" ");
+  return (sp>20?c.slice(0,sp):c).replace(/[\s,.;—-]+$/,"")+"…";
+}
+function isPinned(name){ return pins().some(p=>p.name===name) }
+function pinAdd(name){
+  if(isPinned(name)) return null;
+  const next=[{name, at:TODAY}].concat(pins());
+  const dropped = next.length>PIN_MAX ? next[PIN_MAX].name : null;
+  S.pinned=next.slice(0,PIN_MAX);
+  return dropped;
+}
+function pinRemove(name){ S.pinned=pins().filter(p=>p.name!==name) }
+/* "I did it" is the same signal as Okay in the quiz — your word that a thing
+   worked — so it feeds the same weighting. It also marks the card for the rest
+   of the day, which is memory rather than scorekeeping: nothing counts up,
+   nothing is owed, and tomorrow it's a plain button again. */
+function didToday(name){ return (S.didIt||{})[name]===TODAY }
+function pinnedBlock(){
+  const list=pins();
+  if(!list.length) return "";
+  return `<p class="label" style="margin-top:20px">What helps you</p>
+    <div class="pins">
+      ${list.map(p=>`<div class="pincard">
+        <button class="pinx" data-unpin="${encodeURIComponent(p.name)}"
+                aria-label="Take this off your home screen">\u00d7</button>
+        <p class="pintext">${p.name}</p>
+        <div class="pinfoot">
+          ${didToday(p.name)
+            ? `<span class="pindone">You did this today</span>`
+            : `<button class="pindo" data-pindid="${encodeURIComponent(p.name)}">I did it!</button>`}
+        </div>
+      </div>`).join("")}
+    </div>`;
 }
 
 function tiredBlock(){
@@ -1896,7 +2173,7 @@ function taskRow(e,plain){
 }
 
 /* ---------- blurb ---------- */
-/* The horizon is yours to pick. The shrink-as-you-drain behaviour (§8) survives
+/* The horizon is yours to pick. The shrink-as-you-drain behavior (§8) survives
    in its strongest form — below the bottom threshold the week is hidden
    entirely — but the intermediate 7→3 step is gone with the "auto" option. */
 function horizonDays(){ return S.horizon || 3 }
@@ -2049,8 +2326,8 @@ function weekArc(days){
     for(let h=1;h<24;h++)
       grid+=`<line x1="${X(h/24)}" y1="0" x2="${X(h/24)}" y2="${H}" stroke="var(--hair)"
                stroke-width="1" opacity="${h%4===0?"1":".45"}"/>`;
-    /* midnight is labelled at both ends so the axis reads as a whole day rather
-       than a window onto one — pinned to the edges, since a centred label there
+    /* midnight is labeled at both ends so the axis reads as a whole day rather
+       than a window onto one — pinned to the edges, since a centerd label there
        would hang half outside the frame */
     axis=`<span class="hr edge" style="left:10px">${clockLabel(0)}</span>`
        + [4,8,12,16,20].map(h=>`<span class="hr" style="left:calc(10px + (100% - 20px) * ${(h/24).toFixed(4)})">${clockLabel(h)}</span>`).join("")
@@ -2058,7 +2335,7 @@ function weekArc(days){
   }
 
   /* "You are here" — the dot walks the curve as the day goes by. It used to mark
-     the week's lowest point, but that's already said by the colour and by the
+     the week's lowest point, but that's already said by the color and by the
      heads-up card, and a marker that never moves teaches you nothing. */
   const nowX = NOW_H/24/days;      /* the same clock the columns are drawn on */
   const showNow = true;
@@ -2134,8 +2411,8 @@ const GEAR = `<svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentC
 function render(){
   projCache=null;
   S.events=S.events.filter(e=>!(e.task&&e.done&&e.doneAt&&daysBetween(e.doneAt,TODAY)>DONE_KEEP_DAYS));
-  renderForecast(); renderCalendar(); renderDay(); renderTasks(); renderLog();
-  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===S.tab||(S.tab==="day"&&b.dataset.tab==="calendar")));
+  renderForecast(); renderCalendar(); renderDay(); renderReset(); renderTasks(); renderLog();
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===S.tab||((S.tab==="day"||S.tab==="tasks")&&b.dataset.tab==="calendar")));
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));
   $("v-"+S.tab).classList.add("on");
   save();
@@ -2196,9 +2473,9 @@ function renderForecast(){
           return `<div class="spans" style="height:${h}px">
             ${sp.map(s=>{
             const left=s.from/dates.length*100, w=(s.to-s.from+1)/dates.length*100;
-            const labelled = s.group==="mine" || wide;
-            return `<button class="spanbar ${s.group==="mine"?"mine":"cal"} ${labelled?"":"slim"}" data-editcond="${s.e.id}" style="left:calc(${left}% + 6px);width:calc(${w}% - 12px);top:${topOf(s)}px;background:${calColor(s.e)};--rail:${calRail(s.e)};--ct:${calInk(s.e)}">${
-            labelled
+            const labeled = s.group==="mine" || wide;
+            return `<button class="spanbar ${s.group==="mine"?"mine":"cal"} ${labeled?"":"slim"}" data-editcond="${s.e.id}" style="left:calc(${left}% + 6px);width:calc(${w}% - 12px);top:${topOf(s)}px;background:${calColor(s.e)};--rail:${calRail(s.e)};--ct:${calInk(s.e)}">${
+            labeled
               ? `${s.e.emoji?`<span class="emo">${s.e.emoji}</span>`:""}${s.open?"‹ ":""}${s.e.name}${s.e.cap?` · max ${fmt(s.e.cap)}`:""}${s.e.every?`<span class="arrow rep">${REPEAT}</span>`:""}${trendIcon(s.e)}`
               : ""
           }</button>`;
@@ -2231,6 +2508,7 @@ function renderForecast(){
     extra = `<div class="rec-note">
         <b>Today only.</b> The week can wait.<br>${OVERWHELMED.frozen}
       </div>
+      ${pinnedBlock()}
       ${hasR
         ? `<p class="label">What you landed on</p>
            <div class="card">
@@ -2248,8 +2526,10 @@ function renderForecast(){
       <div style="height:24px"></div>`;
   } else {
     const over=f.slice(1).find(d=>zoneOf(d.end).k==="over"&&d.load>0);
-    if(over){
-      extra = `<p class="label">Heads up</p><div class="card">
+    const headsShut = S.hidHeads===TODAY;
+    if(headsShut){ extra="" }
+    else if(over){
+      extra = `${labelX("Heads up",'data-hideheads="1"')}<div class="card">
         <div style="font-size:13px;line-height:1.45">${dowL(over.date)} is going to be tough.</div>
         <div class="hint" style="margin-top:5px;font-size:12px;line-height:1.5;color:var(--muted)">Cancel or move something if you can. If you can't, build in recovery time on either side.</div>
 
@@ -2257,7 +2537,7 @@ function renderForecast(){
       </div>`;
     } else {
       const rd=recoveryDays();
-      extra = `<p class="label">Heads up</p><div class="card">
+      extra = `${labelX("Heads up",'data-hideheads="1"')}<div class="card">
         <div style="font-size:13px;line-height:1.45">Nothing in the next ${f.length} days goes over.</div>
         <div class="hint" style="margin-top:6px">${S.charge<.62?`About ${rd} low-demand day${rd===1?"":"s"} would get you back to comfortable.`:"You're in the comfortable band."}</div>
       </div>`;
@@ -2266,7 +2546,7 @@ function renderForecast(){
        simplifying that page would have deleted it from the app outside burnout.
        It belongs here anyway: an empty day is a reading of the week ahead, and
        this screen is where the week ahead is read. */
-    extra += `<div style="height:20px"></div>${planBlock(7)}`;
+    extra += `<div style="height:${headsShut?0:20}px"></div>${planBlock(7)}`;
   }
 
   /* Proactive flag: estimates that read low change the forecast, so say so
@@ -2283,14 +2563,54 @@ function renderForecast(){
       <button class="condbtn" data-settings="1">${chargeBlock}</button>
       <p class="blurb">${blurb(headed)}</p>
       ${checkinPill(low)}
-      ${low?"":tiredBlock()}
     </div>
     ${S.roughNight?`<p class="hint" style="margin:-10px 0 14px;text-align:center">Bad sleep logged — tonight's refill is withheld.</p>`:""}
     ${strip}
+    ${lookNote(7)}
     ${extra}`;
 }
 
+const ICON_PENCIL = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 5.4 18.6 9.4"/><path d="M4.9 19.1l4.2-1 9.5-9.5a1.85 1.85 0 0 0-2.6-2.6L6.5 15.5z"/></svg>`;
+const ICON_LAYERS = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4 3.6 7.6 12 11.8l8.4-4.2z"/><path d="M3.6 12.3 12 16.5l8.4-4.2"/><path d="M3.6 16.8 12 21l8.4-4.2"/></svg>`;
+const ICON_CAL  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.3" y="5" width="17.4" height="15.6" rx="2.3"/><path d="M3.3 9.7h17.4M8.2 3.2v3.5M15.8 3.2v3.5"/></svg>`;
+const ICON_TASK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 6.1 4.6 7.5 7.4 4.6"/><path d="M10.3 6.1h10.5"/><path d="M3.2 12.6 4.6 14 7.4 11.1"/><path d="M10.3 12.6h10.5"/><path d="M3.6 19.1h3.8M10.3 19.1h10.5"/></svg>`;
+/* Calendar and tasks are two views of the same thing — what's coming — so they
+   share a header and you flip between them up there, rather than one hiding at
+   the bottom of the other. */
+function calSegs(which){
+  return `<span class="segs">
+    <button data-tab2="calendar" class="${which==="calendar"?"on":""}" aria-label="Calendar">${ICON_CAL}</button>
+    <button data-tab2="tasks" class="${which==="tasks"?"on":""}" aria-label="Tasks">${ICON_TASK}</button>
+  </span>`;
+}
+function shiftMonth(n){
+  let [y,m]=S.month.split("-").map(Number);
+  m+=n; if(m<1){m=12;y--} if(m>12){m=1;y++}
+  S.month=`${y}-${String(m).padStart(2,"0")}`;
+}
+/* A year of months to choose from, because scrubbing eleven times to reach next
+   August is not navigation. */
+function renderYear(){
+  const [cy,cm]=S.month.split("-").map(Number);
+  const y=S.calY||cy, [ty,tm]=[Number(TODAY.slice(0,4)),Number(TODAY.slice(5,7))];
+  $("v-calendar").innerHTML=`
+    <div class="calhead">
+      <button class="calttl" data-calyear="0">${y}<span class="caret">\u25b4</span></button>
+      ${calSegs("calendar")}
+    </div>
+    <div class="calbody">
+      <div class="yearhead">
+        <button data-yyear="-1">\u2039</button><b>${y}</b><button data-yyear="1">\u203a</button>
+      </div>
+      <div class="yeargrid">
+        ${MON.map((name,i)=>`<button class="ycell ${y===cy&&i+1===cm?"on":""} ${y===ty&&i+1===tm?"now":""}"
+           data-ymon="${y}-${String(i+1).padStart(2,"0")}">${name}</button>`).join("")}
+      </div>
+    </div>`;
+}
+
 function renderCalendar(){
+  if(S.calYear) return renderYear();
   const [y,m]=S.month.split("-").map(Number);
   const first=new Date(y,m-1,1), pad=first.getDay(), len=new Date(y,m,0).getDate();
 
@@ -2303,11 +2623,12 @@ function renderCalendar(){
     /* spans first, so a condition or a holiday runs along the top of the row the
        way it does in a real calendar */
     /* every event gets a chip here, priced or not — an unpriced one shows in
-       grey, which is how a half-estimated day says so now */
+       gray, which is how a half-estimated day says so now */
     const chips=S.events.filter(e=>isSpan(e)&&coversDate(e,date))
-                .concat(eventsOn(date))
+                .concat(eventsOn(date)).filter(calShown)
                 .slice(0,4)
-                .map(e=>`<i class="${e.inv?"inv":""}${costOf(e)==null?" un":""}" style="--c:${calColor(e)}"></i>`).join("");
+                .map(e=>`<i class="${e.inv?"inv":""}${costOf(e)==null?" un":""}"
+                     style="--c:${calColor(e)};--rail:${calRail(e)}">${e.name}</i>`).join("");
     return `<button class="cell ${st} ${adj?"adj":""} ${date===TODAY?"today":""} ${date===S.selDate?"sel":""}" data-day="${date}">
       <span class="d">${d}</span><span class="cevs">${chips}</span></button>`;
   };
@@ -2320,7 +2641,7 @@ function renderCalendar(){
   const nextY=m===12?y+1:y, nextM=m===12?1:m+1;
   let nd=1;
   for(let i=(pad+len)%7; i>0 && i<7; i++) cells+=cellHTML(iso(nextY,nextM,nd),nd++,true);
-  const sel=S.selDate, evs=eventsOn(sel);
+  const sel=S.selDate, evs=eventsOn(sel).filter(calShown);
   const f=project(Math.max(1,daysBetween(TODAY,sel)+1));
   const d=daysBetween(TODAY,sel)>=0?f[f.length-1]:null;
 
@@ -2343,30 +2664,149 @@ function renderCalendar(){
   }
   if(!evs.length) rows += `<p class="hint" style="padding:10px 0">Nothing scheduled. That's recovery.</p>`;
 
+  /* Tasks due on the day belong with the day. They are the only part of the
+     tasks page with a date on it, and this is the screen about dates. */
+  const due=S.events.filter(e=>e.task&&!e.done&&e.due===sel);
+  /* EVERY multi-day bar that covers the day, not just the ones Spoon owns. A
+     span drawn in the month has to be findable in the day, or tapping its cell
+     shows you a day with a hole where the thing you tapped was — which is what
+     "Replenish mana" was doing. Conditions live here too, because you never add
+     one in the abstract: you add one about some days, and you're already looking
+     at the days. */
+  const covering=S.events.filter(e=>isSpan(e)&&coversDate(e,sel)&&calShown(e));
+  const shut=!!S.calShut;
+  const hid=(S.hiddenCals||[]).length;
+
   $("v-calendar").innerHTML=`
-    <div class="scr-head"><h2>${MON[m-1]} ${y}</h2>
-      <span class="cal-nav"><button data-mon="-1">‹</button><button data-mon="1">›</button></span></div>
-    <div class="dow">${DOW.map(x=>`<span>${x[0]}</span>`).join("")}</div>
-    <div class="grid">${cells}</div>
-    <div class="legend">
-      <span><i style="background:var(--ok-deep)"></i>fits</span>
-      <span><i style="background:var(--tight-deep)"></i>you'll pay for it</span>
-      <span><i style="background:var(--over-deep)"></i>over</span>
-      <span><i style="background:none;border-color:var(--line-strong)"></i>no estimate</span>
+    <div class="calhead">
+      <button class="calttl" data-calyear="1">${MON[m-1]} ${y}<span class="caret">\u25be</span></button>
+      ${calSegs("calendar")}
     </div>
-    <div class="agenda">
-      <div style="display:flex;justify-content:space-between;align-items:baseline">
-        <p class="label">${niceDate(sel)}</p>
-        <button class="act" data-goday="${sel}" style="font-size:11px;color:var(--muted)">day view ›</button>
+    <div class="calbody">
+      <div class="dow">${DOW.map(x=>`<span>${x[0]}</span>`).join("")}</div>
+      <div class="grid">${cells}</div>
+      <div class="legend">
+        <span><i style="background:var(--ok-deep)"></i>fits</span>
+        <span><i style="background:var(--tight-deep)"></i>you'll pay for it</span>
+        <span><i style="background:var(--over-deep)"></i>over</span>
+        <span><i style="background:none;border-color:var(--line-strong)"></i>no estimate</span>
       </div>
-      ${rows}
-      ${d?`<div class="tot">
-        <span>day total ${noNums()?pips(d.load):`<b>${fmt(d.load)}</b>`}</span>
-        <span>you'll start with ${noNums()?pips(d.start):`<b>${fmt(d.start)}</b>`}</span></div>`:""}
+      <div style="height:${shut?26:"46vh"}"></div>
     </div>
-    <div style="height:26px"></div>
-    ${lookNote(7)}
-    ${condBlock()}`;
+
+    <div class="daysheet" id="daysheet">
+      <div class="grab" id="grab"><i></i></div>
+      <div class="dshead">
+        <p class="label" style="margin:0">${niceDate(sel)}</p>
+        <button class="act" data-goday="${sel}" style="font-size:11px;color:var(--muted)">day view \u203a</button>
+      </div>
+      <div class="dsbody">
+        ${covering.map(e=>{
+          /* Which day of it you're standing in. "5 days" told you the size of the
+             thing; standing inside it, what you want is how far through you are. */
+          const nth=daysBetween(e.date,sel)+1;
+          const where = isCondition(e)
+            ? `Condition${e.cap?` \u00b7 max ${fmt(e.cap)}`:""}`
+            : calOf(e);
+          return `<div class="spanrow">
+            <div class="sn">
+              <span class="dot" style="background:${calColor(e)}"></span>${e.emoji?e.emoji+" ":""}${e.name} ${trendIcon(e)}
+              <span class="nth">Day ${nth} of ${e.span}</span>
+              <br><span class="hint">${where}</span>
+            </div>
+            <button class="spanedit" data-editcond="${e.id}"
+                    aria-label="Edit ${e.name}">${ICON_PENCIL}</button>
+          </div>`}).join("")}
+        <div class="agenda">
+          ${rows}
+          ${due.length?`<div style="height:6px"></div>${due.map(e=>taskRow(e,true)).join("")}`:""}
+          ${d?`<div class="tot">
+            <span>day total ${noNums()?pips(d.load):`<b>${fmt(d.load)}</b>`}</span>
+            <span>you'll start with ${noNums()?pips(d.start):`<b>${fmt(d.start)}</b>`}</span></div>`:""}
+        </div>
+        <button class="btn" data-newcond="1" style="margin-top:14px;border-color:var(--line);color:var(--muted)">+ add a condition</button>
+      </div>
+    </div>
+    <div class="calbar">
+      <button class="calbtn${hid?" some":""}" data-cals="1">
+        ${ICON_LAYERS}<span>${hid?`${Object.keys(CALENDARS).length-hid} of ${Object.keys(CALENDARS).length}`:"Calendars"}</span>
+      </button>
+      <button class="calbtn" data-today="1">Today</button>
+    </div>`;
+  wireCal();
+}
+
+/* GESTURES. Two of them, both on the calendar: the month moves sideways under
+   your thumb, and the day sheet moves up into the day view or down out of the
+   way. Everything here is pointer events, so a trackpad drag works the same as a
+   thumb — this thing gets looked at on a laptop as often as on a phone. */
+/* Every render builds a new sheet element, and a node inserted already at its
+   destination has nothing to animate from — which is why it used to appear and
+   disappear rather than slide. So the sheet is rendered with no position at all
+   and put in its PREVIOUS one here, then moved to its new one on the next frame.
+   Two rAFs: one to get the start position painted, one to change it, or the
+   browser collapses both into a single style resolution and skips the tween. */
+let calSheetWas = null;
+function wireCal(){
+  const v=$("v-calendar");
+  const body=v.querySelector(".calbody"); if(body) swipeMonths(body);
+  const grab=v.querySelector("#grab"), sheet=v.querySelector("#daysheet");
+  if(!sheet){ calSheetWas=null; return }
+  const open=!S.calShut;
+  if(calSheetWas===null){
+    /* first paint of this screen — be where you belong, don't perform */
+    sheet.classList.toggle("shut",!open);
+  } else if(calSheetWas!==open){
+    sheet.classList.toggle("shut",!calSheetWas);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>
+      sheet.classList.toggle("shut",!open)));
+  } else {
+    sheet.classList.toggle("shut",!open);
+  }
+  calSheetWas=open;
+  if(grab) dragSheet(grab,sheet);
+}
+function swipeMonths(el){
+  let x0=null,y0=null;
+  el.addEventListener("pointerdown",e=>{ x0=e.clientX; y0=e.clientY });
+  const end=e=>{
+    if(x0==null) return;
+    const dx=e.clientX-x0, dy=e.clientY-y0; x0=null;
+    /* a swipe has to be sideways AND decisive, or every scroll would turn the
+       page and every tap on a day would be a coin toss */
+    if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.4){
+      shiftMonth(dx<0?1:-1);
+      /* render() detaches the cell under the finger before its click can fire,
+         which is exactly what we want: the swipe doesn't also pick a day */
+      render();
+    }
+  };
+  el.addEventListener("pointerup",end);
+  el.addEventListener("pointercancel",()=>{x0=null});
+}
+function dragSheet(grab,sheet){
+  let y0=null,dy=0;
+  grab.addEventListener("pointerdown",e=>{
+    y0=e.clientY; dy=0; sheet.classList.add("drag");
+    try{ grab.setPointerCapture(e.pointerId) }catch(err){}
+  });
+  grab.addEventListener("pointermove",e=>{
+    if(y0==null) return;
+    dy=e.clientY-y0;
+    /* it can be pulled up a little to show it's going somewhere, but not far —
+       the destination is a different screen, not a taller sheet */
+    sheet.style.transform=`translateY(${Math.max(dy,-70)}px)`;
+  });
+  const end=()=>{
+    if(y0==null) return;
+    const d=dy; y0=null;
+    sheet.classList.remove("drag"); sheet.style.transform="";
+    if(d<-55){ S.dayBack="calendar"; S.tab="day"; render(); return }
+    if(d>55){ S.calShut=true; S.calDismissed=true; render(); return }
+    if(Math.abs(d)<6){ S.calShut=!S.calShut; S.calDismissed=S.calShut; render() }
+  };
+  grab.addEventListener("pointerup",end);
+  grab.addEventListener("pointercancel",end);
 }
 
 function renderDay(){
@@ -2632,7 +3072,7 @@ function sheetLogItem(editId){
    readout is patched in place, the charge is applied as you move, and the views
    are redrawn once per frame.
    The slider's range IS the scale — one step per notch — so the thumb lands on a
-   mark rather than between two, and the range's own max normalises it. */
+   mark rather than between two, and the range's own max normalizes it. */
 let dragFrom=null, dragRaf=0;
 document.addEventListener("input",e=>{
   if(e.target.id!=="chargeSlider") return;
@@ -2880,6 +3320,8 @@ function sheetHelp(reset){
   if(!pick){ closeSheet(); toast("Nothing on your list for that. Add something on a better day."); return }
   const name=itemName(pick), covers=count[name]>1;
   S.tiredResult={name, at:TODAY, covers};
+  /* already pinned means the question is answered — don't offer it again */
+  const pinned=isPinned(name), wants=pinned||!!c.pin;
   openSheet(`
     <h3 style="margin-bottom:3px">Do this</h3>
     <p class="sub">${stretch
@@ -2887,7 +3329,15 @@ function sheetHelp(reset){
       : covers ? coversLine(count[name], c.picks.length)
                : "From your own list, for the state you're actually in."}</p>
     <p class="helpbig">${name}</p>
-    <button class="btn strong" data-hdone="${encodeURIComponent(name)}">Okay</button>
+    ${pinned
+      ? `<p class="hint" style="text-align:center;margin:-8px 0 14px">Already on your home screen.</p>`
+      : `<div class="tiredgrid" style="margin-bottom:14px">
+           <button data-hpin="1" class="${c.pin?"on":""}">
+             <span class="bx">${c.pin?"\u2713":""}</span>This seems helpful
+             <i class="sub2">Keep it on my home screen</i></button>
+         </div>`}
+    <button class="btn strong" data-hdone="${encodeURIComponent(name)}"
+            data-hpinned="${wants?1:0}">Okay</button>
     <div style="height:8px"></div>
     ${list.length>1
       ? `<button class="btn" data-hskip="${encodeURIComponent(name)}" style="border-color:var(--line);color:var(--muted)">Something else</button>`
@@ -2920,6 +3370,52 @@ function sheetRecovery(openKey){
    cost — optionally a ceiling, optionally repeating. */
 function conditions(){ return S.events.filter(isCondition) }
 
+/* month first — Ferri's own convention */
+function shortDate(iso){ const [y,m,dd]=iso.split("-"); return `${m}/${dd}/${y.slice(2)}` }
+function addDays(iso,n){
+  const d=new Date(iso+"T12:00:00"); d.setDate(d.getDate()+n);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+/* Tap the first day, tap the last. A stretch of days is a shape you can see, and
+   a two-field date picker makes you scroll through a list to describe something
+   you could have pointed at. The draft lives in the same sheetCtx as the editor
+   behind it, so nothing typed in there is lost while you're in here. */
+function sheetDatePick(d){
+  const [y,m]=(d.pickMonth||d.date.slice(0,7)).split("-").map(Number);
+  const first=new Date(y,m-1,1), pad=first.getDay(), len=new Date(y,m,0).getDate();
+  const iso=(yy,mm,dd)=>`${yy}-${String(mm).padStart(2,"0")}-${String(dd).padStart(2,"0")}`;
+  const start=d.date, end=addDays(d.date,d.span-1);
+  const cell=(date,n,adj)=>{
+    const inRange = !d.anchor && date>=start && date<=end;
+    const isEnd = !d.anchor && (date===start||date===end);
+    const isAnchor = d.anchor===date;
+    return `<button class="pcell${adj?" adj":""}${inRange?" in":""}${isEnd?" cap":""}${isAnchor?" cap":""}"
+      data-cpick="${date}">${n}</button>`;
+  };
+  let cells="";
+  const pY=m===1?y-1:y, pM=m===1?12:m-1, pLen=new Date(y,m-1,0).getDate();
+  for(let i=pad;i>0;i--){ const n=pLen-i+1; cells+=cell(iso(pY,pM,n),n,true) }
+  for(let n=1;n<=len;n++) cells+=cell(iso(y,m,n),n,false);
+  const nY=m===12?y+1:y, nM=m===12?1:m+1;
+  let nn=1; for(let i=(pad+len)%7;i>0&&i<7;i++) cells+=cell(iso(nY,nM,nn),nn++,true);
+
+  openSheet(`
+    <h3 style="margin-bottom:14px">Set date range</h3>
+    <div class="pickhead">
+      <button data-cmonth="-1" aria-label="Previous month">\u2039</button>
+      <b>${MON[m-1]} ${y}</b>
+      <button data-cmonth="1" aria-label="Next month">\u203a</button>
+    </div>
+    <div class="pdow">${DOW.map(x=>`<span>${x[0]}</span>`).join("")}</div>
+    <div class="pgrid">${cells}</div>
+    <p class="hint" style="text-align:center;margin:14px 0 14px">
+      ${d.anchor
+        ? `${shortDate(d.anchor)} \u2192 tap the last day`
+        : `${shortDate(start)} \u2014 ${shortDate(end)} \u2192 ${d.span} day${d.span===1?"":"s"}`}</p>
+    <button class="btn strong" data-cdone="1">Done</button>`, d, true);
+}
+
 function sheetCondition(id){
   const ex = id!=null ? S.events.find(e=>e.id===Number(id)) : null;
   const d = (sheetCtx&&sheetCtx.cond&&sheetCtx.exId===(ex?ex.id:null)) ? sheetCtx : {
@@ -2940,7 +3436,7 @@ function sheetCondition(id){
          no cost of its own.`}</p>
 
     ${fromCal ? `<div class="handoff">
-        Spoon can't change your calendar, so the name, dates and colour are
+        Spoon can't change your calendar, so the name, dates and color are
         read-only here. What you can set is what it does to <b>you</b>.
       </div>
       <button class="btn" data-opencal="${ex.id}" style="margin-bottom:20px">Open in Google Calendar</button>`
@@ -2954,21 +3450,17 @@ function sheetCondition(id){
       <button data-cemoji="" class="none ${d.emoji?"":"on"}">none</button>
     </div>
 
-    <p class="label">Colour</p>
+    <p class="label">Color</p>
     <div class="swatches">
       ${PALETTE.map(c=>`<button data-ccolor="${c}" class="${d.color===c?"on":""}"
         style="background:${c}"></button>`).join("")}
     </div>
 
-    <p class="label">Starts</p>
-    <input class="tinput" id="condDate" type="date" value="${d.date}">
-
-    <p class="label">How many days</p>
-    <div class="stepper">
-      <button data-cspan="-1">−</button>
-      <div class="val">${d.span}<small> day${d.span===1?"":"s"}</small></div>
-      <button data-cspan="1">+</button>
-    </div>`}
+    <p class="label">When</p>
+    <button class="daterange" data-cdates="1">
+      <span>from <b>${shortDate(d.date)}</b> to <b>${shortDate(addDays(d.date,d.span-1))}</b></span>
+      <i>${d.span} day${d.span===1?"":"s"}</i>
+    </button>`}
 
     <p class="label">Which way does it push you?</p>
     <div class="seg">
@@ -3144,12 +3636,38 @@ function sheetHandoff(id,kind,to){
   `);
 }
 
+/* RESET. The help side of the app, which used to be scattered: pinned things and
+   the quiz sat on the forecast, and the tree itself was buried two taps inside a
+   sheet. The forecast's job is to tell you where you stand; this one's job is to
+   tell you what to do about it. Fastest path first — something you've already
+   said works, then the quiz, then the whole list. */
+function renderReset(){
+  const has=pins().length;
+  $("v-reset").innerHTML = `
+    <div class="scr-head"><h2>Reset</h2>
+      <button class="act" data-settings="1">${GEAR}</button></div>
+    <p class="blurb" style="margin:0 0 4px">When there's nothing left in the day,
+      start here. One thing at a time — never a list.</p>
+    ${has ? pinnedBlock() : `
+      <p class="label" style="margin-top:20px">What helps you</p>
+      <div class="card">
+        <p class="hint" style="margin:0">Nothing pinned yet. When the quiz lands on
+        something that works, tick <b>This seems helpful</b> and it'll live here.</p>
+      </div>`}
+    ${tiredBlock()}
+    <div style="height:22px"></div>
+    <button class="btn strong" data-tstart="1">I'm overwhelmed</button>
+    <p class="hint" style="text-align:center;margin:9px 0 18px">Four questions, then one thing to do.</p>
+    <button class="btn" data-rectree="1" style="border-color:var(--line);color:var(--muted)">See everything on your list</button>
+    <div style="height:24px"></div>`;
+}
+
 function renderTasks(){
   const fit=fitting(), rest=openTasks().filter(e=>!fit.includes(e))
                                        .sort((a,b)=>a.cost-b.cost);
   const dn=doneTasks(), stale=staleTask(), any=openTasks().length;
   $("v-tasks").innerHTML=`
-    <div class="scr-head"><h2>Tasks</h2></div>
+    <div class="scr-head"><h2>Tasks</h2>${calSegs("tasks")}</div>
     <p class="screen-sub">No dates, no order to fall behind on.</p>
 
     ${any ? `
@@ -3283,10 +3801,17 @@ function sheetSettings(){
 }
 
 let toastT=null;
-function toast(msg){
-  $("toast").innerHTML=msg; $("toast").classList.add("on");
-  clearTimeout(toastT); toastT=setTimeout(()=>$("toast").classList.remove("on"),2600);
+/* A toast can carry one way back. `undo` is the token the click handler reads —
+   the toast itself stays click-through so it can't swallow a tap meant for the
+   screen underneath it; only the button takes pointer events. */
+function toast(msg, undo){
+  $("toast").innerHTML = msg + (undo
+    ? ` <button class="tundo" data-undo="${undo}">Undo</button>` : "");
+  $("toast").classList.add("on");
+  clearTimeout(toastT); toastT=setTimeout(()=>$("toast").classList.remove("on"),
+                                          undo?5200:2600);
 }
+function hideToast(){ clearTimeout(toastT); $("toast").classList.remove("on") }
 
 /* ---------------------------------------------------------------------------
    EVENTS
@@ -3294,7 +3819,7 @@ function toast(msg){
 document.addEventListener("click",ev=>{
   const t0=ev.target.closest("[data-hmenu],[data-horizon]");
   if(S.hmenu && !t0){ S.hmenu=false; render() }        /* click away closes it */
-  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-noplan],[data-dobook],[data-tstart],[data-hpick],[data-hgo],[data-hguess],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hdone],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
+  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-calyear],[data-ymon],[data-yyear],[data-dsopen],[data-today],[data-cals],[data-calshow],[data-calcount],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-budget],[data-hideheads],[data-noplan],[data-undo],[data-dobook],[data-tstart],[data-hpick],[data-hgo],[data-hguess],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hpin],[data-hdone],[data-unpin],[data-pindid],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-ccolor],[data-cemoji],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cdates],[data-cmonth],[data-cpick],[data-cdone],[data-cevery],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
   if(!t){ return }
   const D=t.dataset;   /* every clickable in the app routes through here */
 
@@ -3307,7 +3832,10 @@ document.addEventListener("click",ev=>{
   }
   /* tapping into the month either side moves the calendar there, rather than
      selecting a day the grid isn't showing */
-  if(D.day){ S.selDate=D.day; S.month=D.day.slice(0,7); render(); return }
+  /* Tapping a date is a request to see that date, so it brings the sheet back
+     up if you'd put it away. */
+  if(D.day){ S.selDate=D.day; S.month=D.day.slice(0,7);
+    S.calShut=false; S.calDismissed=false; render(); return }
   if(D.goday){ S.selDate=D.goday; S.month=D.goday.slice(0,7);
     S.dayBack = (S.tab==="day"?S.dayBack:S.tab); S.tab="day"; render(); return }
   if(D.ev){ sheetEvent(Number(D.ev)); return }
@@ -3378,12 +3906,35 @@ document.addEventListener("click",ev=>{
   }
   if(D.reset){ S=fresh(); render(); toast("Back to the seeded week."); return }
   /* ---- conditions ---- */
+  if(D.cdates&&sheetCtx&&sheetCtx.cond){
+    sheetCtx.name=($("condName")||{}).value ?? sheetCtx.name;
+    sheetCtx.pickMonth=sheetCtx.date.slice(0,7); sheetCtx.anchor=null;
+    sheetDatePick(sheetCtx); return;
+  }
+  if(D.cmonth&&sheetCtx&&sheetCtx.cond){
+    let [y,m]=(sheetCtx.pickMonth||sheetCtx.date.slice(0,7)).split("-").map(Number);
+    m+=Number(D.cmonth); if(m<1){m=12;y--} if(m>12){m=1;y++}
+    sheetCtx.pickMonth=`${y}-${String(m).padStart(2,"0")}`;
+    sheetDatePick(sheetCtx); return;
+  }
+  if(D.cpick&&sheetCtx&&sheetCtx.cond){
+    if(!sheetCtx.anchor){ sheetCtx.anchor=D.cpick }
+    else {
+      const a=sheetCtx.anchor, b=D.cpick;
+      const from=a<=b?a:b, to=a<=b?b:a;
+      sheetCtx.date=from; sheetCtx.span=daysBetween(from,to)+1;
+      sheetCtx.anchor=null;
+    }
+    sheetDatePick(sheetCtx); return;
+  }
+  if(D.cdone&&sheetCtx&&sheetCtx.cond){
+    sheetCtx.anchor=null; sheetCondition(sheetCtx.exId); return;
+  }
   if(D.newcond){ sheetCtx=null; sheetCondition(null); return }
   if(D.editcond){ sheetCtx=null; sheetCondition(D.editcond); return }
   if(sheetCtx&&sheetCtx.cond&&(D.ccolor||D.cemoji!==undefined||D.cspan||D.ccap||D.ccapstep||D.cevery!==undefined||D.cdir!==undefined)){
     /* keep what's been typed before the sheet redraws */
     sheetCtx.name=($("condName")||{}).value ?? sheetCtx.name;
-    sheetCtx.date=($("condDate")||{}).value || sheetCtx.date;
     if(D.ccolor) sheetCtx.color=D.ccolor;
     if(D.cemoji!==undefined) sheetCtx.emoji=D.cemoji||null;
     if(D.cspan)  sheetCtx.span=Math.max(2,Math.min(60,sheetCtx.span+Number(D.cspan)));
@@ -3408,7 +3959,7 @@ document.addEventListener("click",ev=>{
     }
     const name=(($("condName")||{}).value||"").trim();
     if(!name){ toast("Give it a name first."); return }
-    const date=($("condDate")||{}).value||sheetCtx.date;
+    const date=sheetCtx.date;
     const patch={name, date, span:sheetCtx.span, cap:sheetCtx.cap||null,
                  every:sheetCtx.every||null, color:sheetCtx.color,
                  dir:sheetCtx.dir||null, emoji:sheetCtx.emoji||null,
@@ -3547,12 +4098,46 @@ document.addEventListener("click",ev=>{
     sheetCtx.skip=(sheetCtx.skip||0)+1; sheetHelp(); return;
   }
   if(D.hwiden&&sheetCtx&&sheetCtx.help){ widen(sheetCtx); sheetHelp(); return }
+  if(D.hpin&&sheetCtx&&sheetCtx.help){ sheetCtx.pin=!sheetCtx.pin; sheetHelp(); return }
+  if(D.unpin){ pinRemove(decodeURIComponent(D.unpin)); render(); return }
+  if(D.pindid){
+    const n=decodeURIComponent(D.pindid);
+    S.helped=Object.assign({},S.helped||{},{[n]:((S.helped||{})[n]||0)+1});
+    S.didIt=Object.assign({},S.didIt||{},{[n]:TODAY});
+    render(); toast("Good. That one comes up first next time."); return;
+  }
   if(D.hdone){
     /* "that one helped" is the only thing this screen learns from, and it's the
        same shape as marking an event draining: your word, weighted over time */
     const n=decodeURIComponent(D.hdone);
     S.helped=Object.assign({},S.helped||{},{[n]:((S.helped||{})[n]||0)+1});
-    closeSheet(); render(); toast("Noted — that one comes up first next time."); return;
+    let dropped=null, pinning = D.hpinned==="1" && !isPinned(n);
+    if(pinning) dropped=pinAdd(n);
+    closeSheet(); render();
+    toast(pinning
+      ? (dropped
+         ? `Pinned. “${short(dropped)}” dropped off — three is all the home screen holds.`
+         : "Pinned to your home screen.")
+      : "Noted — that one comes up first next time.");
+    return;
+  }
+  if(D.calyear!==undefined){
+    S.calYear = D.calyear==="1"; S.calY = Number(S.month.slice(0,4)); render(); return }
+  if(D.ymon){ S.month=D.ymon; S.calYear=false; render(); return }
+  if(D.yyear){ S.calY=(S.calY||Number(S.month.slice(0,4)))+Number(D.yyear); render(); return }
+  if(D.dsopen){ S.calShut=false; S.calDismissed=false; render(); return }
+  if(D.today){ S.selDate=TODAY; S.month=TODAY.slice(0,7);
+    S.calShut=false; S.calDismissed=false; render(); return }
+  if(D.cals){ sheetCals(); return }
+  if(D.calcount){
+    const n=decodeURIComponent(D.calcount), free=S.freeCals||[];
+    S.freeCals = free.indexOf(n)<0 ? free.concat(n) : free.filter(x=>x!==n);
+    projCache=null; sheetCals(); render(); return;
+  }
+  if(D.calshow){
+    const n=decodeURIComponent(D.calshow), hid=S.hiddenCals||[];
+    S.hiddenCals = hid.indexOf(n)<0 ? hid.concat(n) : hid.filter(x=>x!==n);
+    sheetCals(); render(); return;
   }
   if(D.tclear){ S.tiredResult=null; render(); return }
   if(D.rectree){ sheetRecovery(); return }
@@ -3597,8 +4182,17 @@ document.addEventListener("click",ev=>{
     return;
   }
   if(D.book){ const [pid,d]=D.book.split("|"); sheetBook(pid,d); return }
+  if(D.undo){
+    const [kind,arg]=D.undo.split("|");
+    if(kind==="heads") S.hidHeads=null;
+    if(kind==="plan") S.plannedFor=(S.plannedFor||[]).filter(x=>x!==arg);
+    hideToast(); render(); return;
+  }
+  if(D.hideheads){ S.hidHeads=TODAY; render();
+    toast("Hidden for today.","heads"); return }
+  if(D.budget){ sheetBudget(D.budget); return }
   if(D.noplan){ S.plannedFor=(S.plannedFor||[]).concat(D.noplan); render();
-    toast("Fine. It'll mention it again another week."); return }
+    toast("We'll check in the next time you have a free day.","plan|"+D.noplan); return }
   if(D.dobook){
     const [pid,d]=D.dobook.split("|");
     const spec=plannedById(pid);

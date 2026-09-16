@@ -291,10 +291,10 @@ The cost of four batteries was also concrete: the forecast becomes four curves,
 and *"you're at 22 of 30 going into a week that needs 26"* stops being sayable.
 That sentence is the app.
 
-**What types do instead:** a **read-only diagnostic** — four greyscale bars
+**What types do instead:** a **read-only diagnostic** — four grayscale bars
 showing what the week ahead asks of you, ordered, with a line like *"Social is
 over half of what the next 7 days ask of you."* No arithmetic, no second number
-to track. Greyscale deliberately, so it never competes with the red/amber/green
+to track. Grayscale deliberately, so it never competes with the red/amber/green
 affordability signal. Types also still drive recovery matching (§7).
 
 **Considered and parked: saturation.** One battery, but recent same-type load
@@ -408,7 +408,7 @@ The history has to grow from real use or the flags never earn their authority.
 - **One tap is still enough to agree.** A tap that doesn't move the thumb counts
   as an answer — that's why the row listens for `click` as well as `input` —
   so *about right* costs a tap and Done, not a drag away and back.
-- **A centred window, not a drawer.** Every other panel slides up because you
+- **A centerd window, not a drawer.** Every other panel slides up because you
   reached for it; this one is the app asking *you* something, so it arrives as a
   dialog in the middle of the screen. *(A closed drawer is off-screen and harmless;
   a closed window is still sitting in the middle at opacity 0, and opacity doesn't
@@ -883,7 +883,7 @@ No score, so the payoff is **language and evidence**:
 The per-type diagnostic under the arc (§5) is as far as insight goes, and no
 export or shareable summary is wanted. The app stays small.
 
-**Caveat to honour in the copy:** if the app is mostly opened during worrying
+**Caveat to honor in the copy:** if the app is mostly opened during worrying
 weeks, the data over-represents bad weeks. Insights stay descriptive — "in the
 stretches you've logged…" — and never claim to know someone's whole life.
 
@@ -911,13 +911,13 @@ everything the app happens to know. In order:
 Laid out from Ferri's sketch, 13 Sept 2026:
 
 1. Date, with a **gear** rather than the word "settings"
-2. **A centred column** — the charge large and alone, the sentence beneath it,
+2. **A centerd column** — the charge large and alone, the sentence beneath it,
    then a pill **Log**. The placeholder artwork box is gone; the number is
    the thing you see first.
 3. **This week's arc**, chart and day cells **inside one bordered container**,
    divided rather than floating as separate boxes
 4. **Heads up**
-5. Tasks, unlabelled
+5. Tasks, unlabeled
 
 **Heads up names the day and suggests a move — no numbers.** The card used to
 read "Monday is asking for more than you'll have" over two figures. Both were
@@ -1014,7 +1014,7 @@ Booking one changes the forecast immediately: a Nothing day on Sunday moved
 Monday from *"your spoons run out in the evening"* to *"holds together, but
 leaves you nothing to spare."* The run-up is where the day gets rescued.
 
-**A window, not a drawer.** Tapping an event opens a centred modal over the
+**A window, not a drawer.** Tapping an event opens a centerd modal over the
 dimmed day — the same treatment the post-event ask uses. The distinction is
 whether the app is holding one thing still in front of you or handing you a tray
 you reached for: deciding about Deep work block is the former, so the panel sits
@@ -1048,7 +1048,7 @@ what it takes to decide whether to open it.
 > │ at.                                      │
 > └──────────────────────────────────────────┘
 
-Amber, because that's the "you'll pay for it" zone colour and this is the app
+Amber, because that's the "you'll pay for it" zone color and this is the app
 being unsure rather than certain. The detail — each event, what you've actually
 come out at, and what the week costs if those rates are right — opens as a
 modal. Rows still lead to the cost sheet, so accepting a number is two taps.
@@ -1106,7 +1106,7 @@ compare before you learn anything, and the thing you actually wanted to know was
 | ↘↘↘ | heavy — 0.25 and up |
 | ↗ ↗↗ ↗↗↗ | the same, for something that gives back |
 
-**Three bands, because light / medium / heavy is the whole judgement anyone makes
+**Three bands, because light / medium / heavy is the whole judgment anyone makes
 from a cost.** A fourth arrow would be a digit wearing a costume. The boundaries
 sit where the printed figures used to fall, so an event that read "3" gets three
 arrows — the bands are a coarser view of the same scale, not a different opinion
@@ -1248,7 +1248,7 @@ lets you say outright that it's free. One is the app learning, the other is you
 telling it.
 
 **Two channels on one chip.** Two things are worth knowing about an event and
-only one of them deserves a whole colour.
+only one of them deserves a whole color.
 
 The **fill** says what it does to you — the only thing this app has an opinion
 about:
@@ -1260,17 +1260,17 @@ about:
 | red | draining |
 | green | gives back |
 
-The **notch** — three pixels of colour down the left edge — says which calendar it
+The **notch** — three pixels of color down the left edge — says which calendar it
 came from. That's real information, but it isn't a decision, so it gets three
 pixels instead of the whole chip. Four hues across a week was a rainbow you had
 to look past to find anything.
 
 **Dark and saturated, not the pale Google wash it started as.** These chips sit
-on a coloured day cell; a deep fill with light type holds its edge against a
+on a colored day cell; a deep fill with light type holds its edge against a
 gradient where a pastel one dissolved into it. The stroke went light, too — a
 navy outline round a navy chip is a chip with no edge.
 
-Only a condition **you** made keeps the colour you gave it, and with it the dark
+Only a condition **you** made keeps the color you gave it, and with it the dark
 type it was designed for. A multi-day thing off the calendar is still an event
 and gets read like one: "Replenish mana" is green because it gives back, with a
 teal notch because it's on your Personal calendar. In the month grid the bars are
@@ -1281,8 +1281,8 @@ use.)*
 
 ### The zone is a rule; the chips are a stoplight
 
-Three passes to get here. The zone colour started as a wash ramping from 12% down
-a cell, which made a week read as blocks of saturated colour with the events
+Three passes to get here. The zone color started as a wash ramping from 12% down
+a cell, which made a week read as blocks of saturated color with the events
 floating on top — the biggest thing on screen saying the smallest thing. Then a
 band at the bottom. Now, on both the forecast strip and the month grid, **3px
 across the top of the day and nothing else.**
@@ -1305,7 +1305,7 @@ selection and by the adjacent-month dimming.
 
 **The two systems overlap on purpose.** A day whose rule is amber is a day you'll
 pay for; a chip that's amber is the thing making you pay. Magenta over the day,
-red on the chip; teal over the day, green on the chip. One colour language at two
+red on the chip; teal over the day, green on the chip. One color language at two
 scales, agreeing in direction — which is why the collision reads as reinforcement
 rather than as two palettes fighting.
 
@@ -1314,7 +1314,7 @@ invitation carries. The hues warmed from pure stoplight toward gold, emerald,
 crimson and periwinkle — the same four meanings, less traffic sign. Conditions
 you made keep **your** hue but deepened to the same weight (`deepen(hex, .62)`),
 because a pastel bar with dark type was the last thing on screen still dressed as
-a Google Calendar event; the notch keeps the colour you actually picked.
+a Google Calendar event; the notch keeps the color you actually picked.
 
 ### Libre Franklin for the working type
 
@@ -1353,13 +1353,13 @@ They're drawn on the background layer, so a single line runs the full height
 behind the header, the banners and the events instead of restarting at every row —
 and the spans and the chips share one inset, so a banner's left edge lands on the
 notches below it. The Garamond date gets larger now that it isn't
-competing with a rectangle. The coloured rule over each day is the only fill
+competing with a rectangle. The colored rule over each day is the only fill
 left, and the **notch survives because it was never the noisy part**: three
 pixels of calendar identity was always the right size for it.
 
 Multi-day spans stay filled, because they're banners rather than events — a
 condition *is* a block of the week. At seven columns the chips have no room for
-names, so there they're flat bars in the state colour rather than chips with
+names, so there they're flat bars in the state color rather than chips with
 strokes.
 
 The month grid keeps its boxes. It really is a calendar.
@@ -1401,6 +1401,197 @@ outranks everything — before any learned preference. Check *social battery* an
 That's the payoff for the extra taps, and the reason the counter is elastic:
 `1 / 3` until you check something with a too-much/too-little split, then `1 / 4`.
 
+### The calendar becomes a screen, 16 Sept 2026
+
+From Ferri's sketch. The old calendar was a *page*: a month, then an agenda, then
+a look-ahead note, then conditions, then a tasks button, all scrolling past each
+other. Nothing on it knew it was the most spatial screen in the app.
+
+**The month fills what's there.** Nothing above it but its own name.
+
+**No arrows.** You swipe. A swipe has to be sideways and decisive — more than
+45px, and more than 1.4× the vertical movement — or every scroll would turn the
+page and every tap on a day would be a coin toss. Re-rendering detaches the cell
+under your finger before its click can fire, so a swipe never also picks a day.
+
+**The month's name is a button.** It opens a year of months, because scrubbing
+eleven times to reach next August is not navigation.
+
+**The day is a sheet over the bottom of the month**, and the handle does three
+things by how far you pull it: **up** into the day view, **down** out of the way,
+**tap** to toggle. Put away, it leaves a **(!)** — the day is still there, it's
+just not in front of the month.
+
+**Calendar and tasks share a header.** Two icons, top right. They're two views of
+the same question — what's coming — so flipping between them belongs up there,
+not at the bottom of one of them. That replaces the *back* button Tasks had for
+about twenty minutes.
+
+**Where conditions go — the answer is: with the day.** They were a list at the
+bottom of the calendar page, which made them look like settings. But you never
+add a condition in the abstract; you add one *about some days*, and by the time
+you're doing it you're already looking at those days. So a condition covering the
+selected day appears at the top of its sheet, tappable to edit, and `+ add a
+condition` is the last thing in the sheet. The month grid keeps drawing them as
+spans across the top of each row, which is where you actually see them.
+
+**Tasks due on the selected day show in the sheet too**, under the events with
+their ticks. They're the only part of the tasks page with a date on it, and this
+is the screen about dates.
+
+### A month you can read, 16 Sept 2026
+
+Ferri, holding up Google Calendar: *"the thing I like about it is the month view —
+I can see my events laid out for me, even if they're cut off."*
+
+**The bars become chips with names in them.** The old month drew each event as a
+3px bar in its state color, which told you how much the day costs — a thing the
+zone rule across the top of the cell was already saying. What it couldn't tell
+you is WHAT is on the day, which is the question you open a month to answer. Now
+each one is a chip carrying its name, clipped at the cell edge. Cut off is fine:
+four characters of *Dentist* is enough to know it's the dentist. The chips keep
+both channels — fill for what it does to you, notch for which calendar — so
+nothing was traded away for the words.
+
+**Edge to edge, and taller.** 104px rows, no side padding on the grid, and the
+whole month fits without scrolling.
+
+**The month opens whole.** The day sheet starts closed and arrives when you tap a
+date. That's what makes the two asks compatible: you can't show six rows of a
+month and a sheet over the bottom of it at the same time, and the month is what
+you came for.
+
+**The (!) is what a dismissal leaves behind**, so it only appears once you've put
+a day away — not as a permanent control on a screen where you've never opened
+one. Tapping a date clears it.
+
+**"3 things have been draining you" moves to the forecast.** It was on the
+calendar because that's where there was room. It belongs with the charge and the
+blurb: it's a statement about your state, not about your month.
+
+### Tasks under Calendar, Reset in, 16 Sept 2026
+
+**Tasks loses its tab and becomes a sub-page of Calendar** — the same shape as
+the day view, reached from a button at the foot of the month and returning with
+*back*, with the Calendar tab lit the whole time. It was parked outright for
+about an hour first, and the middle position is the better one.
+
+What made Tasks feel like productivity software wasn't the feature, it was the
+**tab**: a permanent slot in the bar, greeting you with a list of things you
+haven't done, given equal billing with where-you-stand. Behind Calendar it's a
+reference you go and look up, which is what it always was — a thing with a
+deadline is calendar-adjacent whether or not it has a time. Nothing else
+depended on the tab: every projection already filters tasks out of the cost
+model, so this changed no number anywhere.
+
+**Reset takes its slot.** The help side of the app was scattered — pinned things
+and the quiz sat on the forecast, and the tree itself was two taps deep inside a
+sheet, reachable only by rejecting a suggestion. Now each tab has one job:
+
+| | |
+|---|---|
+| Forecast | where you stand |
+| Calendar | what's coming — and, one level down, the day view and tasks |
+| Reset | what to do about it |
+| Log | what happened |
+
+**Fastest path first.** Pinned things, then the quiz, then the whole list — in
+descending order of how much thinking each one asks of you. The page opens on
+something you've already said works; the quiz is there if you don't know; the
+tree is there if the quiz is wrong.
+
+**The forecast keeps nothing but a door.** Its "I'm overwhelmed" pill is now a
+*Reset* pill that opens the tab, because a screen that tells you where you stand
+shouldn't also be the screen that helps. **Burnout mode is the exception** and
+keeps its inline copy of the pins and the quiz: when you're crashed, being sent
+to another tab is one navigation too many, and that mode exists precisely to
+remove steps.
+
+**The name is Ferri's.** *What helps* was the alternative and would have matched
+the card label; *Reset* won because it's a verb. It does collide with the reset
+button in Settings, which is a thing to watch if that ever moves anywhere visible.
+
+### Pinning an answer, 16 Sept 2026
+
+At the end of the quiz there's now an option — *"This seems helpful · Keep it on
+my home screen"* — and what it pins shows under **What helps you**, on the
+forecast and in burnout mode both.
+
+**It's a checkbox, not a second button.** The answer screen already has *Okay*,
+*Something else* and *Start over*; a fourth button competing with *Okay* would
+make you choose between two ways of saying yes. So the pin is a thing you select
+before you tap Okay, and if you don't select it nothing changes.
+
+**The point is to skip the quiz.** Four questions is a reasonable price the first
+time. It is not a reasonable price every time, for a thing you already know works
+— and being asked is exactly the executive function you came to that screen
+without. Something already pinned says so on the answer screen instead of
+offering to pin it again.
+
+**Three at most.** Not an arbitrary cap: a list is a decision, and this screen
+exists so you don't have to make one. A fourth pin pushes the oldest off and the
+toast says which, rather than refusing you at the worst possible moment.
+
+**It sits above the week**, under the check-in pills, because if you're reaching
+for it you are not reading a forecast.
+
+**One card each, not rows in a list.** Ferri's markup, 16 Sept. Each of these is
+a separate thing you might go and do; sharing one box makes them read as a list
+to get through, which is the opposite of the point. Each card carries a **×** at
+the top right and an **"I did it!"** at the bottom right — remove and confirm at
+opposite corners, so neither is the one you hit by accident.
+
+**"I did it!" is the same signal as *Okay* in the quiz** — your word that a thing
+worked — so it feeds the same weighting, and the card then reads *"You did this
+today"* until tomorrow. That's memory, not scorekeeping: nothing counts up,
+nothing is owed, and an untouched card never says so.
+
+**Ferri's rewrite of the answers, 16 Sept 2026.** Fourteen of the thirty items
+rewritten in place, through an editable copy of the flowchart. Most of it is the
+same move: an item that named a state became an item that names an action. *Lie
+down* → *"Sit down or lie down for a few minutes, breathe deeply and close your
+eyes. Check in with yourself…"*; *Dark room and lie down* → *"Sit in a dark room
+for a bit and let yourself zone out."*; *A spiritual practice of some kind* →
+a sentence that also tells you what to do if you haven't got one. The answer
+screen shows one line in large type, and a line that describes a condition
+leaves you to work out the action yourself — which is the executive function you
+came to this screen without.
+
+**Two consequences that weren't the point of the rewrite:**
+
+1. **The tree no longer has an overlap.** *Alone time* appeared in both Social ·
+   too much and Emotionally taxing, identically, which is what made the ×100
+   overlap bonus and *"Answers both at once."* fire. Emotionally taxing's copy is
+   now *"Budget in some alone time."* — better English, but no longer the same
+   string, and the strings are all the matcher has. No two items in the tree match
+   now, so that whole branch of the answer copy is currently unreachable.
+2. **`anywhere` clears the capacity question entirely**, which is what it's for —
+   but that includes *"I can't really get up"*. *Exercise* tagged `any` means the
+   quiz now answers "can't get up, physically worn out, an hour" with **Exercise**.
+   The tag means *the place doesn't matter*, not *the body doesn't matter*.
+
+**`anywhere` — a fourth answer to "what does this ask of you", 16 Sept 2026.**
+The three original values are a ladder: `down` → `in` → `out`, each one containing
+the ones below it. Some items aren't on that ladder at all. Breathing doesn't
+care whether you're on the floor, at the kitchen table or on a train, and tagging
+it `down` was only ever a way of saying "this passes every filter" — it described
+the *filter behavior* rather than the item. So `any` sits below the scale at
+rank −1: it always survives question three, and it now says the true thing about
+the item. Nothing else in the model changes, because `NEEDS_RANK` is only ever
+read to compare an item against the answer.
+
+**Rewriting the tree in place, 15 Sept 2026.** *Shake it out* joins *sat still
+all day*, and it closes a real hole: that branch was **take a walk** and
+**exercise**, both `out`, so sat-still-all-day plus can't-face-the-door got
+nothing and fell through to the nearest-thing fallback. `in` / `mins` is the
+cheapest thing in the tree.
+
+The two social branches lose their explanations: *"Talking to people a lot"* →
+**"Socializing a lot"**, *"Lonely, not enough that meant anything"* →
+**"Lonely"**. These are buttons you read at your worst, and the second clause was
+doing the work of a subtitle on a control that has no room for one. Lonely is a
+word you either recognize in yourself or you don't.
+
 **Tailoring without asking.** The week's own answer is marked `likely` on question
 one, so the first tap is usually confirming rather than deciding — and *"I don't
 know, go on my week"* takes it outright. The answer pool is the tree, which is
@@ -1436,24 +1627,24 @@ recovery tree (§7). If the instinct persists, that's evidence the costing
 taxonomy is missing one.
 
 **Day cells read like a calendar week view** (Google Calendar as the
-reference): day name, date, then the day's events as coloured chips.
+reference): day name, date, then the day's events as colored chips.
 
-- **Chips take the calendar's own colour**, Google's palette, so the week looks
+- **Chips take the calendar's own color**, Google's palette, so the week looks
   like the calendar it mirrors. **Affordability is the cell background** —
-  green / amber / red tint on the whole container. One colour system describes
+  green / amber / red tint on the whole container. One color system describes
   *where an event came from*, the other *how the day lands*, and they occupy
   different surfaces (fill vs. chip) so they can't be confused.
 
-  *Parked 13 Sept 2026:* per-event colour isn't worth chasing until the app is
+  *Parked 13 Sept 2026:* per-event color isn't worth chasing until the app is
   in real use on a phone. Revisit then.
 
-  *Constraint worth knowing:* **EventKit exposes the CALENDAR's colour, not
-  per-event colours.** Google's per-event `colorId` is only available through
+  *Constraint worth knowing:* **EventKit exposes the CALENDAR's color, not
+  per-event colors.** Google's per-event `colorId` is only available through
   the Google Calendar API directly — which would reopen the OAuth path §10 closed.
-  So on the chosen native route, chips are coloured by which calendar an event
-  sits on (Work / Personal / Social / Health), not by individual event colour.
+  So on the chosen native route, chips are colored by which calendar an event
+  sits on (Work / Personal / Social / Health), not by individual event color.
 - **Labels appear only when they'd be readable.** At seven columns a cell is
-  ~50px, so chips are bare colour bars; at three or four they carry names. The
+  ~50px, so chips are bare color bars; at three or four they carry names. The
   strip has to stay aligned to the arc above, so the cells can't scroll to make
   room.
 - **Three chips then "+2"**, so a heavy day doesn't stretch the row.
@@ -1482,7 +1673,7 @@ reference): day name, date, then the day's events as coloured chips.
 
 **The per-day charge number left the cell.** The arc directly above carries the
 shape, Heads up names the numbers for the day that matters, and the day view has
-the detail. Affordability survives as the colour of the date.
+the detail. Affordability survives as the color of the date.
 
 ### The horizon is switchable
 
@@ -1493,7 +1684,7 @@ and had to carry a background patch to stay legible over the grid; on the label
 row it obscures nothing and needs none.
 
 **The horizon is yours to pick, full stop** — there's no "auto" option. The
-shrink-as-you-drain behaviour from §8 survives in its strongest form (below the
+shrink-as-you-drain behavior from §8 survives in its strongest form (below the
 bottom threshold the week is hidden entirely and you get today only), but the
 intermediate 7→3 step is gone. A view that silently changes length is worse than
 one you chose, and having to hand control *back* to the app was the odd part of
@@ -1543,7 +1734,7 @@ flare than *"you happen to be low."*
 Stated on the banner and in the sentence, which takes it over entirely while
 it's in force.
 
-**Banners look like calendar bars** — solid fills in the event's colour, exactly
+**Banners look like calendar bars** — solid fills in the event's color, exactly
 like the chips. An earlier build distinguished capped from uncapped conditions
 with a dashed vs solid border; that was a distinction the label already makes
 ("Flare · max 6"), so it went.
@@ -1554,7 +1745,7 @@ with a dashed vs solid border; that was a distinction the label already makes
 |---|---|---|
 | comes from | your calendar | Spoon |
 | e.g. | a holiday, a trip you've booked | a period, a flare, seeing your parents monthly |
-| name / dates / colour | **read-only** — edited in the calendar | yours |
+| name / dates / color | **read-only** — edited in the calendar | yours |
 | direction, ceiling | yours (Spoon-side annotations) | yours |
 | repeats | no — the calendar handles that | yes |
 | delete | in your calendar | here |
@@ -1568,10 +1759,10 @@ Spoon's: which way it pushes you, and whether it caps you.
 **The marker is an emoji you choose**, and it's what tells the two kinds apart
 at a glance — 🩸 🌙 🤒 🛏️ ✈️ 🏠 and so on, or none. Better than another border
 style: it's personal, it carries meaning nothing else on the strip does, and it
-never competes with the colour system.
+never competes with the color system.
 
 **Conditions are pills; calendar spans are rectangles** like the chips. Shape
-carries the difference before you've read anything — and unlike colour or a
+carries the difference before you've read anything — and unlike color or a
 border style, it costs nothing and can't be confused with the affordability
 signal.
 
@@ -1579,7 +1770,7 @@ signal.
 same height, no label. There's no room to read one at that width, and the bar
 already says the thing that matters: this stretch is spoken for. Its name is one
 tap away in the read-only sheet, and it comes back in full at one and three
-days, where the chips are labelled too.
+days, where the chips are labeled too.
 
 **A condition keeps its words at every width.** *"Flare · max 6"* is a claim
 about the week you can't check anywhere else, so it stays legible even when the
@@ -1597,7 +1788,7 @@ it never fills up with calendar entries.
 ### Creating and editing conditions
 
 Tap a banner on the forecast, or the **Conditions** card on the Calendar screen,
-which lists them all and adds new ones. The editor takes: name, a colour from
+which lists them all and adds new ones. The editor takes: name, a color from
 Google's palette, start date, length in days, **which way it pushes you**,
 and whether it **repeats** (never / weekly / every 28 days). Delete lives there
 too.
@@ -1631,7 +1822,7 @@ so this is a ceiling you can plan for."*
   planning-shaped, and planning is what that screen is for.
 
 **Also cut:** the placeholder artwork boxes in the day strip. Day letter, number
-and colour bar carry it; the illustrations can come back when they exist.
+and color bar carry it; the illustrations can come back when they exist.
 
 ### Forecast (home)
 
@@ -1660,7 +1851,7 @@ problem better than careful copy can.
 Where costs get set: tap an event, price it. No separate estimation flow.
 
 - **The month is a month.** One continuous hairline grid, tall cells, the date
-  centred at the top, the day's events as thin colour bars inside it, and the
+  centerd at the top, the day's events as thin color bars inside it, and the
   last week padded out so the block is a rectangle. It was a row of small
   rounded boxes with the number jammed in a corner, which read as a toolbar and
   left no room to show what was in a day — the thing you open a calendar to see.
@@ -1677,7 +1868,7 @@ Where costs get set: tap an event, price it. No separate estimation flow.
   their tint and their events, quietened by an inset wash — not by `opacity`,
   which would have dimmed their grid lines too, recreating the exact problem.
   Tapping one moves the calendar to that month.
-- **Colour goes on the day block, not the events.** Matches the weather framing,
+- **Color goes on the day block, not the events.** Matches the weather framing,
   survives half the events being unpriced, and keeps a busy surface quiet.
 - **The day block and the forecast icon are two expressions of one number** — not
   "how busy is this day" but *how affordable is this day given the charge you'll
@@ -1686,8 +1877,8 @@ Where costs get set: tap an event, price it. No separate estimation flow.
   enough info. Unestimated must be visibly unestimated — painting it neutral
   would be a lie.
 - **No dashed or dotted rules anywhere.** A half-estimated day used to carry a
-  dashed outline; the unpriced event now shows as a **grey chip** among the
-  coloured ones instead, which says *which* thing has no estimate rather than
+  dashed outline; the unpriced event now shows as a **gray chip** among the
+  colored ones instead, which says *which* thing has no estimate rather than
   just that something doesn't. The crossing line, the threshold line on the arc
   and the "add" chip lost their dashes too — they were all reaching for the same
   "provisional" idea with a texture that reads as damage on a dark ground.
@@ -1695,9 +1886,9 @@ Where costs get set: tap an event, price it. No separate estimation flow.
   so the cell is what lights up — better than ringing the number, which had to
   compete with today's filled circle for the same 19px.
 - **The tint rises from the bottom of the cell.** A month cell is tall enough to
-  hold a gradient, and a flat wash of saturated colour at this size fights the
+  hold a gradient, and a flat wash of saturated color at this size fights the
   day number and the chips for the same space. Ramping it leaves the top of every
-  cell quiet enough to read while the colour still arrives at full strength.
+  cell quiet enough to read while the color still arrives at full strength.
   The forecast strip does the same thing, with one difference: its tint is
   painted **once, behind the whole column** — header, banner band and chips —
   rather than per row. Painting each row separately restarted the ramp at every
@@ -1706,15 +1897,15 @@ Where costs get set: tap an event, price it. No separate estimation flow.
 - **The calendar hues are lightened** to hold against that stronger ground, which
   flipped their labels: chip and banner text is now dark navy rather than white.
 - **Every event carries an indigo stroke.** Against a saturated day the pale
-  chips were melting into the colour behind them. The stroke is pitched at the
+  chips were melting into the color behind them. The stroke is pitched at the
   value of the ground near the *top* of the screen, not the darkest navy — at
   near-black it read as a cut-out punched through the day; at this value it
   reads as the background showing between the events.
   Same treatment on the month grid's bars and on the condition banners.
-- **Events keep a cost figure in the day's agenda, not a colour.** The day block
+- **Events keep a cost figure in the day's agenda, not a color.** The day block
   answers "how heavy," tapping it answers "because of what" — which is what
   triage needs.
-- **Type** (social / sensory / executive / physical) rides a small glyph. Colour
+- **Type** (social / sensory / executive / physical) rides a small glyph. Color
   can only carry one variable legibly, and intensity is the scan question.
 - **Open blocks are shown.** White space is the recovery input; the gaps are
   data.
@@ -1742,8 +1933,8 @@ leave you empty by 3:40, which makes the cheap evening thing the real problem.
 - **Rehearse-a-change lives at the bottom** — "what if I moved something?" This
   is the screen where moving one thing visibly repairs the curve.
 - **A now line**, on today only — a current-time marker on a future day means
-  nothing. Deliberately **neutral in colour**: green/amber/red mean affordability
-  here, so borrowing one for the clock would read as a judgement about the time
+  nothing. Deliberately **neutral in color**: green/amber/red mean affordability
+  here, so borrowing one for the clock would read as a judgment about the time
   of day. The arc carries a matching tick.
 - **At one day the arc is a 24-hour clock**, edge to edge: a faint line every
   hour, a stronger one with a label every four — **12am** / 4am / 8am / 12pm /
@@ -1762,7 +1953,7 @@ leave you empty by 3:40, which makes the cheap evening thing the real problem.
   are here" dot well to the left of where the clock said you were — 4:45pm
   landed at 44% of the day instead of 70%. One axis now, at every horizon.
 - **The dot marks where you are now**, and walks the curve as the day goes by. It
-  used to mark the week's lowest point — but the colour and the heads-up card
+  used to mark the week's lowest point — but the color and the heads-up card
   already say where the trouble is, and a marker that never moves teaches you
   nothing.
 - **Nothing is filled under the curve.** The shaded area added weight without
@@ -1862,7 +2053,7 @@ Instead of fourteen items and dread, three that fit.
 - **Notched track, and the thumb snaps to the notches.** The scale is whole
   numbers, so the slider's own range *is* the scale — one step per mark. Without
   that, a drag smears a value rather than picking one, and the readout word is
-  the only sign anything discrete happened. The coloured track is drawn *behind*
+  the only sign anything discrete happened. The colored track is drawn *behind*
   the input rather than by it, so the marks can sit on the track while the thumb
   still passes over the top of them — painted the native way, the thumb dragged
   underneath its own tick marks.
@@ -1919,10 +2110,10 @@ line under a screen title is describing the screen, so it's sans, and bright
 enough to read as instruction rather than as a footnote. Garamond runs small, so the display
 sizes went up a step or two; nothing else about the layout moved.
 
-**The zone colours are teal / magenta / gold**, from Ferri's palette — the green
+**The zone colors are teal / magenta / gold**, from Ferri's palette — the green
 skewed teal, the red skewed magenta, the amber skewed golden, and all three
 deeper and more saturated than the muted set they replaced. On a dark ground a
-desaturated hue just reads as grey with a tint, and these have to carry meaning
+desaturated hue just reads as gray with a tint, and these have to carry meaning
 at chip size. Gold is the brightest of the three, so its tint is pulled down to
 sit level with the others: *"you'll pay for it"* must not outshout *"over"*.
 
@@ -1961,7 +2152,7 @@ standalone at a cost of a few hundred KB.
 
 Charge and costs are stored as fractions of max at full resolution and rounded
 once at render (§4). Working: the projection, the blurb engine, day-block
-colouring, the week arc, the computed day gradient, the cost sheet,
+coloring, the week arc, the computed day gradient, the cost sheet,
 rehearse-a-change with real what-if simulation, the charge slider, the
 rough-night refill withholding, all four scales, and recovery mode below the
 bottom threshold.
