@@ -1439,6 +1439,50 @@ spans across the top of each row, which is where you actually see them.
 their ticks. They're the only part of the tasks page with a date on it, and this
 is the screen about dates.
 
+### Second pass on the calendar, 16 Sept 2026
+
+**One span row, everywhere.** A multi-day thing reads the same in the day sheet
+and the day view: the calendar's dot, the name, **Day 3 of 5**, and what kind of
+thing it is — *Personal* for one from your calendar, *Condition* for one of
+yours. The day view's filled bars are gone; they were the last of the
+Google-Calendar treatment on that screen. "5 days" told you the size of the
+thing, but standing inside it what you want is how far through you are.
+
+**The name is the way in.** A row with a pencil bolted to the end of it was two
+targets for one thing.
+
+**"I can't move anything" only exists once you've tried.** It used to sit at the
+foot of every day, which presumed a conversation you hadn't had — on a day that
+holds together, nothing is asking to be moved. Now it's inside the sheet for a
+specific event, and when the week has nowhere to put that event it's *promoted*:
+that branch used to end on "nothing absorbs this" and offer nothing, which is
+the worst moment to be a dead end. The day-level way in is the sentence on the
+forecast that was already saying it — *"If you can't, build in recovery time on
+either side"* is now the link.
+
+**Tapping the figure opens the check-in.** It used to open Settings, which
+answered a different question: the common thought about "4 / 10 spoons" is that
+the number is wrong, not that the scale is. The Check in pill stays; two routes
+to the same thing is fine when one is labelled and one is a shortcut.
+
+**Swiping the day sheet moves a day**, crossing months on its own so the grid
+behind follows. Same thresholds as the month swipe, and a gesture starting on
+the grab handle still belongs to the vertical one.
+
+**Words and numbers.** The direction chips are *restorative / neutral /
+depleting*, which is the vocabulary the rest of the app already uses — "helps /
+neither / limits" was a third set of words for an idea you'd met twice. Dates
+read *September 12th – 16th*, *September 12th – October 22nd*, *December 30th,
+2026 – January 2nd, 2027*: both ends take their ordinal, and the month and year
+are each said once when once is enough.
+
+**Two explainers and two carets went.** The read-only caveat described an
+absence — there are no name or date fields on a calendar span to begin with.
+"Only a limiting condition can set a ceiling" explained why a control wasn't
+there, when the control simply appearing under *depleting* says it. The chevron
+on the drain note repeated its own "Tap to see", and the ▾ on the horizon switch
+decorated a menu that opens regardless.
+
 ### A month you can read, 16 Sept 2026
 
 Ferri, holding up Google Calendar: *"the thing I like about it is the month view —

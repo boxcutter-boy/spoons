@@ -543,16 +543,15 @@
   .calbtn.some{border-color:var(--tight);color:var(--tight)}
   .calbtn.some svg{opacity:1}
   /* a span, and where you are inside it */
-  .spanrow{display:flex;align-items:flex-start;gap:10px;padding:9px 0 10px;
-           border-bottom:1px solid var(--hair)}
-  .spanrow .sn{flex:1;min-width:0;font-size:13px;line-height:1.45;color:var(--ink)}
+  .spanlist{margin:14px 0 4px}
+  .spanrow{padding:9px 0 10px;border-bottom:1px solid var(--hair)}
+  .spanlist .spanrow:first-child{border-top:1px solid var(--hair)}
+  .spanname{font-size:13px;line-height:1.45;color:var(--ink);padding:1px 4px;margin:-1px -4px;
+            border-radius:4px}
+  .spanname:active{background:var(--surface2)}
   .spanrow .dot{display:inline-block;width:9px;height:9px;border-radius:50%;
                 margin-right:6px;vertical-align:0}
-  .spanrow .hint{font-size:11px}
-  .spanedit{flex:none;width:30px;height:30px;display:grid;place-items:center;border-radius:7px;
-            border:1px solid var(--line);color:var(--muted)}
-  .spanedit:active{background:var(--surface2);color:var(--ink)}
-  .spanedit svg{width:14px;height:14px}
+  .spanrow .hint{font-size:11px;margin-top:1px}
   .nth{margin-left:7px;font-size:10px;font-variant-numeric:tabular-nums;color:var(--faint);
         border:1px solid var(--line);border-radius:4px;padding:2px 5px;vertical-align:1px;
         white-space:nowrap}
@@ -668,6 +667,14 @@
   .strip button.sel .dl{color:var(--ink)}
   .stripgrid button.partial .dd{opacity:.7}
   /* a heading that can send its block away */
+  /* a sentence that is also the way in */
+  .sheetx{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:8px;
+          display:grid;place-items:center;line-height:1;font-size:18px;color:var(--faint)}
+  .sheetx:active{background:var(--surface2);color:var(--ink)}
+  .btnrow{display:flex;gap:9px}
+  .btnrow .btn{flex:1;min-width:0}
+  .inlink{display:inline;font:inherit;color:var(--ink);text-decoration:underline;
+          text-underline-offset:2px;text-decoration-color:var(--line-strong)}
   .labrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 7px}
   .labrow .label{margin:0}
   .xout{flex:none;width:24px;height:24px;display:grid;place-items:center;line-height:1;
@@ -1995,7 +2002,6 @@ function lookNote(days){
           : `${n} things have been draining you.`}</span>
         <span class="np">${n===1?"It's":"They're"} priced higher than you set ${n===1?"it":"them"}. Tap to see.</span>
       </span>
-      <span class="chev">\u203a</span>
     </button>
     <div style="height:22px"></div>`;
 }
@@ -2436,7 +2442,7 @@ function renderForecast(){
     strip = `<div class="striphead">
         <p class="label">${f.length===1?"Today":f.length===3?"The next few days":"This week's arc"}</p>
         <div class="hzwrap">
-          <button class="hz" data-hmenu="1">${HZ.find(h=>h[0]===f.length)?.[1]||f.length+" day"} ▾</button>
+          <button class="hz" data-hmenu="1">${HZ.find(h=>h[0]===f.length)?.[1]||f.length+" day"}</button>
           ${S.hmenu?`<div class="hzmenu">
             ${HZ.map(([n,l])=>`<button data-horizon="${n}" class="${f.length===n?"on":""}">${l}</button>`).join("")}
           </div>`:""}
@@ -2531,7 +2537,7 @@ function renderForecast(){
     else if(over){
       extra = `${labelX("Heads up",'data-hideheads="1"')}<div class="card">
         <div style="font-size:13px;line-height:1.45">${dowL(over.date)} is going to be tough.</div>
-        <div class="hint" style="margin-top:5px;font-size:12px;line-height:1.5;color:var(--muted)">Cancel or move something if you can. If you can't, build in recovery time on either side.</div>
+        <div class="hint" style="margin-top:5px;font-size:12px;line-height:1.5;color:var(--muted)">Cancel or move something if you can. If you can't, <button class="inlink" data-cantmove="${over.date}">build in recovery time on either side</button>.</div>
 
         <button class="btn" data-goday="${over.date}" style="margin-top:12px">Take a look at ${dowL(over.date)}</button>
       </div>`;
@@ -2560,7 +2566,10 @@ function renderForecast(){
       <button class="act" data-settings="1">${GEAR}</button></div>
     <div class="cond">
       ${headed?`<button class="headline" data-settings="1">${headline()}</button>`:""}
-      <button class="condbtn" data-settings="1">${chargeBlock}</button>
+      <!-- the figure is the thing the check-in changes, so tapping it is the
+           shortest sentence in the app: "this is wrong" -> tell it what you are.
+           Settings is still one tap away on the gear. -->
+      <button class="condbtn" data-checkin="1">${chargeBlock}</button>
       <p class="blurb">${blurb(headed)}</p>
       ${checkinPill(low)}
     </div>
@@ -2570,7 +2579,6 @@ function renderForecast(){
     ${extra}`;
 }
 
-const ICON_PENCIL = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 5.4 18.6 9.4"/><path d="M4.9 19.1l4.2-1 9.5-9.5a1.85 1.85 0 0 0-2.6-2.6L6.5 15.5z"/></svg>`;
 const ICON_LAYERS = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4 3.6 7.6 12 11.8l8.4-4.2z"/><path d="M3.6 12.3 12 16.5l8.4-4.2"/><path d="M3.6 16.8 12 21l8.4-4.2"/></svg>`;
 const ICON_CAL  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.3" y="5" width="17.4" height="15.6" rx="2.3"/><path d="M3.3 9.7h17.4M8.2 3.2v3.5M15.8 3.2v3.5"/></svg>`;
 const ICON_TASK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 6.1 4.6 7.5 7.4 4.6"/><path d="M10.3 6.1h10.5"/><path d="M3.2 12.6 4.6 14 7.4 11.1"/><path d="M10.3 12.6h10.5"/><path d="M3.6 19.1h3.8M10.3 19.1h10.5"/></svg>`;
@@ -2701,22 +2709,7 @@ function renderCalendar(){
         <button class="act" data-goday="${sel}" style="font-size:11px;color:var(--muted)">day view \u203a</button>
       </div>
       <div class="dsbody">
-        ${covering.map(e=>{
-          /* Which day of it you're standing in. "5 days" told you the size of the
-             thing; standing inside it, what you want is how far through you are. */
-          const nth=daysBetween(e.date,sel)+1;
-          const where = isCondition(e)
-            ? `Condition${e.cap?` \u00b7 max ${fmt(e.cap)}`:""}`
-            : calOf(e);
-          return `<div class="spanrow">
-            <div class="sn">
-              <span class="dot" style="background:${calColor(e)}"></span>${e.emoji?e.emoji+" ":""}${e.name} ${trendIcon(e)}
-              <span class="nth">Day ${nth} of ${e.span}</span>
-              <br><span class="hint">${where}</span>
-            </div>
-            <button class="spanedit" data-editcond="${e.id}"
-                    aria-label="Edit ${e.name}">${ICON_PENCIL}</button>
-          </div>`}).join("")}
+        ${covering.map(e=>spanRow(e,sel)).join("")}
         <div class="agenda">
           ${rows}
           ${due.length?`<div style="height:6px"></div>${due.map(e=>taskRow(e,true)).join("")}`:""}
@@ -2752,6 +2745,7 @@ function wireCal(){
   const body=v.querySelector(".calbody"); if(body) swipeMonths(body);
   const grab=v.querySelector("#grab"), sheet=v.querySelector("#daysheet");
   if(!sheet){ calSheetWas=null; return }
+  swipeDays(sheet);
   const open=!S.calShut;
   if(calSheetWas===null){
     /* first paint of this screen — be where you belong, don't perform */
@@ -2778,6 +2772,26 @@ function swipeMonths(el){
       shiftMonth(dx<0?1:-1);
       /* render() detaches the cell under the finger before its click can fire,
          which is exactly what we want: the swipe doesn't also pick a day */
+      render();
+    }
+  };
+  el.addEventListener("pointerup",end);
+  el.addEventListener("pointercancel",()=>{x0=null});
+}
+/* The month moves sideways under your thumb; so does the day. Same gesture, one
+   level down — and it crosses months on its own, so the grid behind follows. */
+function swipeDays(el){
+  let x0=null,y0=null;
+  el.addEventListener("pointerdown",e=>{
+    if(e.target.closest && e.target.closest(".grab")){ x0=null; return }
+    x0=e.clientX; y0=e.clientY;
+  });
+  const end=e=>{
+    if(x0==null) return;
+    const dx=e.clientX-x0, dy=e.clientY-y0; x0=null;
+    if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.4){
+      S.selDate=addDays(S.selDate, dx<0?1:-1);
+      S.month=S.selDate.slice(0,7);
       render();
     }
   };
@@ -2880,8 +2894,7 @@ function renderDay(){
     <div class="scr-head"><h2>${niceDate(date)}</h2>
       <button class="act" data-tab2="${S.dayBack||"calendar"}">back</button></div>
     <p class="sumline">${sum}</p>
-    ${dspans.length?`<div class="condline" style="margin-top:12px">${dspans.map(e=>`<span class="${e.src==="spoon"?"mine":""}" style="--c:${calColor(e)};--rail:${calRail(e)};--ct:${calInk(e)}"
-       >${e.emoji?`<span class="emo">${e.emoji}</span>`:""}${e.name}${e.cap&&!noNums()?` · max ${fmt(e.cap)}`:""}</span>`).join("")}</div>`:""}
+    ${dspans.length?`<div class="spanlist">${dspans.map(e=>spanRow(e,date)).join("")}</div>`:""}
     <div class="tl" style="height:${H}px">
       <div class="rail" style="background:linear-gradient(to bottom,${stops.join(",")})"></div>
       ${ticks}${nowLine}${cross}${nodes}
@@ -2890,8 +2903,7 @@ function renderDay(){
       ${untimed.map(e=>`<button class="ev ${isHeavy(e)?"drain":""}" data-mv="${e.id}">
         <span class="n">${e.name}</span>
         ${costText(costOf(e))}</button>`).join("")}
-      <div style="height:16px"></div>`:""}
-    <button class="btn" data-cantmove="${date}" style="border-color:var(--line);color:var(--muted)">I can't move anything</button>`;
+      <div style="height:16px"></div>`:""}`;
 }
 function lastEventAfter(date,h){
   const e=eventsOn(date).filter(x=>x.time&&hm(x.time)>h&&x.cost>0).pop();
@@ -3371,6 +3383,41 @@ function sheetRecovery(openKey){
 function conditions(){ return S.events.filter(isCondition) }
 
 /* month first — Ferri's own convention */
+/* A multi-day thing, and where you are inside it. Used by the day sheet and the
+   day view, so a span reads the same wherever you meet it: the calendar's dot,
+   the name, how far through you are, and what kind of thing it is. */
+function spanRow(e, onDate){
+  const nth=daysBetween(e.date,onDate)+1;
+  const where = isCondition(e)
+    ? `Condition${e.cap&&!noNums()?` \u00b7 max ${fmt(e.cap)}`:""}`
+    : calOf(e);
+  /* the name is the way in — a row with a pencil bolted to the end of it was two
+     targets for one thing */
+  return `<div class="spanrow">
+    <button class="spanname" data-editcond="${e.id}">
+      <span class="dot" style="background:${calColor(e)}"></span>${e.emoji?e.emoji+" ":""}${e.name} ${trendIcon(e)}
+    </button>
+    <span class="nth">Day ${nth} of ${e.span}</span>
+    <div class="hint">${where}</div>
+  </div>`;
+}
+function ordinal(n){
+  const t=n%100;
+  return n + (t>=11&&t<=13 ? "th" : ["th","st","nd","rd"][n%10] || "th");
+}
+/* "September 12th – 16th"; "September 12th – October 22nd" across a month;
+   "December 30th, 2026 – January 2nd, 2027" across a year. Both ends take their
+   ordinal, and the month and the year are each said once when once is enough —
+   a span that stays inside one of them shouldn't have to keep saying so. */
+function dateSpan(from,to){
+  const a=parse(from), b=parse(to);
+  if(from===to) return `${MON[a.getMonth()]} ${ordinal(a.getDate())}`;
+  const yA=a.getFullYear(), yB=b.getFullYear(), sameYear=yA===yB;
+  const sameMonth = sameYear && a.getMonth()===b.getMonth();
+  const left  = `${MON[a.getMonth()]} ${ordinal(a.getDate())}${sameYear?"":`, ${yA}`}`;
+  const right = `${sameMonth?"":MON[b.getMonth()]+" "}${ordinal(b.getDate())}${sameYear?"":`, ${yB}`}`;
+  return `${left} – ${right}`;
+}
 function shortDate(iso){ const [y,m,dd]=iso.split("-"); return `${m}/${dd}/${y.slice(2)}` }
 function addDays(iso,n){
   const d=new Date(iso+"T12:00:00"); d.setDate(d.getDate()+n);
@@ -3428,19 +3475,15 @@ function sheetCondition(id){
   const EVERY=[[0,"doesn't"],[7,"weekly"],[28,"every 28 days"]];
   const fromCal = !!(ex && isCalSpan(ex));
   openSheet(`
+    <button class="sheetx" data-closesheet="1" aria-label="Close">×</button>
     <h3>${fromCal?ex.name:(ex?"Edit condition":"Add a condition")}</h3>
     <p class="sub">${fromCal
-      ? `From your calendar · ${niceDate(ex.date)} · ${ex.span} days`
+      ? `${calOf(ex)}  ·  ${dateSpan(ex.date, addDays(ex.date, (ex.span||1)-1))}`
       : `A stretch of days that changes what you're capable of — a period, a
          flare, seeing your parents. It needn't be in any calendar, and it has
          no cost of its own.`}</p>
 
-    ${fromCal ? `<div class="handoff">
-        Spoon can't change your calendar, so the name, dates and color are
-        read-only here. What you can set is what it does to <b>you</b>.
-      </div>
-      <button class="btn" data-opencal="${ex.id}" style="margin-bottom:20px">Open in Google Calendar</button>`
-    : `
+    ${fromCal ? "" : `
     <input class="tinput" id="condName" type="text" placeholder="What is it?"
            value="${(d.name||"").replace(/"/g,"&quot;")}">
 
@@ -3462,11 +3505,11 @@ function sheetCondition(id){
       <i>${d.span} day${d.span===1?"":"s"}</i>
     </button>`}
 
-    <p class="label">Which way does it push you?</p>
+    <p class="label">Restorative or depleting?</p>
     <div class="seg">
-      <button data-cdir="up" class="seg-ico ${d.dir==="up"?"on":""}">${trendGlyph("up")}helps</button>
-      <button data-cdir="" class="${!d.dir?"on":""}">neither</button>
-      <button data-cdir="down" class="seg-ico ${d.dir==="down"?"on":""}">${trendGlyph("down")}limits</button>
+      <button data-cdir="up" class="seg-ico ${d.dir==="up"?"on":""}">${trendGlyph("up")}restorative</button>
+      <button data-cdir="" class="${!d.dir?"on":""}">neutral</button>
+      <button data-cdir="down" class="seg-ico ${d.dir==="down"?"on":""}">${trendGlyph("down")}depleting</button>
     </div>
     ${d.dir==="down"?`
       <button class="row" data-ccap="1" style="margin-bottom:${d.cap?"4px":"18px"}">
@@ -3477,19 +3520,19 @@ function sheetCondition(id){
         <button data-ccapstep="-1">−</button>
         <div class="val">${fmt(d.cap)}<small> / ${fmtMax()||"10"}</small></div>
         <button data-ccapstep="1">+</button>
-      </div>`:""}`:`<p class="hint" style="margin:-8px 0 18px">Only a limiting
-        condition can set a ceiling. The rest is just useful to see coming.</p>`}
+      </div>`:""}`:`<div style="height:18px"></div>`}
 
     ${fromCal?"":`<p class="label">Repeats</p>
     <div class="seg">
       ${EVERY.map(([v,l])=>`<button data-cevery="${v}" class="${(d.every||0)===v?"on":""}">${l}</button>`).join("")}
     </div>`}
 
-    <button class="btn strong" data-csave="1">${ex?"Save":"Add it"}</button>
-    <div style="height:8px"></div>
-    ${(ex&&!fromCal)?`<button class="btn" data-cdelete="${ex.id}" style="border-color:var(--line);color:var(--over)">Delete</button>
-    <div style="height:8px"></div>`:""}
-    <button class="btn" data-closesheet="1" style="border-color:var(--line);color:var(--muted)">Cancel</button>
+    <div class="btnrow">
+      ${fromCal
+        ? `<button class="btn" data-opencal="${ex.id}" style="border-color:var(--line);color:var(--muted)">Open in Google Calendar</button>`
+        : (ex?`<button class="btn" data-cdelete="${ex.id}" style="border-color:var(--line);color:var(--over)">Delete</button>`:"")}
+      <button class="btn strong" data-csave="1">${ex?"Save":"Add it"}</button>
+    </div>
   `, d);
 }
 
@@ -3584,11 +3627,17 @@ function sheetMove(id){
         <span class="d">that day ends on ${fig(m.there)}</span></button>`).join("")}
       <p class="hint" style="margin:9px 0 0">Any of them leaves ${dowL(e.date)} on ${
         noNums()?zoneOf(off).k:fmt(off)} instead of ${noNums()?zoneOf(day.end).k:fmt(day.end)}.</p>`
-      : (past?"":`<p class="hint" style="padding:6px 0 2px">Nothing later in the week absorbs this without costing you more than it saves.</p>`)}
+      : (past?"":`<p class="hint" style="padding:6px 0 2px">Nothing later in the week absorbs this without costing you more than it saves.</p>
+         <button class="opt" data-cantmove="${e.date}">
+           <span class="n">Protect the days around it instead</span>
+           <span class="d arrow2">\u203a</span></button>`)}
     ${past?"":`<p class="label" style="margin-top:18px">Or</p>
     <button class="opt" data-pdrop="${id}">
       <span class="n">Cancel it altogether</span>
       <span class="d">${dowL(e.date)} ends on ${fig(drop)}</span></button>`}
+    ${past||!moves.length?"":`<button class="opt" data-cantmove="${e.date}">
+      <span class="n">I can't move it</span>
+      <span class="d">protect the days around it \u203a</span></button>`}
     <button class="opt" data-ev="${id}">
       <span class="n">Change what it costs</span><span class="d arrow2">\u203a</span></button>
     <div style="height:16px"></div>
