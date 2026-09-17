@@ -25,6 +25,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 WATCH_EXTS = {".html", ".css", ".js", ".svg", ".json"}
+SKIP_DIRS = {".git", "__pycache__", "node_modules", ".claude"}
 
 # Bumped whenever a watched file changes. The SSE stream compares against
 # the value each client last saw and emits "reload" when it moves.
@@ -48,11 +49,19 @@ LIVE_RELOAD_SNIPPET = b"""
 def _snapshot():
     """Return a hashable signature of all watched files' mtimes+sizes."""
     sig = []
-    for path in ROOT.rglob("*"):
-        if path.suffix.lower() in WATCH_EXTS and ".git" not in path.parts:
+    # Walk rather than rglob so .git can be pruned before it's descended into.
+    # This runs every 0.4s for as long as the server is up; rglob was visiting
+    # every object in .git a hundred and fifty times a minute to throw them all
+    # away, which is most of a CPU-day over a week of leaving this running.
+    for root, dirs, files in os.walk(ROOT):
+        dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+        for name in files:
+            if os.path.splitext(name)[1].lower() not in WATCH_EXTS:
+                continue
+            full = os.path.join(root, name)
             try:
-                st = path.stat()
-                sig.append((str(path), st.st_mtime, st.st_size))
+                st = os.stat(full)
+                sig.append((full, st.st_mtime, st.st_size))
             except OSError:
                 pass
     return tuple(sorted(sig))
