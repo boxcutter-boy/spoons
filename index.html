@@ -129,6 +129,14 @@
   .scr-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;gap:10px}
   .scr-head h2{margin:0;font-family:var(--serif);font-size:19px;font-weight:500;line-height:1.2;letter-spacing:.005em}
   .scr-head .act{font-size:11px;color:var(--muted)}
+  /* A pushed screen says where you came from at the start of the line, not as a
+     word parked in the far corner. `place-items` because the global
+     button{text-align:left} puts a bare glyph in the top-left of its own box. */
+  .scr-head.lead{justify-content:flex-start;align-items:center;gap:6px}
+  .scr-head.lead .bk{flex:none;width:24px;height:26px;margin-left:-7px;
+                     display:grid;place-items:center;line-height:1;
+                     font-size:23px;color:var(--muted)}
+  .scr-head.lead .bk:active{color:var(--ink)}
   /* Sections read as clusters: a label, its choices and the note explaining
      them are one thing, so the air goes BETWEEN groups rather than inside them. */
   .group{margin-bottom:26px}
@@ -139,6 +147,10 @@
   .group .chips{margin-bottom:0}
   .label{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
          margin:0 0 8px;font-weight:600}
+  /* A second level under a .label: sentence case and a size up, so the two read
+     as heading and subheading rather than as two headings competing. */
+  .sublab{font-size:11.5px;color:var(--muted);font-weight:500;margin:0 0 2px}
+  .chipwrap + .sublab{margin-top:16px}
   /* containers are filled, not outlined — an outline alone disappears against a
      gradient, and the moodboard's whole idea is a solid sitting on a ground */
   .card{border:1px solid var(--line);border-radius:8px;padding:14px;background:var(--surface);
@@ -146,6 +158,15 @@
   .btn{border:1px solid var(--line-strong);border-radius:6px;padding:10px 12px;font-size:12px;
        text-align:center;display:block;width:100%}
   .btn.strong{border-width:1.5px}
+  /* Two weights of destructive, because they play different parts. Outlined is
+     the Delete sitting beside a Save — present, not shouting. Filled is the
+     one in a confirm, where destroying the thing IS the primary action and the
+     button should be as easy to find as the question. --fill is the ground's
+     own near-black, already the ink every filled chip uses. */
+  .btn.bad{border-color:var(--line);color:var(--over)}
+  .btn.bad.strong{border-color:var(--over);background:var(--over);
+                  color:var(--fill);font-weight:600}
+  .btn.bad.strong:active{background:var(--over-deep);color:#fff}
   .btn:active{background:var(--surface2)}
   .hint{font-size:10.5px;color:var(--faint)}
   .ph{background:var(--ph);border:1px solid var(--line);border-radius:4px;
@@ -396,8 +417,8 @@
      the name says what it does to you. One button doing both meant every tap that
      was meant as a look was a completion. */
   .task{display:flex;align-items:center;gap:9px;padding:11px 0;border-bottom:1px solid var(--hair);width:100%}
-  .task .tick{width:17px;height:17px;border:1px solid var(--line-strong);border-radius:50%;flex:none;
-              padding:0}
+  .task .tick{width:17px;height:17px;border:1px solid var(--line-strong);border-radius:50%;
+              flex:none;padding:0}
   .task .nb{flex:1;min-width:0;display:flex;align-items:center;gap:9px}
   .task .n{flex:1;font-size:12.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
@@ -412,6 +433,7 @@
   .task .par{color:var(--faint)}
   .due{font-size:10px;color:var(--muted);margin:-4px 0 8px 26px}
   .due.tight{color:var(--tight)}
+  .tmeta{font-size:10px;color:var(--faint);margin:-4px 0 8px 26px}
   .nudge{font-size:10.5px;color:var(--faint);margin:-2px 0 10px 26px;line-height:1.45}
   /* a task's nudge belongs to that task — no rule between them */
   /* The separator belongs to the whole row — the task plus its due line and its
@@ -436,6 +458,9 @@
   .lead{font-family:var(--serif);font-size:13px;line-height:1.45;color:var(--muted);margin:-2px 0 10px}
   .tinput{width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:6px;
           padding:11px;font:inherit;font-size:13px;color:var(--ink);margin-bottom:16px}
+  /* Room for a sentence or three, and no drag handle — a box you can resize is a
+     box asking to be fiddled with rather than written in. */
+  .tarea{min-height:76px;resize:none;line-height:1.5}
   .namerow{display:flex;gap:9px;align-items:stretch}
   .namerow .tinput{flex:1;min-width:0}
   /* Square, and the emoji at full strength — a marker you've chosen is a fact
@@ -457,8 +482,13 @@
   .mgrid button.no.on{color:#fff;font-weight:600}
   /* The placeholder was the browser's own gray — a warm neutral that belongs to
      no palette and reads dimmer than anything else on the screen. This is the
-     app's own muted, and opacity:1 stops Firefox fading it again on top. */
-  .tinput::placeholder{color:var(--muted);opacity:1}
+     app's own muted, mixed a fifth of the way into the field it sits in, and
+     italic: together they read as the app asking rather than as something
+     already written in the box. opacity:1 stops Firefox fading it again on top
+     — the fade is in the colour so it's the same in every browser. */
+  .tinput::placeholder,.tarea::placeholder{
+    color:color-mix(in srgb, var(--muted) 80%, var(--surface2));
+    font-style:italic;opacity:1}
   .tinput:focus{outline:none;border-color:var(--line-strong)}
 
   /* calendar handoff */
@@ -491,7 +521,11 @@
   .flag.lower{background:var(--ok)}
   .look .opt{border-bottom:1px solid var(--hair)}
   .look .opt:last-of-type{border-bottom:none}
-  .landed{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--hair)}
+  /* One height for every row in this list. A logged row carries a 22px remove
+     button and a calendar row doesn't, which left the two sections 4px out of
+     step with each other on the same screen. */
+  .landed{display:flex;align-items:center;gap:8px;padding:9px 0;min-height:41px;
+          border-bottom:1px solid var(--hair)}
   .landed .n{flex:1;font-size:12px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .landed .e{font-size:10px;color:var(--faint);flex:none}
   .landed .set{display:flex;gap:4px;flex:none}
@@ -717,10 +751,24 @@
   /* a row of choices where no one option is wider because its word is longer */
   .seg.even{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
   .seg.even.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .seg.even.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .seg.even.four button{padding:10px 2px;gap:3px}
   .numgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
   .numgrid button{height:42px;display:grid;place-items:center;border:1px solid var(--line);
                   border-radius:8px;font-size:14px;color:var(--muted);
                   font-variant-numeric:tabular-nums}
+  /* Five rungs that read as a scale rather than five unrelated buttons: the dots
+     run down a rail, coloured the way the chip will be once it's chosen. */
+  .lvpick{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+  .lvpick button{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;
+                 border:1px solid var(--line);border-radius:8px;font-size:13px;
+                 color:var(--muted);text-align:left}
+  .lvpick button i{flex:none;width:9px;height:9px;border-radius:50%;background:var(--line-strong)}
+  .lvpick button:nth-child(1) i{background:#ff7d97}
+  .lvpick button:nth-child(2) i{background:#f5b544}
+  .lvpick button:nth-child(3) i{background:#94abf7}
+  .lvpick button:nth-child(4) i{background:#3fd3b4}
+  .lvpick button:nth-child(5) i{background:#3fd3b4;box-shadow:0 0 0 3px rgba(63,211,180,.3)}
   .repsentence{margin:16px 0 18px;text-align:center;font-family:var(--serif);font-size:15px;
                color:var(--muted)}
   .repsentence b{color:var(--ink);font-weight:500}
@@ -741,7 +789,10 @@
   .ev{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--hair);width:100%}
   .ev .t{font-size:10px;color:var(--faint);width:48px;flex:none}
   .ev .n{flex:1;font-size:12.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ev .g,.task .g{flex:none;display:flex;align-items:center;color:var(--muted)}
+  /* .landed joined this list when its rows started carrying two icons — a bare
+     inline span let the warn mark wrap under the kind glyph instead of sitting
+     beside it. */
+  .ev .g,.task .g,.landed .g{flex:none;display:flex;align-items:center;gap:5px;color:var(--muted)}
   .ico{width:15px;height:15px;display:block}
   .ev .c{font-size:12px;font-weight:600;min-width:34px;text-align:right;flex:none}
   .ev .c.none{font-weight:400;color:var(--faint);font-size:10.5px}
@@ -797,6 +848,20 @@
   .chips{display:flex;flex-wrap:wrap;gap:6px;row-gap:8px;margin-top:8px}
   .chip{border:1px solid var(--line);border-radius:14px;padding:6px 11px;font-size:11px;
         font-weight:500;color:var(--muted);text-align:center}
+  /* Dashed, because it isn't one of the things you can pick — it's the gap at
+     the end of the row where another one would go. */
+  .chip.add{border-style:dashed;color:var(--faint)}
+  /* Not a pill. A pill is something that happened to you and can be picked;
+     this only changes how much of the shelf you can see, so it sits off to the
+     side as plain text and doesn't join the row it's talking about. */
+  .chiprow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px}
+  .showmore{flex:none;font-size:11px;font-weight:500;color:var(--muted)}
+  .showmore:active{color:var(--ink)}
+  /* Two rows: 30px chip + 8px row-gap + 30px chip. The cap lands exactly on the
+     end of the second row, so a third is hidden whole rather than sliced. */
+  .chips.cap{max-height:68px;overflow:hidden}
+  .chips.cap.open{max-height:none}
+
   /* Filled, so a logged chip is an object among outlines rather than two grays
      to compare. The weight does NOT change with state — bolding the label made
      the chip wider on selection and shunted the whole row around it. */
@@ -810,7 +875,8 @@
   .ycell.on,
   .emojis button.on,
   .tiredgrid button.on,
-  .hzmenu button.on{
+  .hzmenu button.on,
+  .lvpick button.on{
     border-color:var(--sel-line);background:var(--sel);color:#fff;font-weight:600;
   }
 
@@ -850,13 +916,23 @@
   .stepper .val small{font-size:13px;color:var(--muted);font-weight:400}
   .seg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
   .seg button{border:1px solid var(--line);border-radius:14px;padding:7px 11px;font-size:11px;color:var(--muted)}
-  .seg button.seg-ico{display:inline-flex;align-items:center;gap:6px}
+  /* justify-content, because text-align does nothing to a flex container. In a
+     one-row flex .seg the buttons hug their content so it never showed; dropped
+     into the four-across grid they gained a fixed width and the icon and label
+     stayed pinned left, leaving up to 30px of dead fill on the shortest word. */
+  .seg button.seg-ico{display:inline-flex;align-items:center;justify-content:center;gap:6px}
   .seg button.addchip{color:var(--muted)}
   .opt{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--hair);width:100%}
   .opt .n{flex:1;font-size:12.5px}
   .opt .d{font-size:11px;color:var(--muted)}
   .opt .d b{font-weight:600}
   .opt.good .d b{color:var(--ok)}
+  .opt .cnt{flex:none;font-size:10px;letter-spacing:.03em;padding:5px 8px;border-radius:5px;
+            border:1px solid var(--line);color:var(--faint);white-space:nowrap}
+  .opt .cnt.on{border-color:var(--ok);color:var(--ok)}
+  .opt .cnt.bad{border-color:var(--over);color:var(--over)}
+  .opt .n .hint{display:block;margin:2px 0 0}
+  .opt .arrow2{color:var(--faint)}
   .toast{
     position:absolute;left:16px;right:16px;bottom:70px;background:var(--surface2);color:var(--ink);
     border-radius:7px;padding:11px 13px;font-size:11.5px;line-height:1.4;z-index:8;
@@ -1004,6 +1080,7 @@
     <section class="view" id="v-reset"></section>
     <section class="view" id="v-tasks"></section>
     <section class="view" id="v-log"></section>
+    <section class="view" id="v-settings"></section>
   </div>
 
   <nav class="tabs">
@@ -1054,6 +1131,38 @@ const CALENDARS = {
   Social:   "#BC7BD6",   /* Grape    */
   Health:   "#F394A8"    /* Flamingo → rose */
 };
+/* Which linked account each calendar came from. In the real flow this arrives
+   from the account when you link it; here it's stated. Worth saying out loud on
+   an event, because the app has a calendar called Social AND a kind called
+   social — two different vocabularies that happen to share a word, and naming
+   the account is what makes clear which one you're looking at. */
+const CAL_SRC = { Work:"google", Personal:"google", Social:"google", Health:"google" };
+
+/* Where the events come from. Named ones first because between them they're
+   most of everyone: iCloud because this is going to be an iOS app, Google
+   because it's the biggest, Outlook because that's where work lives. The
+   fourth isn't a brand — an .ics subscription is the mechanism every other
+   calendar falls back to, so it covers Proton, Fastmail, Notion and a
+   university timetable without pretending to a logo for each.
+
+   Spoon reads; it never writes. That's already the app's position everywhere
+   else — a move opens your calendar rather than editing it behind your back —
+   and linking a source doesn't change it. */
+const CAL_SOURCES = [
+  ["icloud",  "Apple Calendar",  "iCloud",                    "ed2664@icloud.com"],
+  ["google",  "Google Calendar", "Gmail or Workspace",        "ed2664@gmail.com"],
+  ["outlook", "Outlook",         "Microsoft 365 or Exchange", "ed2664@outlook.com"],
+  ["ics",     "Any calendar",    "by .ics subscription link", "cal.example.com/term.ics"]
+];
+function srcOf(k){ return CAL_SOURCES.find(([s])=>s===k) }
+/* An account is {src, acct}. Earlier builds stored bare provider keys, and the
+   app opens on whatever it saved rather than arguing with it. */
+function linkedCals(){
+  return (S.linked||[])
+    .map(l=>typeof l==="string" ? {src:l, acct:(srcOf(l)||[])[3]||null} : l)
+    .filter(l=>srcOf(l.src));
+}
+
 /* Nineteen states a condition might be, plus none. Not a taxonomy — a shelf of
    things to point at, so choosing one is recognition rather than description. */
 const MARKERS = ["🩸","🤒","🤧","❤️‍🩹","💊","🛏️","🧠","🫠","🌀",
@@ -1074,6 +1183,13 @@ function calOf(e){ return e.cal || CAL_OF[e.name] || "Personal" }
    else would be a way to lie to yourself, which is the one thing this app is
    built not to help with. */
 function calShown(e){ return (S.hiddenCals||[]).indexOf(calOf(e))<0 }
+/* Only names the account while it's actually linked — unlink Google and the
+   events stay, but claiming they still come from somewhere they don't would be
+   the app telling you something it no longer knows. */
+function calWhere(e){
+  const l=linkedCals().find(x=>x.src===CAL_SRC[calOf(e)]);
+  return calOf(e) + (l ? ` – ${srcOf(l.src)[1]}` : "");
+}
 /* Some calendars aren't commitments. A birthdays calendar, a holiday feed, the
    bin collection — you keep them for the reminder, not the time, and pricing
    them makes every week look busier than it is. A calendar turned off here
@@ -1111,7 +1227,7 @@ function calInk(){ return "#0d1026" }
    as a Google Calendar event. */
 function chipState(e){
   /* a multi-day span carries no per-day price, only a direction */
-  if(isSpan(e)) return e.dir==="up" ? "give" : e.dir==="down" ? "thin" : "flat";
+  if(isSpan(e)) return lvOf(e).chip;
   const c=costOf(e);
   if(c==null)  return "flat";
   if(c<0)      return "give";
@@ -1134,7 +1250,7 @@ const TREND = { up:"\u2197", down:"\u2198" };   /* ↗ ↘ — the characters th
 function trendGlyph(d){ return `<span class="arrow">${TREND[d]}</span>` }
 const REPEAT = "\u21bb";                        /* ↻ */
 function trendOf(e){
-  if(isSpan(e)) return e.dir||null;
+  if(isSpan(e)) return lvOf(e).dir;
   const c=costOf(e);
   if(c==null||c===0) return null;
   return c<0 ? "up" : "down";
@@ -1223,14 +1339,38 @@ const SEED_INVITED = ["Dinner out", "Dinner at Sam's", "Rosie's birthday"];
 /* Tasks are just untimed events — same cost, same type, same calibration loop.
    Undated ones are a pool; give one a date and it counts against that day. */
 /* name, cost, type, days-since-added, hard deadline (or null) */
+/* How long it needs, in the coarsest terms that are still true. Deliberately
+   not minutes — this app's unit of time is the day, and "a couple of hours" is
+   the most honest thing anyone can say about a job they haven't started. */
+const TAKES = [
+  {k:"short", label:"under an hour"},
+  {k:"hours", label:"a couple of hours"},
+  {k:"day",   label:"a day"},
+  {k:"multi", label:"more than a day"}
+];
+/* Dread is not cost, and it must not be priced. A phone call can be two spoons
+   and still sit on the list for a month — that gap is the whole phenomenon, and
+   the app has never been able to see it. So it gets its own axis and stays out
+   of costOf entirely: a forecast that grows more pessimistic because you feel
+   bad about something has stopped being a forecast. What dread changes is what
+   the app OFFERS you and in what order. */
+const DREADS = [
+  {k:"none", label:"none"},
+  {k:"some", label:"a bit"},
+  {k:"lots", label:"a lot"},
+  {k:"wall", label:"can't face it"}
+];
+const takesLabel=e=>(TAKES.find(t=>t.k===e.takes)||{}).label||null;
+const dreadLabel=e=>(DREADS.find(d=>d.k===e.dread)||{}).label||null;
+
 const SEED_TASKS = [
-  ["Sort out the insurance thing", .35, "executive", 26, null],
-  ["File the tax return",          .40, "executive",  9, "2026-09-30"],
-  ["Call the bank",                .25, "executive",  7, null],
-  ["Book dentist",                 .15, "executive", 14, null],
-  ["Reply to Priya",               .10, "social",     3, null],
-  ["Laundry",                      .10, "physical",   2, null],
-  ["Water the plants",             .05, "physical",   5, null]
+  ["Sort out the insurance thing", .35, "executive", 26, null,        "hours","wall"],
+  ["File the tax return",          .40, "executive",  9, "2026-09-30","day",  "lots"],
+  ["Call the bank",                .25, "executive",  7, null,        "short","lots"],
+  ["Book dentist",                 .15, "executive", 14, null,        "short","some"],
+  ["Reply to Priya",               .10, "social",     3, null,        "short","some"],
+  ["Laundry",                      .10, "physical",   2, null,        "hours","none"],
+  ["Water the plants",             .05, "physical",   5, null,        "short","none"]
 ];
 
 /* Two kinds of recovery, and they behave differently.
@@ -1385,8 +1525,37 @@ const GAVE = [
   ["hobby time",                     .18, "executive"]
 ];
 function quickList(){
+  /* Yours go on the end, which keeps every index data-off already emitted
+     pointing at the same thing. The filter puts each one in its own row. */
   return OFF_CAL.map(([n,cost,type])=>({n,cost,type}))
-    .concat(GAVE.map(([n,cost,type])=>({n,cost:-cost,type})));
+    .concat(GAVE.map(([n,cost,type])=>({n,cost:-cost,type})))
+    .concat((S.myQuick||[]).map(q=>({n:q.n, cost:q.cost, type:q.type||null})));
+}
+/* A new chip is named and logged in one go, because a chip you just typed is a
+   thing that just happened to you — making you tap it again afterwards is a
+   second step to say what you already said. The size is a middling guess; the
+   row it writes under "Logged today" opens for editing, which is where a
+   figure gets argued with. */
+/* On a notch of every scale the app offers (2/10, 2.4→2/12, 20/100), so the
+   sheet opens somewhere the stepper can actually walk away from evenly. */
+const QUICK_GUESS = .2;
+function snapCost(v){
+  const s=SCALES[S.scale], step=(s.step||1)/(s.max||10);
+  return Math.max(-1, Math.min(1, Math.round(v/step)*step));
+}
+/* Anything you log by hand becomes a chip, so the second time you don't have to
+   type it. Only things you named yourself — the two seeded rows are fixed. */
+function rememberCustom(name, cost, type){
+  const n=(name||"").trim(); if(!n) return;
+  if(quickList().some(q=>q.n.toLowerCase()===n.toLowerCase())) return;
+  S.myQuick=(S.myQuick||[]).concat({n, cost, type:type||null});
+}
+/* And un-logging it takes the chip away again. A chip is a thing you've told the
+   app happens to you; taking the log back says it didn't, so leaving the chip
+   behind would just silt the row up with typos and one-offs forever. The
+   built-ins stay whatever you do to them. */
+function forgetCustom(name){
+  S.myQuick=(S.myQuick||[]).filter(q=>q.n.toLowerCase()!==(name||"").toLowerCase());
 }
 
 /* SCALES has to be declared before the first line that runs, because load()
@@ -1395,6 +1564,12 @@ function quickList(){
    landed in load()'s own try/catch and came back as "no saved state", so the
    app opened on seed data every single time and nothing you did to it ever
    survived a refresh. Leave this above the state. */
+/* What Settings offers. `flat` stays in CHRONO as todMult's fallback — a saved
+   state can still name it — but it isn't a choice any more: "much the same" is
+   what you pick when you don't know, and the four real answers already cover
+   everyone who does. */
+const CHRONO_PICK = [["yours","custom"],["morning","mornings"],
+                     ["evening","evenings"],["dip","afternoon dip"]];
 const SCALES = {
   ten:     {label:"out of 10",  max:10,  step:1,  round:v=>Math.round(v*10)},
   twelve:  {label:"out of 12",  max:12,  step:1,  round:v=>Math.round(v*12)},
@@ -1420,6 +1595,7 @@ function fresh(){
     tab:"forecast",
     selDate:"2026-09-17",
     dayBack:"calendar", /* where the day screen's back button returns to */
+    setBack:"forecast", /* and the settings screen's */
     calYear:false,      /* the month picker is open over the month */
     /* The month opens whole. You came here to see a month; the day arrives when
        you tap one, and the (!) brings it back after you've dismissed it. */
@@ -1433,7 +1609,8 @@ function fresh(){
         inv:SEED_INVITED.includes(e[2])}))
       .concat(SEED_TASKS.map((s,i)=>({id:SEED_EVENTS.length+i,date:null,time:null,
                                       name:s[0],cost:s[1],type:s[2],task:true,
-                                      added:addDays(TODAY,-s[3]),due:s[4],parent:null}))),
+                                      added:addDays(TODAY,-s[3]),due:s[4],parent:null,
+                                      takes:s[5]||null,dread:s[6]||null}))),
     nextId: SEED_EVENTS.length + SEED_TASKS.length,
     nudged: [],                     /* tasks already offered a breakdown */
     drains: SEED_DRAINS.map(d=>({name:d[0], date:addDays(TODAY,-d[1])})),
@@ -1445,6 +1622,11 @@ function fresh(){
     pinned:  [],                    /* what you've kept on the home screen */
     didIt:   {},                    /* pinned thing -> the day you last did it */
     plannedFor: [],                 /* days already offered something restorative */
+    chipsOpen: [],                  /* which chip rows you've expanded past two */
+    myQuick: [],                    /* chips you named yourself, kept for next time */
+    linked: [{src:"google", acct:"ed2664@gmail.com"}],  /* the four named calendars came from somewhere */
+    condLog: [],                    /* B: predicted vs reported, per condition day */
+    expect: null,                   /* tomorrow's projected start, written down today */
     deferred: {}
   };
 }
@@ -1458,6 +1640,7 @@ function load(){
        write-in unit is the live example: "Your custom runs out on Monday". */
     if(!SCALES[v.scale]) v.scale="ten";
     if(["spoons","energy","mana"].indexOf(v.unit)<0) v.unit="spoons";
+    if(!CHRONO_PICK.some(([k])=>k===v.chrono)) v.chrono="yours";
     if(!Array.isArray(v.events)||!v.events.length) return null;
     if(!Array.isArray(v.drains)) return null;   /* pre-marks schema — start clean */
     return v;
@@ -1681,18 +1864,83 @@ function repLabel(rep){
   const one={days:"day",weeks:"week",months:"month"}[rep.unit];
   return rep.n===1 ? `every ${one}` : `every ${rep.n} ${rep.unit}`;
 }
-function capOn(date){
-  let cap=1;
-  for(const e of S.events){
-    if(!isSpan(e)||!e.cap) continue;
-    if(coversDate(e,date)) cap=Math.min(cap,e.cap);
-  }
-  return cap;
+/* A condition is an EXPECTATION, not a rule — a stretch of days you're telling
+   the app will be harder or easier than usual. One control, five steps, and the
+   step you pick is the mechanism: nothing to declare, no ceiling to dial in.
+
+   It's a multiplier because that's what "stressful" actually means. A work call
+   during a flare costs more than the same call in a good week; the thing itself
+   didn't change. The app already believes this shape — todMult does exactly it
+   on the hour of the day — and a multiplier is symmetric in the way the old
+   Math.min ceiling could never be. A minimum can only hold you down, which is
+   why restorative conditions were decorative from the day they were added.
+
+   `rest` scales what comes BACK: the night refill and open afternoons. Without
+   it "very restorative" would still do nothing, because a holiday is a week
+   with nothing on the calendar and a cost multiplier has nothing to multiply. */
+const COND_LEVELS = [
+  {k:"vdrain", label:"very draining",        cost:1.45, rest:.80,  chip:"drain", dir:"down"},
+  {k:"drain",  label:"a little draining",    cost:1.18, rest:.92,  chip:"thin",  dir:"down"},
+  {k:"flat",   label:"neutral",              cost:1,    rest:1,    chip:"flat",  dir:null},
+  {k:"rest",   label:"a little restorative", cost:.85,  rest:1.12, chip:"give",  dir:"up"},
+  {k:"vrest",  label:"very restorative",     cost:.65,  rest:1.25, chip:"give",  dir:"up"}
+];
+/* The two numbers are deliberately lopsided. A cost multiplier applies once per
+   event; a recovery one applies every night and compounds, so the same figure on
+   both sides sends a five-day flare to zero and pins a holiday at full. Cost
+   carries the scale. `rest` is mostly there so the restorative end isn't inert
+   on the week it matters most — the one with nothing on the calendar. */
+const LV={}; COND_LEVELS.forEach(l=>LV[l.k]=l);
+function lvOf(e){
+  if(e.lv&&LV[e.lv]) return LV[e.lv];
+  /* Anything saved before the scale existed. A cap was the only way to say
+     "this one is bad", so a low one reads as the bottom step. */
+  if(e.dir==="down") return LV[(e.cap!=null&&e.cap<=.6)?"vdrain":"drain"];
+  if(e.dir==="up")   return LV.rest;
+  return LV.flat;
 }
-function capNameOn(date){
-  const hit=S.events.filter(e=>isSpan(e)&&e.cap&&coversDate(e,date))
-                    .sort((a,b)=>a.cap-b.cap)[0];
-  return hit?hit.name:null;
+/* Two at once compound, which is the honest answer: being ill at your parents'
+   is worse than either on its own. */
+function condMult(date){
+  let cost=1, rest=1;
+  for(const e of S.events){
+    if(!isSpan(e)||!coversDate(e,date)) continue;
+    const l=lvOf(e); cost*=l.cost; rest*=l.rest;
+  }
+  return {cost, rest};
+}
+function condsOn(date){ return S.events.filter(e=>isSpan(e)&&coversDate(e,date)) }
+
+/* ── B: what the condition said, and what you said ────────────────────────────
+   A condition predicts a day; the next morning your check-in overwrites it.
+   That comparison is free — no rating, no extra tap, no question to answer —
+   which makes it the only kind of learning this app is allowed to do.
+
+   Nothing reads any of this yet. It ships now because it cannot learn
+   backwards: every day that goes unrecorded is evidence that doesn't exist
+   later. Two rules keep it honest — the prediction has to be written down
+   BEFORE the day it's about (otherwise it's just the answer copied out), and
+   a day you check in on twice keeps one row, the last one. */
+function stampExpect(f){
+  const t=addDays(TODAY,1);
+  if(S.expect&&S.expect.date===t) return;      /* already called this one */
+  const d=f.find(x=>x.date===t);
+  if(d) S.expect={date:t, v:+d.start.toFixed(4)};
+}
+function noteCondDay(got){
+  const pred = (S.expect&&S.expect.date===TODAY) ? S.expect.v : null;
+  if(pred==null) return;                        /* nothing was predicted for today */
+  const on = condsOn(TODAY);
+  if(!on.length) return;
+  S.condLog = (S.condLog||[]).filter(r=>r.date!==TODAY);
+  const seen={};
+  on.forEach(e=>{
+    if(seen[e.name]) return; seen[e.name]=1;
+    S.condLog.push({name:e.name, lv:lvOf(e).k, date:TODAY,
+                    pred:+pred.toFixed(3), got:+got.toFixed(3),
+                    day:daysBetween(e.date,TODAY)+1});
+  });
+  if(S.condLog.length>400) S.condLog=S.condLog.slice(-400);
 }
 function eventsOn(date){
   return S.events.filter(e=>e.date===date&&!isSpan(e))
@@ -1719,12 +1967,14 @@ function colorFor(v){
    accumulates as `debt`, and recovery pays that off BEFORE charge climbs. That
    is "debt is measured in time" made mechanical: no negative number anywhere,
    but overspending still delays the recovery. */
-function runDay(date, startCharge, startDebt, cap){
+function runDay(date, startCharge, startDebt, cm){
   const evs = eventsOn(date).filter(e=>e.time!=null);
-  const CAP = cap==null ? 1 : cap;
-  let c = Math.min(startCharge, CAP), debt = startDebt||0;
+  const M = cm || condMult(date);
+  let c = startCharge, debt = startDebt||0;
   const curve = [{h:DAY_START_H, c}];
-  let cross = null, openHours = 0, budget = DAY_OPEN_CAP, bestGap = null;
+  /* a day inside a restorative stretch has more to give back, and a day inside
+     a draining one has less — the budget for open time moves with it */
+  let cross = null, openHours = 0, budget = DAY_OPEN_CAP*M.rest, bestGap = null;
   const noteGap = (from,len) => {
     if(!bestGap || len>bestGap.len) bestGap = {from, len};
   };
@@ -1742,16 +1992,18 @@ function runDay(date, startCharge, startDebt, cap){
       const gap = h-cursor;
       if(gap>=1.5){
         openHours += gap; noteGap(cursor, gap);
-        c = Math.min(CAP, c+claim(gap));
+        c = Math.min(1, c+claim(gap));
         curve.push({h, c});
       } else curve.push({h, c});
       cursor = h;
     }
     const base = planned(e);
-    const cost = base==null ? 0 : (base>0 ? base*todMult(h) : base);
+    /* a bath works less well while you're ill, and a bath on holiday works
+       better — the restore side scales too, or the scale is only half a claim */
+    const cost = base==null ? 0 : (base>0 ? base*todMult(h)*M.cost : base*M.rest);
     const before = c;
     const raw = c - cost;
-    if(raw < 0){ debt += -raw; c = 0 } else c = Math.min(CAP, raw);
+    if(raw < 0){ debt += -raw; c = 0 } else c = Math.min(1, raw);
     const dur = .9;
     curve.push({h:h+dur, c});
     if(cross==null && before>=.25 && c<.25){
@@ -1762,7 +2014,7 @@ function runDay(date, startCharge, startDebt, cap){
   }
   if(cursor<DAY_END_H){
     const gap = DAY_END_H-cursor;
-    if(gap>=1.5){ openHours += gap; noteGap(cursor, Math.min(gap, 21-cursor)); c = Math.min(CAP,c+claim(gap)) }
+    if(gap>=1.5){ openHours += gap; noteGap(cursor, Math.min(gap, 21-cursor)); c = Math.min(1,c+claim(gap)) }
     curve.push({h:DAY_END_H-.8, c});
   }
   /* Events with no time still cost you — they just can't be placed. Applied at
@@ -1770,9 +2022,9 @@ function runDay(date, startCharge, startDebt, cap){
   /* untimed things happen "sometime", so no chronotype multiplier */
   const loose = eventsOn(date).filter(e=>e.time==null && costOf(e)!=null);
   if(loose.length){
-    const sum = loose.reduce((s,e)=>s+planned(e),0);
+    const sum = loose.reduce((s,e)=>{ const v=planned(e); return s + (v>0 ? v*M.cost : v*M.rest) },0);
     const raw = c - sum;
-    if(raw<0){ debt += -raw; c = 0 } else c = Math.min(CAP, raw);
+    if(raw<0){ debt += -raw; c = 0 } else c = Math.min(1, raw);
     curve.push({h:DAY_END_H, c});
   } else curve.push({h:DAY_END_H, c});
   /* load/rest are the base sums, so they match the prices shown on the rows;
@@ -1793,20 +2045,17 @@ function project(n){
   for(let i=0;i<N;i++){
     const date=addDays(TODAY,i);
     if(i>0){
-      const gain = (i===1&&S.roughNight) ? NIGHT_BAD : nightRefill(c);
+      /* the night before a holiday day is a holiday night */
+      const base = (i===1&&S.roughNight) ? NIGHT_BAD : nightRefill(c);
+      const gain = base*condMult(date).rest;
       const pay = Math.min(debt, gain); debt -= pay;
       c = Math.min(1, c + (gain-pay));
     }
-    /* A cap is a guess, made in advance, about how this condition usually goes.
-       The check-in is a report from inside it. When they disagree the report
-       wins — anything else is the app telling you you're wrong about your own
-       body, over a number you typed in last week. So a cap holds down days you
-       haven't lived yet, and never the one you're standing in: today's ceiling
-       is whichever is higher, and tomorrow goes back to planning around the cap. */
-    const cap=capOn(date);
-    const ceil = i===0 ? Math.max(cap, c) : cap;
-    c = Math.min(c, ceil);
-    const d=runDay(date,c,debt,ceil);
+    /* Nothing clamps day 0 any more. A condition is a guess made in advance
+       about how this stretch usually goes; the check-in is a report from inside
+       it, and the report wins. What a condition shapes is the cost of the days
+       — including today's, from here on out — not the number you just gave it. */
+    const d=runDay(date,c,debt,condMult(date));
     out.push(Object.assign({date},d));
     c=d.end; debt=d.debt;
   }
@@ -2070,6 +2319,12 @@ function fitting(){
     .sort((a,b)=>{
       const ua=urgency(a), ub=urgency(b);
       if(ua!==ub) return ua-ub;                 /* real deadlines lead */
+      /* Then the least dreaded. A wall of a task at the top of "what fits right
+         now" is a list you close. Dread never hides anything and never changes
+         a price — it decides what you're shown first, which is the only lever
+         that actually helps anyone start. */
+      const da=nudgeRank(a)===0?1:0, db=nudgeRank(b)===0?1:0;
+      if(da!==db) return da-db;
       return b.cost-a.cost;                     /* then the biggest that fits */
     });
 }
@@ -2095,10 +2350,28 @@ function deadlineLine(e){
 }
 /* a task that has sat untouched long enough to be worth breaking up */
 const STALE_DAYS = 21;
+/* Is this the moment to offer the first piece instead of the whole thing?
+   Four ways to earn the offer, and they don't say the same thing — dread you've
+   admitted to, a job that was never one sitting, dread that has also had time
+   to fester, and the old rule of a thing that has simply sat. One function
+   answers it so a row can't stack up three nudges saying it four ways. */
+function nudgeOf(e){
+  if(e.parent!=null || (S.nudged||[]).includes(e.id)) return null;
+  const age = e.added ? daysBetween(e.added,TODAY) : 0;
+  if(e.dread==="wall")           return "you can't face this one — what's the first small piece?";
+  if(e.takes==="multi")          return "more than a day's work — break it into sittings?";
+  if(e.dread==="lots"&&age>=7)   return "dreading it, and it's been a week — break it up?";
+  if(age>=STALE_DAYS)            return "sitting a while — break it into smaller chunks?";
+  return null;
+}
+/* Worst first, so the list's one nudge is spent on the thing most stuck. */
+function nudgeRank(e){
+  return e.dread==="wall" ? 0 : e.takes==="multi" ? 1 : e.dread==="lots" ? 2 : 3;
+}
 function staleTask(){
-  return openTasks().filter(e=>e.added&&daysBetween(e.added,TODAY)>=STALE_DAYS
-                            &&e.parent==null&&!(S.nudged||[]).includes(e.id))
-                    .sort((a,b)=>daysBetween(b.added,TODAY)-daysBetween(a.added,TODAY))[0]||null;
+  return openTasks().filter(nudgeOf)
+    .sort((a,b)=>nudgeRank(a)-nudgeRank(b)
+      || daysBetween(b.added||TODAY,TODAY)-daysBetween(a.added||TODAY,TODAY))[0]||null;
 }
 /* What the week asks of you — moved off the homepage and behind a tap on the
    arc, with the actual events named so it's something you can act on rather
@@ -2323,8 +2596,17 @@ function tiredBlock(){
 }
 function taskRow(e,plain){
   const par=parentOf(e), dl=deadlineLine(e);
-  const nudgeable = e.added&&daysBetween(e.added,TODAY)>=STALE_DAYS
-                    &&e.parent==null&&!(S.nudged||[]).includes(e.id);
+  /* One nudge on the whole list, on the thing most stuck. Dread earns the offer
+     far more often than the old 21-day rule did, so without this a list with
+     three dreaded jobs on it grows three separate invitations to break
+     something up — which is a list you close, not a list you start. */
+  const nudge = staleTask()&&staleTask().id===e.id ? nudgeOf(e) : null;
+  /* Silent on the ordinary case. "under an hour, no dread" is what a task is
+     unless it says otherwise, and printing that under every row would bury the
+     two or three that are actually trying to tell you something. */
+  const meta=[ e.takes&&e.takes!=="short" ? takesLabel(e) : null,
+               (e.dread==="lots"||e.dread==="wall") ? `dread: ${dreadLabel(e)}` : null
+             ].filter(Boolean).join(" · ");
   return `<div class="taskwrap">
     <div class="task">
       <button class="tick" data-done="${e.id}" aria-label="Mark ${e.name} done"></button>
@@ -2334,8 +2616,9 @@ function taskRow(e,plain){
         <span class="c">${costArrows(e.cost)}</span>
       </button>
     </div>
+    ${meta?`<p class="tmeta">${meta}</p>`:""}
     ${dl?`<p class="due ${affordableBefore(e).count===0?"tight":""}">${dl}</p>`:""}
-    ${!plain&&nudgeable?`<p class="nudge"><button data-breakdown="${e.id}">sitting a while — break it into smaller chunks?</button></p>`:""}
+    ${!plain&&nudge?`<p class="nudge"><button data-breakdown="${e.id}">${nudge}</button></p>`:""}
   </div>`;
 }
 
@@ -2379,56 +2662,43 @@ function headline(){
   return "Feeling great.";
 }
 
-function blurb(headed){
-  const capNow=capOn(TODAY);
-  if(capNow<1){
-    const n=capNameOn(TODAY);
-    const rec=S.events.find(e=>isSpan(e)&&e.cap&&repOf(e)&&coversDate(e,TODAY));
-    const tail = rec ? " It comes round again, so this is a ceiling you can plan for."
-                     : " Plan for that ceiling, not your usual one.";
-    /* Above your own ceiling isn't a contradiction to argue with, it's today.
-       Say what the forecast is still doing instead of telling someone they
-       can't be where they are. (The figure drops out under no numbers, which
-       used to leave this sentence with a hole in the middle of it.) */
-    if(S.charge>capNow) return noNums()
-      ? `You're above where ${n} usually leaves you. Today's yours — the week still plans lower.`
-      : `You're above where ${n} usually leaves you. Today's yours — the week still plans around ${fmt(capNow)}.`;
-    return noNums()
-      ? `${n} — it holds you below your usual ceiling while it lasts.${tail}`
-      : `${n} — the forecast keeps you no higher than ${fmt(capNow)} while it lasts.${tail}`;
-  }
-  const f=project(7), over=f.slice(1).filter(d=>zoneOf(d.end).k==="over"&&d.load>0);
-  const c=S.charge, n=v=>noNums()?"":fmt(v);
-  const firstOver = over[0];
-  const day = firstOver?dowL(firstOver.date):"Sunday";
-  if(c<=0) return headed
-    ? "Anything you spend now comes out of recovery time."
-    : "You're at empty. Anything you spend now comes out of recovery time.";
-  if(c<.20) return headed ? "Just today, then." : "Running very low. Just today, then.";
-  if(c<.35) return headed
-    ? "This week is asking for more than that. Worth looking at what could move."
-    : `${noNums()?"You're low":"You're at a "+n(c)}, and this week is asking for more than that. Worth looking at what could move.`;
-  if(c<.50) return headed
-    ? `Enough for the week as planned, but there's no slack in it. A quiet ${day} would buy you some.`
-    : `${noNums()?"Middling":"You're at a "+n(c)}. Enough for the week as planned, but there's no slack in it. A quiet ${day} would buy you some.`;
-  if(c<.70) return firstOver
-    ? `${headed?"But ":"Decent charge, but "}${dowL(firstOver.date)} is going to be a tough one.`
-    : `${headed?"The week ahead fits without much fuss.":"Decent charge, and the week ahead fits without much fuss."}`;
-  if(c<.85) return firstOver
-    ? `${headed?"Though ":"Good charge — though "}${dowL(firstOver.date)} is still going to be a stretch.`
-    : `${headed?"This week fits — taking it easy is still the smart call.":"Good charge, and this week fits — taking it easy is still the smart call."}`;
-  return firstOver
-    ? `${headed?"But ":"Plenty in the tank, but "}${dowL(firstOver.date)} is heavy enough to matter.`
-    : `${headed?"Plenty of room for the week you've got planned.":"Plenty of room in the tank for the week you've got planned."}`;
+/* One sentence, about the figure above it. A condition used to return before any
+   of that and win outright, so the line read the same at a 1 as at a 9; then it
+   rode along as a clause, which just made every line longer to say something the
+   strip below already shows as a bar across the days it covers. */
+function blurb(){ return chargeLine() }
+/* Four bands, Ferri's words, 29 Sept 2026. The figure sits directly above this,
+   so none of them repeat it — which also means there's no longer a headed /
+   not-headed split to keep in step, and the same sentence works under "no
+   numbers" as under a 10.
+
+   `toughDay` is a real claim, not a turn of phrase: the projection has to
+   actually land that day at or below the bottom band with something scheduled
+   on it. No such day, no clause — the sentence never names a Thursday it can't
+   account for. Days are checked from tomorrow, because "Thursday will be tough"
+   about today is a forecast that has already happened. */
+function toughDay(){
+  const f=project(7);
+  return f.slice(1).find(d=>zoneOf(d.end).k==="over" && d.load>0) || null;
 }
+function chargeLine(){
+  const c=S.charge, tough=toughDay();
+  /* Boundaries in charge, not in printed figures, so they hold on every scale.
+     On a ten they land exactly where the bands read: <.25 prints 1–2, <.55
+     prints 3–5, <.65 prints 6, the rest 7–10. */
+  if(c<.25) return "Focus on rest if you can. Be gentle with yourself.";
+  if(c<.55) return "Easy does it. Build in some restorative time if you can.";
+  if(c<.65) return tough
+    ? `You're at a decent charge but ${dowL(tough.date)} is going to be tough. Build in some restorative time if you can.`
+    : "You're at a decent charge. Build in some restorative time if you can.";
+  return tough
+    ? `Plenty in the tank — though ${dowL(tough.date)} is going to be tough.`
+    : "Plenty in the tank. Let's do this!";
+}
+
 function paybackDays(debt){
   if(!debt||debt<=.01) return 0;
   return Math.max(1, Math.round(debt/(nightRefill(0)+DAY_OPEN_CAP)));
-}
-function recoveryDays(){
-  let c=S.charge,d=0;
-  while(c<.62&&d<21){ c=Math.min(1,c+nightRefill(c)+DAY_OPEN_CAP); d++ }
-  return d;
 }
 function drainedType(){
   const since=addDays(TODAY,-7); const tally={};
@@ -2586,14 +2856,29 @@ function render(){
   projCache=null;
   S.events=S.events.filter(e=>!(e.task&&e.done&&e.doneAt&&daysBetween(e.doneAt,TODAY)>DONE_KEEP_DAYS));
   renderForecast(); renderCalendar(); renderDay(); renderReset(); renderTasks(); renderLog();
-  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===S.tab||((S.tab==="day"||S.tab==="tasks")&&b.dataset.tab==="calendar")));
+  renderSettings();
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===S.tab||((S.tab==="day"||S.tab==="tasks")&&b.dataset.tab==="calendar")
+    ||(S.tab==="settings"&&b.dataset.tab===(S.setBack==="day"||S.setBack==="tasks"?"calendar":S.setBack||"forecast"))));
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));
   $("v-"+S.tab).classList.add("on");
+  /* After the display is set, not inside renderLog: a view that isn't showing
+     measures zero, so an overflow test run there would hide every button. */
+  capChips();
   save();
+}
+
+function capChips(){
+  if(S.tab!=="log") return;
+  document.querySelectorAll("#v-log .chipwrap").forEach(w=>{
+    const c=w.querySelector(".chips.cap"), b=w.querySelector("[data-morechips]");
+    if(!c||!b) return;
+    b.hidden = !c.classList.contains("open") && c.scrollHeight <= c.clientHeight+1;
+  });
 }
 
 function renderForecast(){
   const f=project(horizonDays()), today=f[0], low=S.charge<.25;
+  stampExpect(project(2));
   /* concept.md §4: at the bottom band the score disappears — a bleak number to
      stare at is not useful information when you're crashed. */
   /* no number means no heading — so the state phrase takes the place the figure
@@ -2650,7 +2935,7 @@ function renderForecast(){
             const labeled = s.group==="mine" || wide;
             return `<button class="spanbar ${s.group==="mine"?"mine":"cal"} ${labeled?"":"slim"}" data-editcond="${s.e.id}" style="left:calc(${left}% + 6px);width:calc(${w}% - 12px);top:${topOf(s)}px;background:${calColor(s.e)};--rail:${calRail(s.e)};--ct:${calInk(s.e)}">${
             labeled
-              ? `${s.e.emoji?`<span class="emo">${s.e.emoji}</span>`:""}${s.open?"‹ ":""}${s.e.name}${s.e.cap?` · max ${fmt(s.e.cap)}`:""}${repOf(s.e)?`<span class="arrow rep">${REPEAT}</span>`:""}${trendIcon(s.e)}`
+              ? `${s.e.emoji?`<span class="emo">${s.e.emoji}</span>`:""}${s.open?"‹ ":""}${s.e.name}${repOf(s.e)?`<span class="arrow rep">${REPEAT}</span>`:""}${trendIcon(s.e)}`
               : ""
           }</button>`;
           }).join("")}</div>`;})()}
@@ -2702,27 +2987,26 @@ function renderForecast(){
       <div style="height:24px"></div>`;
   } else {
     const over=f.slice(1).find(d=>zoneOf(d.end).k==="over"&&d.load>0);
-    const headsShut = S.hidHeads===TODAY;
-    if(headsShut){ extra="" }
-    else if(over){
+    /* A heads-up has to be warning you about something to have earned the room.
+       "Nothing in the next 3 days goes over" is not news — it's the app
+       congratulating you for a week you can already read off the arc directly
+       above it, dressed in the same card that means trouble. Cry wolf in
+       reverse often enough and nobody reads the one that matters. */
+    const heads = !!over && S.hidHeads!==TODAY;
+    if(!heads){ extra="" }
+    else {
       extra = `${labelX("Heads up",'data-hideheads="1"')}<div class="card">
         <div style="font-size:13px;line-height:1.45">${dowL(over.date)} is going to be tough.</div>
         <div class="hint" style="margin-top:5px;font-size:12px;line-height:1.5;color:var(--muted)">Cancel or move something if you can. If you can't, <button class="inlink" data-cantmove="${over.date}">build in recovery time on either side</button>.</div>
 
         <button class="btn" data-goday="${over.date}" style="margin-top:12px">Take a look at ${dowL(over.date)}</button>
       </div>`;
-    } else {
-      const rd=recoveryDays();
-      extra = `${labelX("Heads up",'data-hideheads="1"')}<div class="card">
-        <div style="font-size:13px;line-height:1.45">Nothing in the next ${f.length} days goes over.</div>
-        <div class="hint" style="margin-top:6px">${S.charge<.62?`About ${rd} low-demand day${rd===1?"":"s"} would get you back to comfortable.`:"You're in the comfortable band."}</div>
-      </div>`;
     }
     /* The roomy-day offer used to live only on the calendar, which meant
        simplifying that page would have deleted it from the app outside burnout.
        It belongs here anyway: an empty day is a reading of the week ahead, and
        this screen is where the week ahead is read. */
-    extra += `<div style="height:${headsShut?0:20}px"></div>${planBlock(7)}`;
+    extra += `<div style="height:${heads?20:0}px"></div>${planBlock(7)}`;
   }
 
   /* Proactive flag: estimates that read low change the forecast, so say so
@@ -2744,7 +3028,7 @@ function renderForecast(){
            app instead of asking how you were. -->
       ${headed?`<button class="headline" data-checkin="1">${headline()}</button>`:""}
       <button class="condbtn" data-checkin="1">${chargeBlock}</button>
-      <p class="blurb">${blurb(headed)}</p>
+      <p class="blurb">${blurb()}</p>
       ${checkinPill(low)}
     </div>
     ${S.roughNight?`<p class="hint" style="margin:-10px 0 14px;text-align:center">Bad sleep logged — tonight's refill is withheld.</p>`:""}
@@ -3010,7 +3294,7 @@ function dragSheet(grab,sheet){
 
 function renderDay(){
   const date=S.selDate, off=daysBetween(TODAY,date);
-  const f=project(Math.max(1,off+1)), d= off>=0 ? f[f.length-1] : runDay(date,.7,0,capOn(date));
+  const f=project(Math.max(1,off+1)), d= off>=0 ? f[f.length-1] : runDay(date,.7,0,condMult(date));
   const evs=eventsOn(date).filter(e=>e.time!=null);
   const untimed=eventsOn(date).filter(e=>e.time==null);
   const isHeavy=heavyOn(date);
@@ -3148,19 +3432,20 @@ function sheetCheckin(){
     <button class="btn strong" data-closesheet="1">Done</button>
     <div style="height:8px"></div>
     <button class="btn" data-golog="1" style="border-color:var(--line);color:var(--muted)">Something happened — log it</button>`,
-    {checkin:true});
+    {checkin:true}, true);
 }
 
 /* Logging an item is the same calibration loop as rating an event, entered from
    the other end: you name the thing and its size at once. It counts against the
    charge and joins the history, so a "hard phone call" logged often enough
    starts pricing itself like anything else. */
-function applyLog(name, cost, type){
+function applyLog(name, cost, type, note){
   S.prevCharge=S.charge;
   S.charge=Math.max(0, Math.min(1, S.charge-cost));
   S.lastLog=TODAY;
   S.offlog=(S.offlog||[]).concat({id:"L"+(S.nextLogId=(S.nextLogId||0)+1),
-                                  name, cost, type:type||null, at:TODAY});
+                                  name, cost, type:type||null, at:TODAY,
+                                  note:(note||"")||null});
 }
 
 /* Logging is one tap, so un-logging has to be too — a mis-tap on a chip
@@ -3176,10 +3461,11 @@ function unlog(id){
 
 /* Editing reverses the old entry's effect and applies the new one in place, so
    the row keeps its position and the history keeps exactly one row for it. */
-function relog(id, name, cost, type){
+function relog(id, name, cost, type, note){
   const x=(S.offlog||[]).find(e=>e.id===id); if(!x) return;
   S.charge=Math.max(0, Math.min(1, S.charge + x.cost - cost));
   x.name=name; x.cost=cost; x.type=type||null;
+  if(note!==undefined) x.note=(note||"")||null;
 }
 
 /* A chip that writes something has to show that it did. It reads its state from
@@ -3197,78 +3483,104 @@ function renderLog(){
   const today=(S.offlog||[]).filter(x=>x.at===TODAY);
   $("v-log").innerHTML=`
     <div class="scr-head"><h2>What happened?</h2></div>
-    <p class="screen-sub">Mark what took it out of you. Everything else, the app assumes was fine.</p>
 
     ${todayEvents.length?`<div class="group">
       <p class="label">On your calendar today</p>
-      <div class="chips">
-        ${todayEvents.map(e=>`<button class="chip ${markedOn(e.name,TODAY)?"on":""}"
-          data-markday="${e.name}|${TODAY}">${e.name}</button>`).join("")}
-      </div>
+      ${todayEvents.map(e=>{
+        /* The same row as the logged ones below: name, kind, figure, and you tap
+           it to open the thing. No tick — marking happens inside the sheet,
+           next to the price it changes, which is the one place it can explain
+           itself. The warn icon is the app's existing "costing you more than you
+           thought", so a marked event still says so without a control of its own. */
+        const c=costOf(e);
+        return `<div class="landed">
+          <button class="n" data-ev="${e.id}">${e.name}</button>
+          <span class="g">${typeIcon(e.type)}${flagMark(e)}</span>
+          <button class="e" data-ev="${e.id}">${c==null?"—"
+            :`${c<0?"+":"−"}${noNums()?"":fmt(Math.abs(c))}`}</button>
+        </div>`}).join("")}
+    </div>`:""}
+
+    ${today.length?`<div class="group">
+      <p class="label">Logged today</p>
+      ${today.map(x=>`<div class="landed">
+        <button class="n" data-editlog="${x.id}">${x.name}</button>
+        <span class="g">${x.type?typeIcon(x.type):""}</span>
+        <button class="e" data-editlog="${x.id}">${x.cost<0?"+":"−"}${noNums()?"":fmt(Math.abs(x.cost))}</button>
+        <button class="rm" data-unlog="${x.id}" aria-label="Remove ${x.name}">×</button>
+      </div>`).join("")}
     </div>`:""}
 
     <div class="group">
-      <p class="label">Off the calendar — took away ${unitWord()}</p>
-      <div class="chips">
-        ${quickList().map((q,i)=>[q,i]).filter(([q])=>q.cost>0).map(([q,i])=>
-          `<button class="chip ${loggedToday(q.n)?"on":""}" data-off="${i}">${q.n}</button>`).join("")}
-      </div>
+      <p class="label">Off the calendar</p>
+    ${[["down","Draining"],["up","Restorative"]].map(([dir,verb])=>`
+      <p class="sublab">${verb}</p>
+      ${(()=>{
+        /* Two rows, then "more…". Capped by height rather than by a count,
+           because two rows is two rows however long the words are — six short
+           chips or three long ones. Nothing is hidden permanently and nothing
+           moves: the order stays exactly as declared, so a chip you've learned
+           the position of is still in that position tomorrow. Ranking these by
+           what you use most would shrink the list too, and rearrange it every
+           night, which is the more expensive kind of tidy. */
+        const open=(S.chipsOpen||[]).indexOf(dir)>=0;
+        return `<div class="chipwrap">
+          <div class="chips cap${open?" open":""}">
+            ${quickList().map((q,i)=>[q,i]).filter(([q])=>dir==="up"?q.cost<0:q.cost>0).map(([q,i])=>
+              `<button class="chip ${loggedToday(q.n)?"on":""}" data-off="${i}">${q.n}</button>`).join("")}
+          </div>
+          <div class="chiprow">
+            <button class="chip add" data-newchip="${dir}">+ something else…</button>
+            <button class="showmore" data-morechips="${dir}">${open?"Show less…":"Show more…"}</button>
+          </div>
+        </div>`})()}
+    `).join("")}
     </div>
-    <div class="group">
-      <p class="label">Off the calendar — gave me ${unitWord()}</p>
-      <div class="chips">
-        ${quickList().map((q,i)=>[q,i]).filter(([q])=>q.cost<0).map(([q,i])=>
-          `<button class="chip ${loggedToday(q.n)?"on":""}" data-off="${i}">${q.n}</button>`).join("")}
-      </div>
-    </div>
-    <button class="btn" data-addlog="1">+ something else</button>
-
-    <p class="label" style="margin-top:26px">Logged today</p>
-    ${today.length
-      ? today.map(x=>`<div class="landed">
-          <button class="n" data-editlog="${x.id}">${x.name}</button>
-          <span class="g">${x.type?typeIcon(x.type):""}</span>
-          <button class="e" data-editlog="${x.id}">${x.cost<0?"+":"−"}${noNums()?"":fmt(Math.abs(x.cost))}</button>
-          <button class="rm" data-unlog="${x.id}" aria-label="Remove ${x.name}">×</button>
-        </div>`).join("")
-      : `<p class="hint" style="padding:4px 0 0">Nothing logged today. That's okay.</p>`}
 
     <div style="height:24px"></div>
-    <button class="btn strong" data-tab="forecast">Done</button>
-    <div style="height:8px"></div>
-    <button class="btn" data-reset="1" style="border-color:var(--line);color:var(--muted)">Reset demo data</button>`;
+    <button class="btn strong" data-logdone="1">Done</button>`;
 }
 
 /* The same sheet writes a new entry and edits an existing one: what it cost you
    is a guess like any other, and the first number you reach for while it's still
    happening is rarely the one you'd pick an hour later. */
-function sheetLogItem(editId){
+/* `cost` here is the app's internal sign — positive TAKES from you. The figure
+   on screen is the opposite, because the question is about your energy: a thing
+   that took 2 reads "−2". That's the same way the logged rows below already
+   print it, and it's why there's no longer a checkbox — a signed number says
+   which direction it went, so asking twice was asking you to keep two halves of
+   one answer in agreement. */
+function sheetLogItem(editId, openAt){
   const ex = editId!=null ? (S.offlog||[]).find(e=>e.id===editId) : null;
   const d = (sheetCtx&&sheetCtx.newLog) ? sheetCtx : {
     newLog:true, editId: ex?ex.id:null,
     name: ex?ex.name:"",
-    cost: ex?Math.abs(ex.cost):.15,
-    type: ex?(ex.type||"social"):"social",
-    rest: ex?ex.cost<0:false
+    cost: ex ? ex.cost : snapCost(openAt!=null ? openAt : QUICK_GUESS),
+    type: ex?(ex.type||null):"social",
+    note: ex?(ex.note||""):""
   };
+  /* No sign on a zero, and a magnitude that still reads under "no numbers",
+     where fmt() returns "" and the denominator already falls back to 10. */
+  const mag = fmt(Math.abs(d.cost)) || String(Math.round(Math.abs(d.cost)*10));
+  const shown = (mag==="0") ? "0" : (d.cost<0?"+":"−")+mag;
   openSheet(`
-    <h3>${d.editId?"Edit event":"Log something"}</h3>
+    <h3>${d.editId?"Edit event":"Add event"}</h3>
     <p class="sub">This helps make your forecast more accurate.</p>
+    <p class="label">Log title</p>
     <input class="tinput" id="logName" type="text" placeholder="What was it?" value="${(d.name||"").replace(/"/g,"&quot;")}">
-    <p class="label">${d.rest?"How much did it give back?":"What did it take?"}</p>
+    <p class="label">Wanna talk about it?</p>
+    <textarea class="tinput tarea" id="logNote" placeholder="optional">${(d.note||"").replace(/</g,"&lt;")}</textarea>
+    <p class="label">How much energy did it give or take?</p>
     <div class="stepper">
       <button data-lstep="-1">−</button>
-      <div class="val">${d.rest?"+":""}${fmt(d.cost)}<small> / ${fmtMax()||"10"}</small></div>
+      <div class="val">${shown}<small> / ${fmtMax()||"10"}</small></div>
       <button data-lstep="1">+</button>
     </div>
     <p class="label">Kind</p>
-    <div class="seg">
+    <div class="seg even four">
       ${Object.keys(TYPES).map(k=>`<button data-ltype="${k}" class="seg-ico ${d.type===k?"on":""}">${typeIcon(k)}${k}</button>`).join("")}
     </div>
-    <button class="row" data-lrest="1" style="margin-bottom:16px">
-      <span class="box">${d.rest?"✓":""}</span>
-      <span style="font-size:12.5px">This gave me ${unitWord()}</span>
-    </button>
+    <div style="height:16px"></div>
     <button class="btn strong" data-savelog="1">${d.editId?"Save":"Log it"}</button>
     <div style="height:8px"></div>
     <button class="btn" data-closesheet="1" style="border-color:var(--line);color:var(--muted)">Cancel</button>`,
@@ -3297,6 +3609,7 @@ document.addEventListener("change",e=>{
   /* the drag already moved S.charge, so "before" is where it started */
   S.prevCharge = dragFrom!==null ? dragFrom : S.charge;
   dragFrom=null;
+  noteCondDay(v);                 /* before S.charge moves — see B, above */
   S.charge=v; S.lastLog=TODAY;
   if(v>.5) S.debt=0;
   render();
@@ -3326,34 +3639,47 @@ function sheetEvent(id){
   const note = drainNote(e);
   const opening = e.cost==null ? .2 : Math.abs(e.cost);
   /* 0 is a stated price, so a neutral event must not read as "tap to price me" */
-  const draft = sheetCtx&&sheetCtx.id===id ? sheetCtx : {id, cost:opening, rest:e.cost!=null&&e.cost<0, type:e.type||"social"};
-  const s=SCALES[S.scale], shown = s.round?s.round(draft.cost):Math.round(draft.cost*10);
+  /* Same sheet as the one you get for something you logged yourself — same
+     order, same wording, same signed stepper. What's different is what a
+     calendar event doesn't have: no title to retype and nothing to write about
+     it. So the name is the heading rather than a box you can't type in, and the
+     when and which-calendar go under it where they're read rather than edited. */
+  const draft = sheetCtx&&sheetCtx.id===id ? sheetCtx
+    : {id, cost:(e.cost==null ? -QUICK_GUESS : e.cost), type:e.type||null};
+  const mag = fmt(Math.abs(draft.cost)) || String(Math.round(Math.abs(draft.cost)*10));
+  const zero = mag==="0";
   openSheet(`
     <h3>${e.name}</h3>
-    <p class="sub">${e.time?e.time+" · ":""}${niceDate(e.date)}</p>
+    <p class="sub">${e.time?e.time+" · ":""}${niceDate(e.date)} · ${calWhere(e)}</p>
+    ${(daysBetween(TODAY,e.date)<=0 && (e.cost==null||e.cost>0))?`
+      <button class="opt mark ${markedOn(e.name,e.date)?"on":""}" data-markev="${e.id}">
+        <span class="n">${markedOn(e.name,e.date)?"Marked as draining":"That took it out of me"}</span>
+        <span class="d">${markedOn(e.name,e.date)?"✓":""}</span></button>
+      <div style="height:16px"></div>`:""}
+
     ${e.inv?`<div class="handoff">Invited, not answered. The forecast counts it at about
       <b>${Math.round(INVITE_DISCOUNT*100)}%</b> until you say yes or no.</div>`:""}
-    <p class="label">${draft.rest?"How much does it give back?":"What does it cost you?"}</p>
+
+    <p class="label">How much energy did it give or take?</p>
     <div class="stepper">
       <button data-step="-1">−</button>
-      <div class="val">${shown==="0"||shown===0
+      <div class="val">${zero
         ? `<span class="zero">\u2014</span>`
-        : `${draft.rest?"+":""}${shown}<small> / ${fmtMax()||"10"}</small>`}</div>
+        : `${draft.cost<0?"+":"−"}${mag}<small> / ${fmtMax()||"10"}</small>`}</div>
       <button data-step="1">+</button>
     </div>
-    ${(shown==="0"||shown===0)?`<p class="hint" style="margin:-8px 0 14px">Neither takes
+    ${zero?`<p class="hint" style="margin:-8px 0 14px">Neither takes
       nor gives. It's on your calendar and it costs you nothing.</p>`:""}
     ${note?`<div class="hintbox">${drainText(e,note)}
       <button data-clearmarks="${e.id}">Clear the marks and start again</button>
     </div>`:""}
+
     <p class="label">Kind</p>
-    <div class="seg">
+    <div class="seg even four">
       ${Object.keys(TYPES).map(t=>`<button data-type="${t}" class="seg-ico ${draft.type===t?"on":""}">${typeIcon(t)}${t}</button>`).join("")}
     </div>
-    <button class="row" data-rest="1" style="margin-bottom:16px">
-      <span class="box">${draft.rest?"✓":""}</span>
-      <span style="font-size:12.5px">This restores me instead</span>
-    </button>
+    <div style="height:16px"></div>
+
     <button class="btn strong" data-savecost="1">Save</button>
     <div style="height:8px"></div>
     <button class="btn" data-closesheet="1" style="border-color:var(--line);color:var(--muted)">Cancel</button>
@@ -3591,7 +3917,7 @@ function openToAsk(){
 function spanRow(e, onDate){
   const nth=daysBetween(e.date,onDate)+1;
   const where = isCondition(e)
-    ? `Condition${e.open?" \u00b7 no end date yet":""}${e.cap&&!noNums()?` \u00b7 max ${fmt(e.cap)}`:""}`
+    ? `Condition${e.open?" \u00b7 no end date yet":""}${lvOf(e).k==="flat"?"":` \u00b7 ${lvOf(e).label}`}`
     : calOf(e);
   /* the name is the way in — a row with a pencil bolted to the end of it was two
      targets for one thing */
@@ -3664,11 +3990,21 @@ function sheetTaskKind(id){
          class="seg-ico ${e.type===t?"on":""}">${typeIcon(t)}${t}</button>`).join("")}
     </div>
 
+    <p class="label">How long will it take?</p>
+    <div class="seg even">
+      ${TAKES.map(t=>`<button data-tsettk="${id}|${t.k}" class="${e.takes===t.k?"on":""}">${t.label}</button>`).join("")}
+    </div>
+
+    <p class="label">How much are you dreading it?</p>
+    <div class="seg even">
+      ${DREADS.map(d=>`<button data-tsetdr="${id}|${d.k}" class="${e.dread===d.k?"on":""}">${d.label}</button>`).join("")}
+    </div>
+
     <button class="opt" data-breakdown="${id}">
       <span class="n">Break it into smaller pieces</span><span class="d arrow2">›</span></button>
     <div style="height:16px"></div>
     <div class="btnrow">
-      <button class="btn" data-tdelete="${id}" style="border-color:var(--line);color:var(--over)">Delete</button>
+      <button class="btn bad" data-tdelete="${id}">Delete</button>
       <button class="btn strong" data-tsave="${id}">Save</button>
     </div>`, null, true);
 }
@@ -3743,8 +4079,8 @@ function sheetCondition(id){
     cond:true, exId: ex?ex.id:null,
     name: ex?ex.name:"",
     date: ex?ex.date:TODAY, span: ex?(ex.span||1):3,
-    cap: ex?ex.cap:null, rep: ex?repOf(ex):null, open: ex?!!ex.open:false,
-    dir: ex?(ex.dir||null):null, emoji: ex?(ex.emoji||null):null
+    lv: ex?lvOf(ex).k:"drain", rep: ex?repOf(ex):null, open: ex?!!ex.open:false,
+    emoji: ex?(ex.emoji||null):null
   };
   const fromCal = !!(ex && isCalSpan(ex));
   /* Always a window, never a drawer. It's a form you fill in, and it opens from
@@ -3777,22 +4113,11 @@ function sheetCondition(id){
       <span style="font-size:12.5px">No end date yet</span>
     </button>`}
 
-    <p class="label">Restorative or depleting?</p>
-    <div class="seg">
-      <button data-cdir="up" class="seg-ico ${d.dir==="up"?"on":""}">${trendGlyph("up")}restorative</button>
-      <button data-cdir="" class="${!d.dir?"on":""}">neutral</button>
-      <button data-cdir="down" class="seg-ico ${d.dir==="down"?"on":""}">${trendGlyph("down")}depleting</button>
+    <p class="label">What do you expect of it?</p>
+    <div class="lvpick">
+      ${COND_LEVELS.map(l=>`<button data-clv="${l.k}" class="${d.lv===l.k?"on":""}">
+        <i></i><span>${l.label}</span></button>`).join("")}
     </div>
-    ${d.dir==="down"?`
-      <button class="row" data-ccap="1" style="margin-bottom:${d.cap?"4px":"18px"}">
-        <span class="box">${d.cap?"✓":""}</span>
-        <span style="font-size:12.5px">Caps how high you can get</span>
-      </button>
-      ${d.cap?`<div class="stepper" style="margin-top:0">
-        <button data-ccapstep="-1">−</button>
-        <div class="val">${fmt(d.cap)}<small> / ${fmtMax()||"10"}</small></div>
-        <button data-ccapstep="1">+</button>
-      </div>`:""}`:""}
 
     ${fromCal||d.open?"":`
     <button class="row" data-creps="1" style="margin-bottom:${d.rep?"10px":"18px"}">
@@ -3812,7 +4137,7 @@ function sheetCondition(id){
     <div class="btnrow">
       ${fromCal
         ? `<button class="btn" data-opencal="${ex.id}" style="border-color:var(--line);color:var(--muted)">Open in Google Calendar</button>`
-        : (ex?`<button class="btn" data-cdelete="${ex.id}" style="border-color:var(--line);color:var(--over)">Delete</button>`:"")}
+        : (ex?`<button class="btn bad" data-cdelete="${ex.id}">Delete</button>`:"")}
       <button class="btn strong" data-csave="1">${ex?"Save":"Add it"}</button>
     </div>
   `, d, true);
@@ -3824,7 +4149,7 @@ function condBlock(){
     <div class="card">
       ${cs.length?cs.map(e=>`<button class="opt" data-editcond="${e.id}">
         <span class="n"><span class="dot" style="background:${calColor(e)}"></span>${e.emoji?e.emoji+" ":""}${e.name} ${trendIcon(e)}
-          <br><span class="hint">${niceDate(e.date)} · ${e.span} days${e.cap?` · max ${fmt(e.cap)}`:""}${e.every?` · repeats`:""}</span></span>
+          <br><span class="hint">${niceDate(e.date)} · ${e.span} days${lvOf(e).k==="flat"?"":` · ${lvOf(e).label}`}${e.every?` · repeats`:""}</span></span>
       </button>`).join("")
       :`<p class="hint" style="margin:0 0 12px">Nothing set. A condition is a stretch of days that changes what you're capable of — a period, a flare, a monthly visit. Yours, not your calendar's.</p>`}
       <button class="btn" data-newcond="1" style="margin-top:12px">+ add a condition</button>
@@ -4042,8 +4367,7 @@ function renderTasks(){
         ${fit.length?fit.map(e=>taskRow(e)).join("")
                     :`<p class="hint" style="padding:6px 0">Nothing on the list fits today. That's the list's problem, not yours.</p>`}
         ${stale&&!fit.some(x=>x.id===stale.id)?`<p class="nudge">
-          <b>${stale.name}</b> has been sitting a while.
-          <button data-breakdown="${stale.id}">break it into smaller chunks?</button></p>`:""}
+          <b>${stale.name}</b> — <button data-breakdown="${stale.id}">${nudgeOf(stale)}</button></p>`:""}
       </div>
       ${rest.length?`<div class="group">
         <p class="label">More than you've got right now</p>
@@ -4076,7 +4400,13 @@ function sheetBreakdown(id){
   const draft=(sheetCtx&&sheetCtx.breakdown===id)?sheetCtx:{breakdown:id,cost:.1};
   openSheet(`
     <h3>Break it into smaller chunks</h3>
-    <p class="sub">${parent.name} — ${parent.added?`added ${daysBetween(parent.added,TODAY)} days ago`:""}</p>
+    <p class="sub">${parent.name}${(()=>{
+      /* "Add it and break it up" lands here the same second the task is made,
+         where "added 0 days ago" reads like a bug. */
+      if(!parent.added) return "";
+      const d=daysBetween(parent.added,TODAY);
+      return d<=0 ? "" : d===1 ? " — added yesterday" : ` — added ${d} days ago`;
+    })()}</p>
     ${cur.length?cur.map(k=>`<div class="subrow">
       <span class="n">${k.name}</span>
       <span class="c">${costArrows(k.cost)}</span></div>`).join("")
@@ -4098,7 +4428,8 @@ function sheetBreakdown(id){
 }
 
 function sheetTask(){
-  const draft = (sheetCtx&&sheetCtx.newTask) ? sheetCtx : {newTask:true,cost:.15,type:"executive",when:null};
+  const draft = (sheetCtx&&sheetCtx.newTask) ? sheetCtx
+    : {newTask:true,cost:.15,type:"executive",when:null,takes:"short",dread:"none"};
   /* the lightest day in the next week — the app suggests when, rather than
      asking for a due date */
   const f=project(7).slice(1);
@@ -4113,8 +4444,20 @@ function sheetTask(){
       <div class="val">${fmt(draft.cost)}<small> / ${fmtMax()||"10"}</small></div>
       <button data-tstep="1">+</button>
     </div>
+    <p class="label">How long will it take?</p>
+    <div class="seg even">
+      ${TAKES.map(t=>`<button data-ttakes="${t.k}" class="${draft.takes===t.k?"on":""}">${t.label}</button>`).join("")}
+    </div>
+    <p class="label">How much are you dreading it?</p>
+    <div class="seg even">
+      ${DREADS.map(d=>`<button data-tdread="${d.k}" class="${draft.dread===d.k?"on":""}">${d.label}</button>`).join("")}
+    </div>
+    ${(draft.dread==="wall"||draft.takes==="multi")?`<p class="hint" style="margin:-8px 0 16px">
+      ${draft.takes==="multi"&&draft.dread!=="wall"
+        ? "More than a day means more than one sitting. Add it and name the first piece."
+        : "Then don't add the whole thing. Add it and name the first small piece."}</p>`:""}
     <p class="label">Kind</p>
-    <div class="seg">
+    <div class="seg even">
       ${Object.keys(TYPES).map(k=>`<button data-ttype="${k}" class="seg-ico ${draft.type===k?"on":""}">${typeIcon(k)}${k}</button>`).join("")}
     </div>
     <p class="label">When</p>
@@ -4128,21 +4471,32 @@ function sheetTask(){
     <input class="tinput" id="taskDue" type="date" value="${draft.due||""}">
     <button class="btn strong" data-savetask="1">Add it</button>
     <div style="height:8px"></div>
+    <!-- Subdividing needs a parent to hang the pieces off, and there isn't one
+         until it's saved. So this saves it and walks straight into the
+         breakdown sheet, rather than inventing a second half-saved draft. -->
+    <button class="btn" data-savetask="break">Add it and break it up</button>
+    <div style="height:8px"></div>
     <button class="btn" data-closesheet="1" style="border-color:var(--line);color:var(--muted)">Cancel</button>`,
     draft);   /* openSheet resets sheetCtx — the draft has to be handed back in */
 }
 
-function sheetSettings(){
-  openSheet(`
-    <h3>Settings</h3>
-    <p class="sub">Everything in the app uses one scale, and one name for its units.</p>
+/* Settings was a drawer, which made it a thing that happens OVER the app while
+   the forecast sits there greyed out behind it. Every choice on it changes how
+   the whole app reads — the scale, the unit, where your good hours are — so it
+   pushes like the day screen does, and comes back the way you came. */
+function renderSettings(){
+  $("v-settings").innerHTML=`
+    <div class="scr-head lead">
+      <button class="bk" data-tab2="${S.setBack||"forecast"}" aria-label="Back">‹</button>
+      <h2>Settings</h2></div>
 
     <div class="group">
       <p class="label">Scale</p>
       <div class="seg">
         ${Object.entries(SCALES).map(([k,v])=>`<button data-scale="${k}" class="${S.scale===k?"on":""}">${v.label}</button>`).join("")}
       </div>
-      <p class="hint">“No numbers” keeps the battery, but nothing else. Nice if numbers make you feel guilty.</p>
+      ${noNums()?`<p class="hint">Includes the battery, so you can still see roughly where you are.
+        Nice if numbers make you feel guilty.</p>`:""}
     </div>
 
     ${noNums() ? "" : `
@@ -4156,13 +4510,79 @@ function sheetSettings(){
     <div class="group">
       <p class="label">Your good hours</p>
       <div class="seg">
-        ${[["yours","yours"],["morning","mornings"],["evening","evenings"],["dip","afternoon dip"],["flat","much the same"]]
-          .map(([k,l])=>`<button data-chrono="${k}" class="${S.chrono===k?"on":""}">${l}</button>`).join("")}
+        ${CHRONO_PICK.map(([k,l])=>`<button data-chrono="${k}" class="${S.chrono===k?"on":""}">${l}</button>`).join("")}
       </div>
-      <p class="hint">“Yours” is from the quiz: slow mornings, best late afternoon, done after 10pm.</p>
     </div>
 
-    <button class="btn" data-closesheet="1">Done</button>`);
+    <div class="group">
+      <p class="label">Calendar</p>
+      ${linkedCals().map(l=>`<div class="opt">
+        <span class="n">${srcOf(l.src)[1]}${l.acct?`<span class="hint">${l.acct}</span>`:""}</span>
+        <button class="cnt bad" data-unlink="${l.src}">remove</button>
+      </div>`).join("")}
+      <div style="height:${linkedCals().length?14:4}px"></div>
+      <button class="btn" data-addcal="1">+ add calendar</button>
+    </div>
+
+    <div class="group">
+      <p class="label">Prototype</p>
+      <button class="btn bad" data-reset="1">Reset demo data</button>
+    </div>
+
+`;
+}
+
+/* The one button in the app that throws everything away. It asks for the same
+   reason removing a calendar does, and more so: since load() started working
+   there is real history behind it to lose, where before this button only ever
+   discarded a single session's worth. */
+function sheetReset(){
+  openSheet(`
+    <h3>Are you sure you want to reset the demo?</h3>
+    <p class="sub">Every check-in, mark, task and condition goes back to the
+      seeded week. There's no undo.</p>
+    <div class="btnrow">
+      <button class="btn" data-closesheet="1">Cancel</button>
+      <button class="btn bad strong" data-doreset="1">Reset</button>
+    </div>`, null, true);
+}
+
+/* Unlinking is the first thing in the app you can't undo with a tap, so it's
+   the first thing that asks. The body says what actually happens, because the
+   fear with a button like this is that it reaches into Google and deletes
+   something — and Spoon has never written to a calendar in its life. */
+function sheetUnlink(src){
+  const s=srcOf(src); if(!s) return;
+  openSheet(`
+    <h3>Are you sure you want to remove ${s[1]}?</h3>
+    <p class="sub">You can add it again in settings.</p>
+    <div class="btnrow">
+      <button class="btn" data-closesheet="1">Cancel</button>
+      <button class="btn bad strong" data-dounlink="${src}">Remove</button>
+    </div>`, null, true);
+}
+
+/* The front door of a flow that doesn't exist yet. Picking a provider is the
+   one step that's genuinely decided — the sign-in behind each is the part to
+   build — so this screen is real and the step after it is a toast. */
+function sheetAddCal(){
+  openSheet(`
+    <button class="sheetx" data-closesheet="1" aria-label="Close">×</button>
+    <h3>Add a calendar</h3>
+    <p class="sub">This gives Spoon read-only permission.</p>
+    ${/* What you already have goes first — the answer to "is my calendar in
+          here" shouldn't be somewhere down the list. Sorting is stable, so the
+          rest keep the order they're declared in. */
+      CAL_SOURCES.slice().sort((a,b)=>
+        (linkedCals().some(l=>l.src===a[0])?0:1) - (linkedCals().some(l=>l.src===b[0])?0:1)
+      ).map(([k,name,note])=>{
+      const on=linkedCals().some(l=>l.src===k);
+      return `<button class="opt" data-link="${k}"${on?" disabled":""}>
+        <span class="n">${name}<span class="hint">${note}</span></span>
+        <span class="${on?"cnt on":"d arrow2"}">${on?"linked":"›"}</span></button>`;
+    }).join("")}
+    <div style="height:18px"></div>
+    <button class="btn" data-closesheet="1">Cancel</button>`, null, true);
 }
 
 let toastT=null;
@@ -4184,11 +4604,22 @@ function hideToast(){ clearTimeout(toastT); $("toast").classList.remove("on") }
 document.addEventListener("click",ev=>{
   const t0=ev.target.closest("[data-hmenu],[data-horizon]");
   if(S.hmenu && !t0){ S.hmenu=false; render() }        /* click away closes it */
-  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-addlog],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-lrest],[data-savelog],[data-day],[data-goday],[data-mon],[data-calyear],[data-ymon],[data-yyear],[data-dsopen],[data-today],[data-cals],[data-calshow],[data-calcount],[data-ev],[data-look],[data-mark],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-rough],[data-off],[data-reset],[data-step],[data-type],[data-rest],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-budget],[data-hideheads],[data-noplan],[data-undo],[data-dobook],[data-tstart],[data-hpick],[data-hgo],[data-hguess],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hpin],[data-hdone],[data-unpin],[data-rpin],[data-rskip],[data-pindid],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-cspan],[data-cdir],[data-ccap],[data-ccapstep],[data-cdates],[data-cmonth],[data-cpick],[data-cdone],[data-cmarker],[data-cemoji],[data-cmarkdone],[data-copen],[data-cendnow],[data-stillon],[data-endopen],[data-creps],[data-crep],[data-crepcustom],[data-crepn],[data-crepu],[data-crepdone],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-twhen],[data-savetask],[data-done],[data-tkind],[data-tsetk],[data-tsett],[data-tsave],[data-tdelete],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
+  const t=ev.target.closest("[data-tab],[data-tab2],[data-checkin],[data-golog],[data-newchip],[data-morechips],[data-unlog],[data-editlog],[data-lstep],[data-ltype],[data-savelog],[data-logdone],[data-day],[data-goday],[data-mon],[data-calyear],[data-ymon],[data-yyear],[data-dsopen],[data-today],[data-cals],[data-calshow],[data-calcount],[data-ev],[data-look],[data-mark],[data-markev],[data-markday],[data-clearmarks],[data-mv],[data-cantmove],[data-pmove],[data-pdrop],[data-settings],[data-set],[data-link],[data-addcal],[data-unlink],[data-dounlink],[data-rough],[data-off],[data-reset],[data-doreset],[data-step],[data-type],[data-savecost],[data-closesheet],[data-scale],[data-unit],[data-chrono],[data-book],[data-budget],[data-hideheads],[data-noplan],[data-undo],[data-dobook],[data-tstart],[data-hpick],[data-hgo],[data-hguess],[data-hdir],[data-hcap],[data-htime],[data-hback],[data-hskip],[data-hwiden],[data-hpin],[data-hdone],[data-unpin],[data-rpin],[data-rskip],[data-pindid],[data-tclear],[data-rectree],[data-branch],[data-editplanned],[data-rmplan],[data-pstep],[data-ptype],[data-pat],[data-saveplan],[data-dosync],[data-newcond],[data-editcond],[data-cspan],[data-clv],[data-cdates],[data-cmonth],[data-cpick],[data-cdone],[data-cmarker],[data-cemoji],[data-cmarkdone],[data-copen],[data-cendnow],[data-stillon],[data-endopen],[data-creps],[data-crep],[data-crepcustom],[data-crepn],[data-crepu],[data-crepdone],[data-csave],[data-cdelete],[data-opencal],[data-hmenu],[data-horizon],[data-arcinfo],[data-addtask],[data-tstep],[data-ttype],[data-ttakes],[data-tdread],[data-twhen],[data-savetask],[data-tsettk],[data-tsetdr],[data-done],[data-tkind],[data-tsetk],[data-tsett],[data-tsave],[data-tdelete],[data-undone],[data-breakdown],[data-sstep],[data-addsub],[data-donebreak]");
   if(!t){ return }
   const D=t.dataset;   /* every clickable in the app routes through here */
 
   if(D.tab){ S.tab=D.tab; render(); return }
+  /* One summary at the end instead of a running commentary. Marks and logs both
+     count: a log moves today's figure, a mark changes what a thing costs from
+     here on, and both of those are the forecast changing. Silent on a day you
+     logged nothing — the screen already says that, kindly, where you can see it. */
+  if(D.logdone){
+    const n=(S.offlog||[]).filter(x=>x.at===TODAY).length
+          + (S.drains||[]).filter(d=>d.date===TODAY).length;
+    S.tab="forecast"; render();
+    if(n) toast(`${n} logged. Forecast updated.`);
+    return;
+  }
   if(D.tab2){ S.tab=D.tab2; render(); return }
   if(D.mon){
     let [y,m]=S.month.split("-").map(Number); m+=Number(D.mon);
@@ -4210,6 +4641,8 @@ document.addEventListener("click",ev=>{
     toast(markedOn(e.name,e.date)
       ? `Noted. ${e.name} is priced up from here.`
       : `Unmarked. ${e.name} goes back to what you set.`); return }
+  if(D.markev){ const e=S.events.find(x=>x.id===Number(D.markev));
+    toggleMark(e.name, e.date); sheetCtx=null; render(); sheetEvent(e.id); return }
   if(D.markday){ const [name,date]=D.markday.split("|"); toggleMark(name,date); render(); return }
   if(D.clearmarks){ const e=S.events.find(x=>x.id===Number(D.clearmarks));
     clearMarks(e.name); render(); sheetEvent(e.id);
@@ -4218,12 +4651,13 @@ document.addEventListener("click",ev=>{
   if(D.cantmove){ sheetCantMove(D.cantmove); return }
   if(D.pmove){ const [id,to]=D.pmove.split("|"); sheetHandoff(Number(id),"move",to); return }
   if(D.pdrop){ sheetHandoff(Number(D.pdrop),"drop",null); return }
-  if(D.settings){ sheetSettings(); return }
+  if(D.settings){ S.setBack = S.tab==="settings" ? S.setBack : S.tab;
+    S.tab="settings"; render(); return }
   if(D.closesheet){ closeSheet(); return }
 
-  if(D.scale){ S.scale=D.scale; render(); sheetSettings(); return }
-  if(D.unit){ S.unit=D.unit; render(); sheetSettings(); return }
-  if(D.chrono){ S.chrono=D.chrono; render(); sheetSettings(); return }
+  if(D.scale){ S.scale=D.scale; render(); return }
+  if(D.unit){ S.unit=D.unit; render(); return }
+  if(D.chrono){ S.chrono=D.chrono; render(); return }
 
   if(D.checkin){ sheetCheckin(); return }
   if(D.golog){ closeSheet(); S.tab="log"; render(); return }
@@ -4234,42 +4668,67 @@ document.addEventListener("click",ev=>{
     const q=quickList()[Number(D.off)]; if(!q) return;
     /* a lit chip un-logs — one tap in, one tap out, same as the × below */
     const already=loggedToday(q.n);
-    if(already){ unlog(already.id); render(); toast(`“${q.n}” removed.`); return }
+    /* No toast either way. The chip fills in, the row appears under "Logged
+       today", and the figure at the top moves — three answers already. A fourth
+       one sliding up from the bottom of the screen for every tap turns marking
+       six things into six dismissals. The tally arrives once, on Done. */
+    if(already){ unlog(already.id); forgetCustom(q.n); render(); return }
     applyLog(q.n, q.cost, q.type);
-    render();
-    toast(q.cost<0 ? `“${q.n}” logged — charge restored.`
-                   : `“${q.n}” logged — charge reduced.`); return;
+    render(); return;
   }
   /* ---- log an item ---- */
   if(D.unlog){
     const x=unlog(D.unlog);
+    if(x) forgetCustom(x.name);
     /* not "charge restored" — removing a give-back takes charge away, and the
        toast was saying the opposite of what just happened half the time */
     render(); if(x) toast(`“${x.name}” removed.`); return;
   }
-  if(D.addlog){ sheetCtx=null; sheetLogItem(); return }
+  /* The ellipsis is a promise that this opens something. It opens the same sheet
+     a logged row does, pre-signed for whichever row you tapped it in. */
+  if(D.morechips){
+    const o=S.chipsOpen||[];
+    S.chipsOpen = o.indexOf(D.morechips)>=0 ? o.filter(x=>x!==D.morechips) : o.concat(D.morechips);
+    render(); return;
+  }
+  if(D.newchip){ sheetCtx=null;
+    sheetLogItem(null, D.newchip==="up" ? -QUICK_GUESS : QUICK_GUESS); return }
   if(D.editlog){ sheetCtx=null; sheetLogItem(D.editlog); return }
   /* every redraw rebuilds the input, so the half-typed name goes back into the
      draft before the sheet is re-rendered */
-  const keepLogName=()=>{ if(sheetCtx) sheetCtx.name=($("logName")||{}).value||sheetCtx.name };
+  /* Every control in this sheet rebuilds it, so anything typed has to be caught
+     on the way past or a step of the stepper eats the sentence you just wrote.
+     ?? not ||, because clearing a field back to empty is a real edit. */
+  const keepLogName=()=>{ if(!sheetCtx) return;
+    sheetCtx.name=($("logName")||{}).value ?? sheetCtx.name;
+    sheetCtx.note=($("logNote")||{}).value ?? sheetCtx.note; };
   if(D.lstep&&sheetCtx&&sheetCtx.newLog){
     const s=SCALES[S.scale], step=(s.step||1)/(s.max||10);
     keepLogName();
-    sheetCtx.cost=Math.max(step,Math.min(1,sheetCtx.cost+Number(D.lstep)*step));
+    /* The figure is energy, so + raises it — which LOWERS the internal cost.
+       Snapped to the scale's own notches, because the opening guess doesn't sit
+       on them and everything after it landed half a notch off, which is how
+       stepping down from +2 printed "+0" on the way to −1. */
+    const raw=sheetCtx.cost-Number(D.lstep)*step;
+    sheetCtx.cost=Math.max(-1,Math.min(1,Math.round(raw/step)*step));
     sheetLogItem(sheetCtx.editId); return;
   }
-  if(D.ltype&&sheetCtx&&sheetCtx.newLog){ keepLogName(); sheetCtx.type=D.ltype; sheetLogItem(sheetCtx.editId); return }
-  if(D.lrest&&sheetCtx&&sheetCtx.newLog){ keepLogName(); sheetCtx.rest=!sheetCtx.rest; sheetLogItem(sheetCtx.editId); return }
+  if(D.ltype&&sheetCtx&&sheetCtx.newLog){ keepLogName();
+    sheetCtx.type = sheetCtx.type===D.ltype ? null : D.ltype;
+    sheetLogItem(sheetCtx.editId); return }
   if(D.savelog&&sheetCtx&&sheetCtx.newLog){
     const name=(($("logName")||{}).value||"").trim();
     if(!name){ toast("It needs a name — even a rough one."); return }
-    const v=Math.round(sheetCtx.cost*1000)/1000, cost=sheetCtx.rest?-v:v;
+    const cost=Math.round(sheetCtx.cost*1000)/1000;
     const editId=sheetCtx.editId, type=sheetCtx.type;
-    if(editId){ relog(editId, name, cost, type) } else { applyLog(name, cost, type) }
+    const note=((($("logNote")||{}).value)||"").trim();
+    if(editId){ relog(editId, name, cost, type, note) } else { applyLog(name, cost, type, note) }
+    rememberCustom(name, cost, type);
     closeSheet(); S.tab="log"; render();
     toast(editId?`“${name}” updated.`:`“${name}” logged.`); return;
   }
-  if(D.reset){ S=fresh(); render(); toast("Back to the seeded week."); return }
+  if(D.reset){ sheetReset(); return }
+  if(D.doreset){ S=fresh(); closeSheet(); render(); toast("Back to the seeded week."); return }
   /* ---- conditions ---- */
   if(D.stillon){
     const e=S.events.find(x=>x.id===Number(D.stillon));
@@ -4336,40 +4795,31 @@ document.addEventListener("click",ev=>{
   }
   if(D.newcond){ sheetCtx=null; sheetCondition(null); return }
   if(D.editcond){ sheetCtx=null; sheetCondition(D.editcond); return }
-  if(sheetCtx&&sheetCtx.cond&&(D.cemoji!==undefined||D.cspan||D.ccap||D.ccapstep||D.copen!==undefined||D.creps!==undefined||D.crep||D.cdir!==undefined)){
+  if(sheetCtx&&sheetCtx.cond&&(D.cemoji!==undefined||D.cspan||D.clv||D.copen!==undefined||D.creps!==undefined||D.crep)){
     /* keep what's been typed before the sheet redraws */
     sheetCtx.name=($("condName")||{}).value ?? sheetCtx.name;
     if(D.cspan)  sheetCtx.span=Math.max(2,Math.min(60,sheetCtx.span+Number(D.cspan)));
-    if(D.ccap)   sheetCtx.cap=sheetCtx.cap?null:.6;
-    if(D.ccapstep){
-      const s=SCALES[S.scale], step=(s.step||1)/(s.max||10);
-      sheetCtx.cap=Math.max(step,Math.min(1,(sheetCtx.cap||.6)+Number(D.ccapstep)*step));
-    }
+    if(D.clv)    sheetCtx.lv=D.clv;
     if(D.copen!==undefined){
       sheetCtx.open=!sheetCtx.open;
       if(sheetCtx.open) sheetCtx.rep=null;   /* nothing to repeat after */
     }
     if(D.creps!==undefined) sheetCtx.rep = sheetCtx.rep ? null : {n:1,unit:"weeks"};
     if(D.crep){ const [n,unit]=D.crep.split("|"); sheetCtx.rep={n:Number(n),unit} }
-    if(D.cdir!==undefined){
-      sheetCtx.dir=D.cdir||null;
-      if(sheetCtx.dir!=="down") sheetCtx.cap=null;   /* only a limit can cap */
-    }
     sheetCondition(sheetCtx.exId); return;
   }
   if(D.csave&&sheetCtx&&sheetCtx.cond){
     const existing = sheetCtx.exId!=null ? S.events.find(e=>e.id===sheetCtx.exId) : null;
     if(existing && isCalSpan(existing)){          /* annotations only */
-      existing.dir=sheetCtx.dir||null;
-      existing.cap=sheetCtx.cap||null;
+      existing.lv=sheetCtx.lv||"flat";
       closeSheet(); render(); toast(`${existing.name} updated.`); return;
     }
     const name=(($("condName")||{}).value||"").trim();
     if(!name){ toast("Give it a name first."); return }
     const date=sheetCtx.date;
-    const patch={name, date, span:sheetCtx.span, cap:sheetCtx.cap||null,
+    const patch={name, date, span:sheetCtx.span, lv:sheetCtx.lv||"flat",
                  rep:sheetCtx.rep||null, every:null, open:!!sheetCtx.open,
-                 dir:sheetCtx.dir||null, emoji:sheetCtx.emoji||null,
+                 cap:null, dir:null, emoji:sheetCtx.emoji||null,
                  time:null, cost:null, type:null, src:"spoon"};
     if(sheetCtx.exId!=null) Object.assign(S.events.find(e=>e.id===sheetCtx.exId), patch);
     else S.events=S.events.concat(Object.assign({id:S.nextId++}, patch));
@@ -4428,6 +4878,16 @@ document.addEventListener("click",ev=>{
     sheetCtx.due=($("taskDue")||{}).value||sheetCtx.due;
     sheetCtx.type=D.ttype; sheetTask(); return;
   }
+  if(D.ttakes&&sheetCtx&&sheetCtx.newTask){
+    sheetCtx.name=($("taskName")||{}).value||sheetCtx.name;
+    sheetCtx.due=($("taskDue")||{}).value||sheetCtx.due;
+    sheetCtx.takes=D.ttakes; sheetTask(); return;
+  }
+  if(D.tdread&&sheetCtx&&sheetCtx.newTask){
+    sheetCtx.name=($("taskName")||{}).value||sheetCtx.name;
+    sheetCtx.due=($("taskDue")||{}).value||sheetCtx.due;
+    sheetCtx.dread=D.tdread; sheetTask(); return;
+  }
   if(D.twhen!==undefined&&sheetCtx&&sheetCtx.newTask){
     sheetCtx.name=($("taskName")||{}).value||sheetCtx.name;
     sheetCtx.due=($("taskDue")||{}).value||sheetCtx.due;
@@ -4438,13 +4898,23 @@ document.addEventListener("click",ev=>{
     if(!name){ toast("Give it a name first."); return }
     const when=sheetCtx.when||null;          /* closeSheet nulls sheetCtx */
     const due=(($("taskDue")||{}).value||"")||null;
-    S.events=S.events.concat({id:S.nextId++,date:when,time:null,
+    const nid=S.nextId++;
+    S.events=S.events.concat({id:nid,date:when,time:null,
                               name,cost:Math.round(sheetCtx.cost*1000)/1000,
-                              type:sheetCtx.type,task:true,added:TODAY,due,parent:null});
+                              type:sheetCtx.type,task:true,added:TODAY,due,parent:null,
+                              takes:sheetCtx.takes||null,dread:sheetCtx.dread||null});
+    /* Subdividing needs a parent to hang the pieces off, and there isn't one
+       until it's saved — so this saves and walks into the breakdown sheet
+       rather than inventing a second, half-saved kind of draft. */
+    if(D.savetask==="break"){ sheetCtx=null; render(); sheetBreakdown(nid); return }
     closeSheet(); render();
     toast(when?`Added to ${niceDate(when)}.`:"Added to the list.");
     return;
   }
+  if(D.tsettk){ const [i,k]=D.tsettk.split("|");
+    S.events.find(x=>x.id===Number(i)).takes=k; render(); sheetTaskKind(i); return }
+  if(D.tsetdr){ const [i,k]=D.tsetdr.split("|");
+    S.events.find(x=>x.id===Number(i)).dread=k; render(); sheetTaskKind(i); return }
   if(D.undone){
     const e=S.events.find(x=>x.id===Number(D.undone)); if(!e) return;
     e.done=false; e.doneAt=null;
@@ -4650,21 +5120,45 @@ document.addEventListener("click",ev=>{
   /* cost sheet */
   if(D.step&&sheetCtx){
     const s=SCALES[S.scale], stepFrac=(s.step||1)/(s.max||10);
-    sheetCtx.cost=Math.max(0,Math.min(1,sheetCtx.cost+Number(D.step)*stepFrac));
+    const raw=sheetCtx.cost-Number(D.step)*stepFrac;
+    sheetCtx.cost=Math.max(-1,Math.min(1,Math.round(raw/stepFrac)*stepFrac));
     sheetEvent(sheetCtx.id); return;
   }
-  if(D.type&&sheetCtx){ sheetCtx.type=D.type; sheetEvent(sheetCtx.id); return }
+  /* Tap the lit one to say nothing. "Kind" is a reading of what an event asks
+     of you, and sometimes there isn't one worth naming — a forced guess is
+     worse than a blank, because the arc's category mix then counts it. Every
+     reader of e.type already checks it's set, so nothing downstream minds. */
+  if(D.type&&sheetCtx){ sheetCtx.type = sheetCtx.type===D.type ? null : D.type;
+    sheetEvent(sheetCtx.id); return }
   if(D.usehist&&sheetCtx){ sheetCtx.cost=Number(D.usehist); sheetEvent(sheetCtx.id); return }
-  if(D.rest&&sheetCtx){ sheetCtx.rest=!sheetCtx.rest; sheetEvent(sheetCtx.id); return }
   if(D.savecost&&sheetCtx){
     const e=S.events.find(x=>x.id===sheetCtx.id);
-    const v=Math.round(sheetCtx.cost*1000)/1000;
-    e.cost=sheetCtx.rest?-v:v; e.type=sheetCtx.type;
+    e.cost=Math.round(sheetCtx.cost*1000)/1000; e.type=sheetCtx.type;
     clearMarks(e.name);
     closeSheet(); render(); toast(`${e.name} priced. Everything downstream recalculated.`); return;
   }
 
   /* hand a move or a cancellation to the calendar app */
+  if(D.addcal){ sheetAddCal(); return }
+  if(D.link){
+    const src=srcOf(D.link);
+    if(linkedCals().some(l=>l.src===D.link)) return;
+    S.linked=linkedCals().concat({src:D.link, acct:src[3]});
+    /* You picked a provider; that's the whole step. Land back on Settings with
+       the new row on it rather than leaving a stale list of providers up. */
+    closeSheet(); render();
+    /* The sign-in is the part that isn't built. Say so, rather than letting a
+       row that names an account imply one it hasn't actually got. */
+    toast(`${src[1]} — the real sign-in comes later. Linked for now.`);
+    return;
+  }
+  if(D.unlink){ sheetUnlink(D.unlink); return }
+  if(D.dounlink){
+    const src=srcOf(D.dounlink);
+    S.linked=linkedCals().filter(l=>l.src!==D.dounlink);
+    closeSheet(); render(); toast(`${src[1]} removed.`);
+    return;
+  }
   if(D.dosync){
     const [id,kind,to]=D.dosync.split("|");
     const e=S.events.find(x=>x.id===Number(id));
